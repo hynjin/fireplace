@@ -1,8 +1,9 @@
 import type { NextApiRequest, NextApiResponse } from 'next';
 import { ObjectId } from 'mongodb';
 import connectToDatabase from '../../util/mongoose';
-import Letter from '../../models/Letter';
+// import Letter from '../../models/Letter';
 import _ from 'lodash';
+const Letter = require('../../models/Letter');
 
 const getLetterCount = () => {
     return Letter.distinct('from');
