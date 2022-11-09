@@ -1,12 +1,10 @@
 import type { NextApiRequest, NextApiResponse } from 'next';
-// import { ObjectId } from 'mongodb';
 import connectToDatabase from '../../util/mongoose';
-// import Letter from '../../models/Letter';
 import _ from 'lodash';
 const Letter = require('../../models/Letter');
 
 const getAllLetters = () => {
-    return Letter.find();
+    return Letter.find().sort({ updated_at: -1 });
 };
 
 const addLetter = (letter: any) => {

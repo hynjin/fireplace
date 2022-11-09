@@ -2,16 +2,23 @@ import { GetServerSideProps } from 'next';
 import React, {
     useState,
     useCallback,
+    useMemo,
 } from 'react';
 import styles from '../styles/Home.module.css';
 import { useForm } from 'react-hook-form';
 import { fetcher, postFetcher } from '../helper/Helper';
 import useSWR from 'swr';
 import _ from 'lodash';
+import Canvas from './Canvas';
+import Table from './Table';
+import dynamic from 'next/dynamic'
 
+const DynamicCanvas = dynamic(() => import('./Canvas'), {
+  suspense: true,
+})
 export default function News(props: { letterCount: number; letters: any }) {
     const { letterCount, letters } = props;
-console.log('++++ map', letters);
+
     const [from, setFrom] = useState('');
     const [to, setTo] = useState('');
     const [content, setContent] = useState('');
@@ -35,6 +42,8 @@ console.log('++++ map', letters);
     } = useForm();
 
     const onSubmit = (data: any) => console.log(data);
+
+    const addressList = useMemo(() => _.map(letters, 'to'), [letters]);
 
     return (
         <div
@@ -88,12 +97,14 @@ console.log('++++ map', letters);
                     </button>
                 </form>
             <div className="divide-y">
+                <Canvas addressList={addressList}/>
                 {_.map(letters, (letter, index) => {
                     return (
                         <div key={index}>
                             <div>from {letter.from}</div>
                             <div>to {letter.to}</div>
                             <div>{letter.content}</div>
+                            <div>{letter.updated_at}</div>
                         </div>
                     )
                 })}
