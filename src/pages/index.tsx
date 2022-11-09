@@ -10,12 +10,7 @@ import { fetcher, postFetcher } from '../helper/Helper';
 import useSWR from 'swr';
 import _ from 'lodash';
 import Canvas from './Canvas';
-import Table from './Table';
-import dynamic from 'next/dynamic'
 
-const DynamicCanvas = dynamic(() => import('./Canvas'), {
-  suspense: true,
-})
 export default function News(props: { letterCount: number; letters: any }) {
     const { letterCount, letters } = props;
 
