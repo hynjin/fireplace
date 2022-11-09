@@ -9,7 +9,7 @@ import { useForm } from 'react-hook-form';
 import { fetcher, postFetcher } from '../helper/Helper';
 import useSWR from 'swr';
 import _ from 'lodash';
-import Canvas from './Canvas';
+import Canvas from '../components/Canvas';
 
 export default function News(props: { letterCount: number; letters: any }) {
     const { letterCount, letters } = props;
