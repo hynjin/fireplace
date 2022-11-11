@@ -15,8 +15,13 @@ import _ from 'lodash';
 export default function SnowFlake() {
     const snowRef = useRef<HTMLCanvasElement>(null);
 
-    const canvasHeight = 1200;
-    const canvasWidth = 800;
+    const windowHeight = useRef(0);
+    const windowWidth = useRef(0);
+
+    useEffect(() => {
+        windowHeight.current = document.body.offsetHeight;
+        windowWidth.current = document.body.offsetWidth;
+    }, []);
     
     const snowVersion1 = useCallback(() => {
         const canvas = snowRef?.current;
@@ -30,7 +35,7 @@ export default function SnowFlake() {
     
     
     function snow() {
-        canvasContext.clearRect(0, 0, canvasWidth, canvasHeight);
+        canvasContext.clearRect(0, 0, windowWidth.current, windowHeight.current);
     
         for (var i = 0; i < flakeCount; i++) {
             var flake = flakes[i],
@@ -65,12 +70,12 @@ export default function SnowFlake() {
             flake.y += flake.velY;
             flake.x += flake.velX;
                 
-            if (flake.y >= canvasHeight || flake.y <= 0) {
+            if (flake.y >= windowHeight.current || flake.y <= 0) {
                 reset(flake);
             }
     
     
-            if (flake.x >= canvasWidth || flake.x <= 0) {
+            if (flake.x >= windowWidth.current || flake.x <= 0) {
                 reset(flake);
             }
     
@@ -82,7 +87,7 @@ export default function SnowFlake() {
     };
     
     function reset(flake) {
-        flake.x = Math.floor(Math.random() * canvasWidth);
+        flake.x = Math.floor(Math.random() * windowWidth.current);
         flake.y = 0;
         flake.size = (Math.random() * 3) + 2;
         flake.speed = (Math.random() * 1) + 0.5;
@@ -93,8 +98,8 @@ export default function SnowFlake() {
     
     function init() {
         for (var i = 0; i < flakeCount; i++) {
-            var x = Math.floor(Math.random() * canvasWidth),
-                y = Math.floor(Math.random() * canvasHeight),
+            var x = Math.floor(Math.random() * windowWidth.current),
+                y = Math.floor(Math.random() * windowHeight.current),
                 size = (Math.random() * 3) + 2,
                 speed = (Math.random() * 1) + 0.5,
                 opacity = (Math.random() * 0.5) + 0.3;
@@ -183,8 +188,8 @@ export default function SnowFlake() {
             for (let i = 0; i < snowAttributes.particleCount; i++) {
                 particles.push(
                     new Particle(
-                        Math.random() * canvasWidth,
-                        Math.random() * canvasHeight,
+                        Math.random() * windowWidth.current,
+                        Math.random() * windowHeight.current,
                         randomIntFromRange(0.5, snowAttributes.particleSize),
                         randomColor(snowAttributes.colors),
                         Math.random() * 80
@@ -196,7 +201,7 @@ export default function SnowFlake() {
         // Animation Loop
         function animate() {
             requestAnimationFrame(animate)
-            canvasContext?.clearRect(0, 0, canvasWidth, canvasHeight);
+            canvasContext?.clearRect(0, 0, windowWidth.current, windowHeight.current);
         
             particles.forEach(particle => {
                 particle.update();
@@ -218,9 +223,9 @@ export default function SnowFlake() {
     return (
         <canvas 
             style={{
-                // position: 'absolute',
+                position: 'absolute',
                 zIndex: 99999,
             }}
-            id={'snow'} ref={snowRef} height={canvasHeight} width={canvasWidth} />
+            id={'snow'} ref={snowRef} height={windowHeight.current} width={windowWidth.current} />
     );
 }

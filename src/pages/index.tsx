@@ -9,7 +9,9 @@ import { useForm } from 'react-hook-form';
 import { fetcher, postFetcher } from '../helper/Helper';
 import useSWR from 'swr';
 import _ from 'lodash';
-import Canvas from '../components/Canvas';
+import Building from 'components/Building';
+import PostOffice from 'components/PostOffice';
+import SnowFlake from 'components/SnowFlake';
 
 export default function News(props: { letterCount: number; letters: any }) {
     const { letterCount, letters } = props;
@@ -42,6 +44,10 @@ export default function News(props: { letterCount: number; letters: any }) {
 
     return (
         <div
+            style={{
+                backgroundImage: 'linear-gradient(CornflowerBlue,midnightblue, black)',
+                zIndex: -9999,
+            }}
             className={
                 `${styles.container}
                 flex
@@ -50,6 +56,7 @@ export default function News(props: { letterCount: number; letters: any }) {
                 divide-double` // TODO: double 스타일 적용
             }
         >
+            <SnowFlake />
             <div className="divide-y">
                 <div className="px-6 py-8 flex justify-between items-center">
                     <h1>Post Office</h1>
@@ -61,49 +68,55 @@ export default function News(props: { letterCount: number; letters: any }) {
                         {letterCount} / 61 명
                     </h2>
                 </div>
-                
-                <form className="py-3">
-                    <input
-                        className="input"
-                        placeholder="from"
-                        type="text"
-                        value={from}
-                        onChange={e => setFrom(e.target.value)}
-                    />
-                    <input
-                        className="input"
-                        placeholder="to"
-                        type="text"
-                        value={to}
-                        onChange={e => setTo(e.target.value)}
-                    />
-                    <textarea
-                        className="input"
-                        placeholder="letter"
-                        value={content}
-                        onChange={e => setContent(e.target.value)}
-                    />
-                    <button
-                        type="submit"
-                        className="btn btn-light"
-                        onClick={() => onClickSendLetter({from, to, content})}
-                    >
-                        편지 쓰기
-                    </button>
-                </form>
-            <div className="divide-y">
-                <Canvas addressList={addressList}/>
-                {_.map(letters, (letter, index) => {
-                    return (
-                        <div key={index}>
-                            <div>from {letter.from}</div>
-                            <div>to {letter.to}</div>
-                            <div>{letter.content}</div>
-                            <div>{letter.updated_at}</div>
+                <div className="flex-1 p-3 pl-0 flex gap-3 divide-x">
+                    <div className="pl-3 basis-1/4">
+                        <Building addressList={addressList}/>
+                    </div>
+                    <div className="pl-3 basis-1/4">
+                        <form className="py-3">
+                            <input
+                                className="input"
+                                placeholder="from"
+                                type="text"
+                                value={from}
+                                onChange={e => setFrom(e.target.value)}
+                            />
+                            <input
+                                className="input"
+                                placeholder="to"
+                                type="text"
+                                value={to}
+                                onChange={e => setTo(e.target.value)}
+                            />
+                            <textarea
+                                className="input"
+                                placeholder="letter"
+                                value={content}
+                                onChange={e => setContent(e.target.value)}
+                            />
+                            <button
+                                type="submit"
+                                className="btn btn-light"
+                                onClick={() => onClickSendLetter({from, to, content})}
+                            >
+                                편지 쓰기
+                            </button>
+                        </form>
+                        <div className="divide-y">
+                            {_.map(letters, (letter, index) => {
+                                return (
+                                    <div key={index} >
+                                        <div>from {letter.from}</div>
+                                        <div>to {letter.to}</div>
+                                        <div>{letter.content}</div>
+                                        <div>{letter.updated_at}</div>
+                                    </div>
+                                )
+                            })}
+                            <PostOffice />
                         </div>
-                    )
-                })}
-            </div>
+                    </div>
+                </div>
             </div>
         </div>
     );
@@ -122,7 +135,7 @@ export const getServerSideProps: GetServerSideProps = async (ctx) => {
     // }
     const baseUrl = `http://${ctx.req.headers.host}`;
     const { count: letterCount } = await fetch(baseUrl + '/api/letter-count').then((res) => res.json());
-    const letters = await fetch(baseUrl + '/api/letters').then((res) => res.json());
+    const letters = [{from:'히히', to: '히히', content:'hehe'}, {from:'히A히', to: '히히', content:'hehe'}];//await fetch(baseUrl + '/api/letters').then((res) => res.json());
 
     return {
         props: {  letterCount, letters },
