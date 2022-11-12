@@ -67,10 +67,10 @@ export default function Building(props: BuildingProps) {
     return (
         <div >
             <canvas 
-                // style={{
-                //     position: 'absolute',
-                //     zIndex: 0,
-                // }}
+                style={{
+                    // position: 'absolute',
+                    zIndex: 0,
+                }}
                 id={'canvas'} ref={canvasRef}  height={canvasHeight} width={canvasWidth} />
             {/* <SnowFlake /> */}
         </div>

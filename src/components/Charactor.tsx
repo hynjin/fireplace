@@ -9,16 +9,21 @@ import _ from 'lodash';
 
 type CharactorProps = {
     image: string;
+    setSend: (t: any) => void;
+    move: boolean;
 };
 
 export default function Charactor(props: CharactorProps) {
-    const { image } = props;
+    const { image, setSend, move } = props;
 
     const charactorRef = useRef<HTMLCanvasElement>(null);
+    
+    const charactorImage = useRef<HTMLImageElement>();
+    const postboxImage = useRef<HTMLImageElement>();
 
         // Define the size of a frame
-    let frameWidth = 320;
-    let frameHeight = 350;
+    let frameWidth = 120;
+    let frameHeight = 130;
 
     // Rows and columns start from 0
     let row = useRef(0);
@@ -27,39 +32,77 @@ export default function Charactor(props: CharactorProps) {
     let x = useRef(0);
 
     const intervalId = useRef(null);
-    const [stop, setStop] = useState(false);
+    const [stop, setStop] = useState(true);
+
+    // useEffect(() => {
+    //     if (stop) {
+    //         row.current = 1;
+    //     } else {
+    //         row.current = 0;
+    //     }
+    // }, [stop]);
 
     const renderCharactor = useCallback( (charactorImage) => {
         const charactor = charactorRef?.current;
         const charactorContext = charactor?.getContext('2d');
-        charactorContext.drawImage(charactorImage, column.current*frameWidth, row.current*frameHeight, frameWidth, frameHeight, 0, 0, frameWidth, frameHeight);
-        charactorContext.clearRect(0, 0, frameHeight, frameWidth);
-        charactorContext.drawImage(charactorImage, column.current*frameWidth, row.current*frameHeight, frameWidth, frameHeight, x.current, 0, frameWidth, frameHeight);
+        // charactorContext.drawImage(charactorImage, column.current*frameWidth, row.current*frameHeight, frameWidth, frameHeight, , frameWidth, frameHeight);
+        charactorContext.clearRect(x.current + 930, 0, frameHeight, frameWidth);
+        charactorContext.drawImage(charactorImage, column.current*frameWidth, row.current*frameHeight, frameWidth, frameHeight, x.current + 930, 0, frameWidth, frameHeight);
 
-        column.current < 16 ? column.current++ : column.current = 0;
-        if (x.current > 240) {
-            console.log(x.current);
+        column.current < 15 ? column.current++ : column.current = 0;
+        console.log(x.current);
+        if (x.current < -598) {
+            row.current = 1;
+        }
+        if (x.current < -600) {
             setStop(true);
+            setSend(true);
             clearInterval(intervalId.current);
         }
-        x.current += 3;
-    }, [frameHeight, frameWidth]);
+        x.current -= 6;
+    }, [frameHeight, frameWidth, setSend]);
 
     useEffect(() => {
-        const charactorImage = new Image();
-        charactorImage.src = image;
+        charactorImage.current = new Image();
+        charactorImage.current.src = image;
+    
+        postboxImage.current = new Image();
+        postboxImage.current.src = '/images/postbox.png';
 
-        charactorImage.onload = () => {
-            console.log('????? d');
-            // renderCharactor( charactorImage);
-            if (!intervalId.current)
-            intervalId.current = setInterval(() => renderCharactor( charactorImage), 150);
+        const charactor = charactorRef?.current;
+        const charactorContext = charactor?.getContext('2d');
+
+        charactorImage.current.onload = () => {
+            if (!intervalId.current) {
+                setStop(false);
+                // intervalId.current = setInterval(() => renderCharactor( charactorImage.current), 100);
+            }
+            charactorContext.drawImage(charactorImage.current, 0, frameHeight, frameWidth, frameHeight, 930, 0, frameWidth, frameHeight);
         };
-    }, [image,, renderCharactor]);
 
+        postboxImage.current.onload = () => {
+            charactorContext.drawImage(postboxImage.current, 1060, 0, 100,100);
+
+        }
+    }, [frameHeight, frameWidth, image, renderCharactor]);
+
+
+    useEffect(() => {
+        if (move) {
+            if (!intervalId.current) {
+                setStop(false);
+                intervalId.current = setInterval(() => renderCharactor( charactorImage.current), 100);
+            }
+        }
+    }, [move, renderCharactor]);
 
     return (
-        <canvas 
-            id={'charactor'} ref={charactorRef}  height={frameHeight} width={frameWidth} />
+        <canvas
+        style={{
+            position: 'absolute',
+            zIndex: 1,
+            top: 1150,
+        }}
+            id={'charactor'} ref={charactorRef}  height={frameHeight} width={3000} />
     );
 }

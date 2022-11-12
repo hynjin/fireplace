@@ -3,6 +3,7 @@ import React, {
     useState,
     useCallback,
     useMemo,
+    useEffect,
 } from 'react';
 import styles from '../styles/Home.module.css';
 import { useForm } from 'react-hook-form';
@@ -12,6 +13,7 @@ import _ from 'lodash';
 import Building from 'components/Building';
 import PostOffice from 'components/PostOffice';
 import SnowFlake from 'components/SnowFlake';
+import Charactor from 'components/Charactor';
 
 export default function News(props: { letterCount: number; letters: any }) {
     const { letterCount, letters } = props;
@@ -19,6 +21,9 @@ export default function News(props: { letterCount: number; letters: any }) {
     const [from, setFrom] = useState('');
     const [to, setTo] = useState('');
     const [content, setContent] = useState('');
+
+    const [move, setMove] = useState(false);
+    const [send, setSend] = useState(false);
 
     const { data } = useSWR(
         `/api/letters`,
@@ -28,9 +33,18 @@ export default function News(props: { letterCount: number; letters: any }) {
     const onClickSendLetter = useCallback(
         async (data: any) => {
             await postFetcher('/api/letters', data);
+            location.reload();
         },
         []
     );
+
+    useEffect(() => {
+        if (send) {
+            onClickSendLetter({from, to, content});
+            setSend(false);
+            setMove(false);
+        }
+    }, [from, to, content, send, onClickSendLetter]);
 
     const {
         register,
@@ -72,7 +86,7 @@ export default function News(props: { letterCount: number; letters: any }) {
                     <div className="pl-3 basis-1/4">
                         <Building addressList={addressList}/>
                     </div>
-                    <div className="pl-3 basis-1/4">
+                    <div style={{zIndex:3}}className="pl-3 basis-1/4">
                         <form className="py-3">
                             <input
                                 className="input"
@@ -95,9 +109,9 @@ export default function News(props: { letterCount: number; letters: any }) {
                                 onChange={e => setContent(e.target.value)}
                             />
                             <button
-                                type="submit"
+                                type="button"
                                 className="btn btn-light"
-                                onClick={() => onClickSendLetter({from, to, content})}
+                                onClick={() => setMove(true)} //onClickSendLetter({from, to, content})}
                             >
                                 편지 쓰기
                             </button>
@@ -113,9 +127,12 @@ export default function News(props: { letterCount: number; letters: any }) {
                                     </div>
                                 )
                             })}
-                            <PostOffice />
                         </div>
                     </div>
+                </div>
+                {/* <PostOffice /> */}
+                <div>
+                    <Charactor image="/images/run.png"  move={move} setSend={setSend}/>
                 </div>
             </div>
         </div>
@@ -135,7 +152,7 @@ export const getServerSideProps: GetServerSideProps = async (ctx) => {
     // }
     const baseUrl = `http://${ctx.req.headers.host}`;
     const { count: letterCount } = await fetch(baseUrl + '/api/letter-count').then((res) => res.json());
-    const letters = [{from:'히히', to: '히히', content:'hehe'}, {from:'히A히', to: '히히', content:'hehe'}];//await fetch(baseUrl + '/api/letters').then((res) => res.json());
+    const letters = await fetch(baseUrl + '/api/letters').then((res) => res.json());
 
     return {
         props: {  letterCount, letters },
