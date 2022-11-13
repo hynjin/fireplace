@@ -74,7 +74,7 @@ export default function PostOffice(props: PostOfficeProps) {
                 // }}
                 id={'canvas'} ref={canvasRef}  height={canvasHeight} width={canvasWidth} /> */}
             {/* <SnowFlake /> */}
-            <Charactor image="/images/run.png" />
+            {/* <Charactor image="/images/run.png" /> */}
         </div>
     );
 }
