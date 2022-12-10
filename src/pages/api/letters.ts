@@ -3,7 +3,10 @@ import connectToDatabase from '../../util/mongoose';
 import _ from 'lodash';
 const Letter = require('../../models/Letter');
 
-const getAllLetters = () => {
+const getAllLetters = (name?: string | string[]) => {
+    if (name) {
+        return Letter.find({ to: name });
+    }
     return Letter.find().sort({ updated_at: -1 });
 };
 
@@ -37,8 +40,9 @@ export default async function lettersHandler(
 
     switch (method) {
         case 'GET':
-            const letters = await getAllLetters();
-            console.log('+++ call letters', letters);
+            const { name } = query;
+            const letters = await getAllLetters(name);
+            console.log('+++ call letters', name, letters);
             res.status(200).json(letters);
             break;
         case 'POST':

@@ -8,7 +8,7 @@ import React, {
 } from 'react';
 import styles from '../styles/Home.module.css';
 import { useForm } from 'react-hook-form';
-import { fetcher, postFetcher } from '../helper/Helper';
+import { fetcher, postFetcher } from '../../helper/Helper';
 import useSWR from 'swr';
 import _ from 'lodash';
 import SnowFlake from './SnowFlake';

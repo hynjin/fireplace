@@ -1,3 +1,5 @@
+type ValueOf<T> = T[keyof T];
+
 declare type UserType = {
     _id: string;
     name: string;
@@ -11,6 +13,8 @@ declare type LetterType = {
     from: string;
     to: string;
     content: string;
+    anonymous: boolean;
+    present: import('src/types/constants').PresentTypeUnion;
 };
 
 declare type RestaurantType = {

@@ -3,4 +3,6 @@ declare type LetterType = {
     from: string;
     to: string;
     content: string;
+    anonymous: boolean;
+    present: import('src/types/constants').PresentTypeUnion;
 };

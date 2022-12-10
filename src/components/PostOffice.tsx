@@ -11,8 +11,8 @@ import { useForm } from 'react-hook-form';
 import { fetcher, postFetcher } from '../helper/Helper';
 import useSWR from 'swr';
 import _ from 'lodash';
-import SnowFlake from './SnowFlake';
-import Charactor from './Charactor';
+import SnowFlake from './canvas/SnowFlake';
+import Charactor from './canvas/Charactor';
 
 type PostOfficeProps = {
     addressList?: string[];

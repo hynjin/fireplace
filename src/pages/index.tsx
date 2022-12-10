@@ -10,17 +10,18 @@ import { useForm } from 'react-hook-form';
 import { fetcher, postFetcher } from '../helper/Helper';
 import useSWR from 'swr';
 import _ from 'lodash';
-import Building from 'components/Building';
 import PostOffice from 'components/PostOffice';
-import SnowFlake from 'components/SnowFlake';
-import Charactor from 'components/Charactor';
+import SnowFlake from 'components/canvas/SnowFlake';
+import Charactor from 'components/canvas/Charactor';
+import LetterList from 'components/LetterList';
+import SendLetterForm from 'components/SendLetterForm';
+import Fireplace from 'components/canvas/Fireplace';
+import { getSession } from 'next-auth/react';
+import CreateLetterModal from 'components/modals/CreateLetterModal';
+import ShowLetterModal from 'components/modals/ShowLetterModal';
 
-export default function News(props: { letterCount: number; letters: any }) {
-    const { letterCount, letters } = props;
-
-    const [from, setFrom] = useState('');
-    const [to, setTo] = useState('');
-    const [content, setContent] = useState('');
+export default function Index(props: { letterCount: number; letters: any; userName: string; userList?: string[] }) {
+    const { letterCount, letters, userName, userList } = props;
 
     const [move, setMove] = useState(false);
     const [send, setSend] = useState(false);
@@ -38,13 +39,13 @@ export default function News(props: { letterCount: number; letters: any }) {
         []
     );
 
-    useEffect(() => {
-        if (send) {
-            onClickSendLetter({from, to, content});
-            setSend(false);
-            setMove(false);
-        }
-    }, [from, to, content, send, onClickSendLetter]);
+    // useEffect(() => {
+    //     if (send) {
+    //         onClickSendLetter({from, to, content});
+    //         setSend(false);
+    //         setMove(false);
+    //     }
+    // }, [from, to, content, send, onClickSendLetter]);
 
     const {
         register,
@@ -73,67 +74,26 @@ export default function News(props: { letterCount: number; letters: any }) {
             <SnowFlake />
             <div className="divide-y">
                 <div className="px-6 py-8 flex justify-between items-center">
-                    <h1>Post Office</h1>
+                    <h1>{userName}의 벽난로</h1>
                 </div>
             </div>
             <div className="flex-1 flex flex-col divide-y">
-                <div className="p-3 flex justify-between items-center">
-                    <h2 className="p-3">
-                        {letterCount} / 61 명
-                    </h2>
-                </div>
                 <div className="flex-1 p-3 pl-0 flex gap-3 divide-x">
                     <div className="pl-3 basis-1/4">
-                        <Building addressList={addressList}/>
+                        <Fireplace letters={letters} />
                     </div>
-                    <div style={{zIndex:3}}className="pl-3 basis-1/4">
-                        <form className="py-3">
-                            <input
-                                className="input"
-                                placeholder="from"
-                                type="text"
-                                value={from}
-                                onChange={e => setFrom(e.target.value)}
-                            />
-                            <input
-                                className="input"
-                                placeholder="to"
-                                type="text"
-                                value={to}
-                                onChange={e => setTo(e.target.value)}
-                            />
-                            <textarea
-                                className="input"
-                                placeholder="letter"
-                                value={content}
-                                onChange={e => setContent(e.target.value)}
-                            />
-                            <button
-                                type="button"
-                                className="btn btn-light"
-                                onClick={() => setMove(true)} //onClickSendLetter({from, to, content})}
-                            >
-                                편지 쓰기
-                            </button>
-                        </form>
-                        <div className="divide-y">
-                            {_.map(letters, (letter, index) => {
-                                return (
-                                    <div key={index} >
-                                        <div>from {letter.from}</div>
-                                        <div>to {letter.to}</div>
-                                        <div>{letter.content}</div>
-                                        <div>{letter.updated_at}</div>
-                                    </div>
-                                )
-                            })}
-                        </div>
+                    <div style={{zIndex:3}}className="pl-3 basis-1/4 text-gray-100">
+                        <CreateLetterModal userList={userList} />
+                        {/* <div className="divide-y">
+                            <LetterList letters={letters} />
+                        </div> */}
+                        <ShowLetterModal letters={letters} />
                     </div>
                 </div>
                 {/* <PostOffice /> */}
-                <div>
+                {/* <div>
                     <Charactor image="/images/run.png"  move={move} setSend={setSend}/>
-                </div>
+                </div> */}
             </div>
         </div>
     );
@@ -152,9 +112,12 @@ export const getServerSideProps: GetServerSideProps = async (ctx) => {
     // }
     const baseUrl = `http://${ctx.req.headers.host}`;
     const { count: letterCount } = await fetch(baseUrl + '/api/letter-count').then((res) => res.json());
-    const letters = await fetch(baseUrl + '/api/letters').then((res) => res.json());
+    const userName = '정다희'; //로그인 도입 후 userName으로
+    const letters = await fetch(baseUrl + '/api/letters' + `?name=${userName}`).then((res) => res.json());
+    const users = await fetch(baseUrl + '/api/users' + `?name=${userName}`).then((res) => res.json());
+    const userList = _.map(users, 'name');
 
     return {
-        props: {  letterCount, letters },
+        props: {  letterCount, letters, userName, userList },
     };
 };

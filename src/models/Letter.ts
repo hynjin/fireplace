@@ -6,6 +6,8 @@ const LetterSchema = new mongoose.Schema({
     to: String,
     content: String,
     updated_at: Date,
+    anonymous: Boolean,
+    present: String,
 });
 
 const Letter = mongoose.models.Letter || mongoose.model('Letter', LetterSchema);
