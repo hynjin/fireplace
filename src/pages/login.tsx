@@ -34,7 +34,7 @@ export default function SignIn(props: SignInType) {
                         publy 계정이 아니에요 다시 로그인 해주세요
                     </p>
                 )}
-                누가 내 벽난로에 선물 쌌어
+                누가 내 벽난로에 선물 쐈어
                 <div>당신은 누구?</div>
                 <button className="flex btn" onClick={() => signIn('google')}>
                     퍼블리 계정으로 시작~
