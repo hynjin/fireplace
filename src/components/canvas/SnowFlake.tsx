@@ -27,7 +27,6 @@ export default function SnowFlake() {
         const canvas = snowRef?.current;
         const canvasContext = canvas?.getContext('2d');
 
-
         var flakes = [];
         const flakeCount = 200;
         let mX = -100;
@@ -216,6 +215,7 @@ export default function SnowFlake() {
 
     useEffect(() => {
         const version = Math.floor((Math.random() * 100) + 1) % 2;
+console.log('++ ??? now ', version, windowHeight.current, windowWidth.current);
 
         version === 0 ? snowVersion1() : snowVersion2();
     }, [snowVersion1, snowVersion2]);
@@ -224,7 +224,7 @@ export default function SnowFlake() {
         <canvas 
             style={{
                 position: 'absolute',
-                // zIndex: 2,
+                zIndex: 2,
             }}
             id={'snow'} ref={snowRef} height={windowHeight.current} width={windowWidth.current} />
     );

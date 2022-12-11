@@ -29,8 +29,10 @@ export default function SignIn(props: SignInType) {
             <SnowFlake />
             {/* 배경만 왜 반응형으로 된거지... */}
             <button  onClick={() => router.push('/') }>
-            <Image src="/images/publy_house.png" height="200" width="353" alt="" className='absolute' style={{ top: 280, left: 340}} />
+            <Image src="/images/publy_house.png" height="200" width="353" alt="" className='absolute' style={{ top: 620, left: 650, zIndex: 3}} />
             </button>
+            <SnowFlake />
+
             <Image src="/images/intro_background.png" priority={false} height="1080" width="1920" alt="" className='relative' style={{ zIndex: -2}} />
             <div className="py-[80px] flex-1 flex flex-col items-center">
                 <button className="flex p-3 absolute border rounded" style={{
@@ -38,8 +40,8 @@ export default function SignIn(props: SignInType) {
                     alignItems: 'flex-start',
                     width: '275px',
                     height: '50px',
-                    left: '380px',
-                    top: '530px',
+                    left: '690px',
+                    top: '870px',
                     background: '#FFFFFF',
                     textAlign: 'center',
                 }}>
