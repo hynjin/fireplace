@@ -100,12 +100,12 @@ export const getServerSideProps: GetServerSideProps = async (ctx) => {
     const { name } = ctx.query;
     const { count: letterCount } = await fetch(baseUrl + '/api/letter-count').then((res) => res.json());
     const userName = name ?? '히히'; //로그인 도입 후 userName으로
-    // const letters = await fetch(baseUrl + '/api/letters').then((res) => res.json());
-    const ranking = await fetch(baseUrl + '/api/rank').then((res) => res.json());
+    const letters = await fetch(baseUrl + '/api/letters').then((res) => res.json());
+    // const ranking = await fetch(baseUrl + '/api/rank').then((res) => res.json());
     const users = userName ? await fetch(baseUrl + '/api/users' + `?name=${userName}`).then((res) => res.json()) : [];
     const userList = _.map(users, 'name');
-
+console.log('+++ rnak', letters);
     return {
-        props: {  letterCount, letters:ranking, userName, userList },
+        props: {  letterCount, letters, userName, userList },
     };
 };

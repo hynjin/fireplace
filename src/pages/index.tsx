@@ -78,7 +78,6 @@ export default function Index(props: Props) {
                 divide-double` // TODO: double 스타일 적용
             }
         >
-            <SnowFlake />
             <div className="divide-y">
                 <div className="px-6 py-8 flex justify-between items-center">
                     <h1>{userName}의 벽난로</h1>

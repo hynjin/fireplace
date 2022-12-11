@@ -224,7 +224,7 @@ export default function SnowFlake() {
         <canvas 
             style={{
                 position: 'absolute',
-                zIndex: 2,
+                // zIndex: 2,
             }}
             id={'snow'} ref={snowRef} height={windowHeight.current} width={windowWidth.current} />
     );
