@@ -20,6 +20,7 @@ import { getSession } from 'next-auth/react';
 import CreateLetterModal from 'components/modals/CreateLetterModal';
 import ShowLetterModal from 'components/modals/ShowLetterModal';
 import { PRESENT_TYPE } from 'types/constants';
+import { useRouter } from 'next/router';
 
 type  Props = {
     letterCount: number;
@@ -30,6 +31,7 @@ type  Props = {
 
 export default function Rank(props: Props) {
     const { letterCount, letters, userName, userList } = props;
+    const router = useRouter();
     // const groupedLetter = _.groupby(letters, 'present');
     const [rankType, setRankType] = useState('');
 
@@ -73,14 +75,16 @@ export default function Rank(props: Props) {
                         ))}
                     </select> 을 가장 많이 얻을 사람은?
                 </div>
+                <button className='btn' onClick={() => router.push('/')}>돌아가기</button>
+
             </div>
-            <div className="flex-1 flex flex-col divide-y">
+            {/* <div className="flex-1 flex flex-col divide-y">
                 <div className="flex-1 p-3 pl-0 flex gap-3 divide-x">
                     <div className="pl-3 basis-1/4">
                         <Fireplace letters={letters} />
                     </div>
                 </div>
-            </div>
+            </div> */}
         </div>
     );
 }
@@ -98,7 +102,7 @@ export const getServerSideProps: GetServerSideProps = async (ctx) => {
     // }
     const baseUrl = `http://${ctx.req.headers.host}`;
     const { name } = ctx.query;
-    const { count: letterCount } = await fetch(baseUrl + '/api/letter-count').then((res) => res.json());
+    // const { count: letterCount } = await fetch(baseUrl + '/api/letter-count').then((res) => res.json());
     const userName = name ?? '히히'; //로그인 도입 후 userName으로
     const letters = await fetch(baseUrl + '/api/letters').then((res) => res.json());
     // const ranking = await fetch(baseUrl + '/api/rank').then((res) => res.json());
@@ -106,6 +110,6 @@ export const getServerSideProps: GetServerSideProps = async (ctx) => {
     const userList = _.map(users, 'name');
 console.log('+++ rnak', letters);
     return {
-        props: {  letterCount, letters, userName, userList },
+        props: {  letterCount:0, letters, userName, userList },
     };
 };

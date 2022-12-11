@@ -5,8 +5,11 @@ import connectToDatabase from '../../util/mongoose';
 import _ from 'lodash';
 const Letter = require('../../models/Letter');
 
-const getLetterCount = () => {
-    return Letter.distinct('from');
+const getLetterCount = (name?: string | string[]) => {
+    return Letter.aggregate([
+        {"$group" : {'_id':"$to", count:{$sum:1}}}
+    ]);
+    // return Letter.distinct('from');
     // .aggregate([
     //     {"$group" : {'_id':"$from", count:{$sum:1}}}
     // ]);
@@ -22,9 +25,10 @@ export default async function letterCountHandler(
 
     switch (method) {
         case 'GET':
-            const letters = await getLetterCount();
-            console.log('+++ +++', letters.length);
-            res.status(200).json({count: letters.length});
+            const { name } = query;
+            const letters = await getLetterCount(name);
+            console.log('+++ +++', letters);
+            res.status(200).json(letters);
             break;
         default:
             res.setHeader('Allow', ['GET']);

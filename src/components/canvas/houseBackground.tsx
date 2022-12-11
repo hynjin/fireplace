@@ -11,8 +11,6 @@ import { useForm } from 'react-hook-form';
 import { fetcher, postFetcher } from '../../helper/Helper';
 import useSWR from 'swr';
 import _ from 'lodash';
-import NextImage from 'next/image';
-import Bonfire from './Bonfire';
 
 type Props = {
     letters: LetterType[];
@@ -23,24 +21,21 @@ export default function Fireplace(props: Props) {
 
     const canvasRef = useRef<HTMLCanvasElement>(null);
 
-    const fireplaceHeight = 621;
-    const fireplaceWidth = 795;
+    const height = 621;
+    const width = 795;
 
     const renderFireplace = useCallback((canvasContext) => {
-        const background = new Image();
-        background.src = "/images/house_background.png";
-        const fireplace = new Image();
-        fireplace.src = "/images/fireplace.png";
+        const image = new Image();
+        image.src = "/images/fireplace.png";    
 
-        fireplace.onload = () => {
-            canvasContext.drawImage(background, 0, 0, 1920, 1080);
-            canvasContext.drawImage(fireplace, 562, 255, fireplaceWidth, fireplaceHeight);
+        image.onload = () => {
+            canvasContext.drawImage(image, 0, 0, width, height);
 
             // let index = 0;
             // for (var i = 0; i < rowCount; i++) {
             //     for (var j = 0; j < colCount; j++) {
             //         canvasContext.fillStyle = _.includes(addressList, postAdress[index]) ? "#729419" : "#000000";
-            //         canvasContext.fillRect(100 + i * rowInterval, 100 + j * colInterval, windowWidth, windowfireplaceHeight );
+            //         canvasContext.fillRect(100 + i * rowInterval, 100 + j * colInterval, windowWidth, windowHeight );
             //         canvasContext.font = '28px serif';
             //         canvasContext.fillText(postAdress[index], 100 + i * rowInterval, 100 + j * colInterval);
 
@@ -48,7 +43,7 @@ export default function Fireplace(props: Props) {
             //     }
             // }
         };
-    }, [fireplaceHeight, fireplaceWidth]);
+    }, [height, width]);
 
     useEffect(() => {
         const canvas = canvasRef?.current;
@@ -61,11 +56,11 @@ export default function Fireplace(props: Props) {
         <div >
             <canvas 
                 style={{
-                    position: 'relative',
-                    zIndex: -1,
+                    // position: 'absolute',
+                    zIndex: 0,
                 }}
-                id={'canvas'} ref={canvasRef}  height={1080} width={1920} />
-                <Bonfire />
+                id={'canvas'} ref={canvasRef}  height={height} width={width} />
+            {/* <SnowFlake /> */}
         </div>
     );
 }
