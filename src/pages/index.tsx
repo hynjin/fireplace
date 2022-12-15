@@ -1,20 +1,25 @@
-import { GetServerSideProps } from "next";
-import React, { useState, useCallback, useMemo, useEffect } from "react";
-import styles from "../styles/Home.module.css";
-import { useForm } from "react-hook-form";
-import { fetcher, postFetcher } from "../helper/Helper";
-import useSWR from "swr";
-import _ from "lodash";
-import PostOffice from "components/PostOffice";
-import SnowFlake from "components/canvas/SnowFlake";
-import Charactor from "components/canvas/Charactor";
-import LetterList from "components/LetterList";
-import SendLetterForm from "components/SendLetterForm";
-import Fireplace from "components/canvas/Fireplace";
-import { getSession } from "next-auth/react";
-import CreateLetterModal from "components/modals/CreateLetterModal";
-import ShowLetterModal from "components/modals/ShowLetterModal";
-import { useRouter } from "next/router";
+import { GetServerSideProps } from 'next';
+import React, {
+    useState,
+    useCallback,
+    useMemo,
+    useEffect,
+} from 'react';
+import styles from '../styles/Home.module.css';
+import { useForm } from 'react-hook-form';
+import { fetcher, postFetcher } from '../helper/Helper';
+import useSWR from 'swr';
+import _ from 'lodash';
+import PostOffice from 'components/PostOffice';
+import SnowFlake from 'components/canvas/SnowFlake';
+import Charactor from 'components/canvas/Charactor';
+import LetterList from 'components/LetterList';
+import SendLetterForm from 'components/SendLetterForm';
+import Fireplace from 'components/canvas/Fireplace';
+import { getSession, signOut } from 'next-auth/react';
+import CreateLetterModal from 'components/modals/CreateLetterModal';
+import ShowLetterModal from 'components/modals/ShowLetterModal';
+import { useRouter } from 'next/router';
 
 type Props = {
   letterCount: any;
@@ -27,28 +32,38 @@ export default function Index(props: Props) {
   const { letterCount, letters, userName, userList } = props;
   const router = useRouter();
 
-  const { data } = useSWR(`/api/letters`, fetcher);
+    const [showBubble, setShowBubble] = useState(false);
+    // const testSound = new Audio('sound/test.mp3');
 
-  return (
-    <div className="relative overflow-hidden">
-      <div className="absolute">
-        <button className="btn" onClick={() => router.push("/rank")}>
-          랭킹 보기
-        </button>
-        <CreateLetterModal userList={userList} />
-        <ShowLetterModal letters={letters} />
-        <h2 className="text-white">{userName}의 벽난로</h2>
-        <h2 className="text-white">
-          {letterCount[userName]?.count ?? 0}개의 편지
-        </h2>
-      </div>
-      <img
-        src="/images/house_background.png"
-        className="object-cover w-[100wh] h-[100vh]"
-      />
-      <Fireplace letters={letters} />
-    </div>
-  );
+    const { data } = useSWR(
+        `/api/letters`,
+        fetcher
+    );
+
+    return (
+        <div className="">
+            <iframe src="sounds/jingle_bells.mp3"  allow="autoplay" id="bgm" style={{display: "none"}}></iframe>
+
+            <audio id="bgm" loop controls autoPlay>
+                <source src="sounds/jingle_bells.mp3" />     
+            </audio>
+            <div className='absolute' style={{top: 100, left: 800, width: 500}}>
+                {showBubble &&
+                    <>
+                        <button className='btn' onClick={() => router.push('/rank')}>랭킹 보기</button>
+                        <CreateLetterModal userList={userList} />
+                        <ShowLetterModal letters={letters} />
+                        <button onClick={() => signOut()} >로그아웃</button>
+                    </>
+                }
+                <h1 className='text-white'>{userName}의 벽난로</h1>
+                <h2 className='text-white'>{letterCount[userName]?.count ?? 0}개의 편지</h2>
+                <button onClick={() => setShowBubble(true)}>당신눈에 이건 개미로 보입니다</button>
+
+            </div>
+            <Fireplace letters={letters} />
+        </div>
+    );
 }
 
 export const getServerSideProps: GetServerSideProps = async (ctx) => {
