@@ -44,6 +44,7 @@ export default function SignIn(props: SignInType) {
                     top: '870px',
                     background: '#FFFFFF',
                     textAlign: 'center',
+                    zIndex: 3,
                 }}
                 onClick={() => signIn('google')}>
                     집을 클릭해 선물을 확인하러 가요!
