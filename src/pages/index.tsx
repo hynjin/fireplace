@@ -53,7 +53,8 @@ export default function Index(props: Props) {
 }
 
 export const getServerSideProps: GetServerSideProps = async (ctx) => {
-    // const session = await getSession(ctx);
+    const session = await getSession(ctx);
+    console.log('+++ se', session);
 
     // if (!session) {
     //     return {

@@ -44,8 +44,8 @@ export default function SignIn(props: SignInType) {
                     top: '870px',
                     background: '#FFFFFF',
                     textAlign: 'center',
-                }}>
-                    {/* signIn('google')}> */}
+                }}
+                onClick={() => signIn('google')}>
                     집을 클릭해 선물을 확인하러 가요!
                 </button>
                 {error && (
@@ -59,6 +59,7 @@ export default function SignIn(props: SignInType) {
 }
 export const getServerSideProps: GetServerSideProps = async (ctx) => {
     const session = await getSession(ctx);
+    console.log('++++ log', session);
     if (session) {
         return {
             redirect: {
