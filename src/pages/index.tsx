@@ -32,6 +32,9 @@ export default function Index(props: Props) {
     const { letterCount, letters, userName, userList } = props;
     const router = useRouter();
 
+    const [showBubble, setShowBubble] = useState(false);
+    // const testSound = new Audio('sound/test.mp3');
+
     const { data } = useSWR(
         `/api/letters`,
         fetcher
@@ -39,13 +42,23 @@ export default function Index(props: Props) {
 
     return (
         <div className="">
+            <iframe src="sounds/jingle_bells.mp3"  allow="autoplay" id="bgm" style={{display: "none"}}></iframe>
+
+            <audio id="bgm" loop controls autoPlay>
+                <source src="sounds/jingle_bells.mp3" />     
+            </audio>
             <div className='absolute' style={{top: 100, left: 800, width: 500}}>
-                <button className='btn' onClick={() => router.push('/rank')}>랭킹 보기</button>
-                <CreateLetterModal userList={userList} />
-                <ShowLetterModal letters={letters} />
-                <button onClick={() => signOut()} >로그아웃</button>
+                {showBubble &&
+                    <>
+                        <button className='btn' onClick={() => router.push('/rank')}>랭킹 보기</button>
+                        <CreateLetterModal userList={userList} />
+                        <ShowLetterModal letters={letters} />
+                        <button onClick={() => signOut()} >로그아웃</button>
+                    </>
+                }
                 <h1 className='text-white'>{userName}의 벽난로</h1>
                 <h2 className='text-white'>{letterCount[userName]?.count ?? 0}개의 편지</h2>
+                <button onClick={() => setShowBubble(true)}>당신눈에 이건 개미로 보입니다</button>
 
             </div>
             <Fireplace letters={letters} />
