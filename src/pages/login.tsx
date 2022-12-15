@@ -28,12 +28,11 @@ export default function SignIn(props: SignInType) {
       {/* 눈송이에 버튼이 가려져서...집위로 눈이 오게 하려면 눈에 zindex주고 그 위에 투명 버튼 만들어야... */}
       <SnowFlake />
       {/* 배경만 왜 반응형으로 된거지... */}
-      <button
-        className="absolute bottom-[-20px] z-[100] h-full "
-        onClick={() => router.push("/")}
-      >
-        <img className="h-1/2 " src="/images/house@3x.png" />
-      </button>
+      <div className="absolute bottom-[-40px] left-[50%] translate-x-[-50%] z-[10] w-1/3">
+        <button onClick={() => router.push("/")} className="w-fit h-fit">
+          <img className="h-full w-full" src="/images/house@3x.png" />
+        </button>
+      </div>
       <SnowFlake />
 
       <img
@@ -42,8 +41,8 @@ export default function SignIn(props: SignInType) {
         style={{ backgroundSize: "cover" }}
       />
 
-      <div className="flex flex-col items-center">
-        <button className="flex p-3 absolute top-0 border rounded">
+      <div className="absolute bottom-14 left-[50%] translate-x-[-50%] flex flex-col items-center z-[100]">
+        <button className="flex p-3 top-0 border rounded bg-white">
           {/* signIn('google')}> */}
           집을 클릭해 선물을 확인하러 가요!
         </button>
