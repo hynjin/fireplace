@@ -7,7 +7,7 @@ const LetterSchema = new mongoose.Schema({
     content: String,
     updated_at: Date,
     anonymous: Boolean,
-    present: String,
+    present: Array,
 });
 
 const Letter = mongoose.models.Letter || mongoose.model('Letter', LetterSchema);

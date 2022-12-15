@@ -19,7 +19,7 @@ type SendLetterType = {
     from: string;
     to: string;
     content?: string;
-    present?: string;
+    present?: string[];
     anonymous: boolean;
 }
 

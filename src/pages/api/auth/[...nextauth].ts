@@ -3,7 +3,9 @@ import GoogleProvider from 'next-auth/providers/google';
 import CognitoProvider from 'next-auth/providers/cognito';
 import { NextApiRequest, NextApiResponse } from 'next';
 import { MongoDBAdapter } from '@next-auth/mongodb-adapter';
-import clientPromise from '../../../util/mognodb';
+import clientPromise from '../../../util/mongodb';
+
+const MONGODB_DB = process.env.MONGODB_DB;
 
 export default NextAuth({
     session: {
@@ -21,7 +23,9 @@ export default NextAuth({
             issuer: process.env.COGNITO_ISSUER,
         }),
     ],
-    adapter: MongoDBAdapter(clientPromise),
+    adapter: MongoDBAdapter(clientPromise, {
+        databaseName: MONGODB_DB
+    }),
     pages: {
         signIn: '/login',
         error: '/login',
