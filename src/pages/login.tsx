@@ -41,10 +41,12 @@ export default function SignIn(props: SignInType) {
         style={{ backgroundSize: "cover" }}
       />
 
-      <div className="absolute bottom-14 left-[50%] translate-x-[-50%] flex flex-col items-center z-[100]">
-        <button className="flex p-3 top-0 border rounded bg-white">
+      <div className="absolute top-[38%] left-[50%] translate-x-[-50%] flex flex-col items-center z-[100]">
+        <button className="flex p-3 top-0 border-2 border-dashed border-red-600 rounded bg-white">
           {/* signIn('google')}> */}
-          집을 클릭해 선물을 확인하러 가요!
+          <h6 className="text-lg text-sky-700">
+            집을 클릭해서 선물을 확인하러 가요!
+          </h6>
         </button>
         {error && (
           <p className="description error">
