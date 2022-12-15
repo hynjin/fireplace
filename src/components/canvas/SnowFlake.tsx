@@ -130,7 +130,7 @@ export default function SnowFlake() {
         // Variables
         const snowAttributes = {
             particleCount: 400,   // Change amount of snowflakes
-            particleSize: 3,      // Max size of a snowflake
+            particleSize: 4,      // Max size of a snowflake
             fallingSpeed: 1,      // Intensity of the snowfall horizontal
             colors: ['#ccc', '#eee', '#fff', '#ddd'] // Array of usable colors
         }
@@ -214,11 +214,8 @@ export default function SnowFlake() {
 
 
     useEffect(() => {
-        const version = Math.floor((Math.random() * 100) + 1) % 2;
-console.log('++ ??? now ', version, windowHeight.current, windowWidth.current);
-
-        version === 0 ? snowVersion1() : snowVersion2();
-    }, [snowVersion1, snowVersion2]);
+        snowVersion2();
+    }, [snowVersion2]);
 
     return (
         <canvas 
