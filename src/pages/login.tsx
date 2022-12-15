@@ -29,7 +29,7 @@ export default function SignIn(props: SignInType) {
       <SnowFlake />
       {/* 배경만 왜 반응형으로 된거지... */}
       <div className="absolute bottom-[-40px] left-[50%] translate-x-[-50%] z-[10] w-1/3">
-        <button onClick={() => router.push("/")} className="w-fit h-fit">
+        <button onClick={() => signIn("google")} className="w-fit h-fit">
           <img className="h-full w-full" src="/images/house@3x.png" />
         </button>
       </div>
@@ -42,12 +42,14 @@ export default function SignIn(props: SignInType) {
       />
 
       <div className="absolute top-[38%] left-[50%] translate-x-[-50%] flex flex-col items-center z-[100]">
-        <div className="flex p-3 top-0 border-2 border-dashed border-green-600 rounded bg-white">
-          {/* signIn('google')}> */}
+        <button
+          className="flex p-3 top-0 border-2 border-dashed border-green-600 rounded bg-white"
+          onClick={() => signIn("google")}
+        >
           <h6 className="text-md text-green-800">
             👇 집을 클릭해서 선물을 확인하러 가요! 👇
           </h6>
-        </div>
+        </button>
         {error && (
           <p className="description error">
             publy 계정이 아니에요 다시 로그인 해주세요
