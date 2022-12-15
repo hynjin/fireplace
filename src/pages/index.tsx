@@ -53,21 +53,23 @@ export default function Index(props: Props) {
 }
 
 export const getServerSideProps: GetServerSideProps = async (ctx) => {
-    // const session = await getSession(ctx);
+    const session = await getSession(ctx);
 
-    // if (!session) {
-    //     return {
-    //         redirect: {
-    //             destination: '/login',
-    //             permanent: false,
-    //         },
-    //     };
-    // }
+    if (!session) {
+        return {
+            redirect: {
+                destination: '/login',
+                permanent: false,
+            },
+        };
+    }
+
     const baseUrl = `http://${ctx.req.headers.host}`;
-    const { name } = ctx.query;
+    const { user } = session;
+    const { name } = user;
+    const userName = name ?? '히히'; //로그인 도입 후 userName으로
     const groupedLetter = await fetch(baseUrl + '/api/letter-count').then((res) => res.json());
     const letterCount = _.keyBy(groupedLetter, '_id');
-    const userName = name ?? '히히'; //로그인 도입 후 userName으로
     const letters = userName ? await fetch(baseUrl + '/api/letters' + `?name=${userName}`).then((res) => res.json()) : [];
     const users = userName ? await fetch(baseUrl + '/api/users' + `?name=${userName}`).then((res) => res.json()) : [];
     const userList = _.map(users, 'name');
