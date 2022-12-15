@@ -16,7 +16,7 @@ import Charactor from 'components/canvas/Charactor';
 import LetterList from 'components/LetterList';
 import SendLetterForm from 'components/SendLetterForm';
 import Fireplace from 'components/canvas/Fireplace';
-import { getSession } from 'next-auth/react';
+import { getSession, signOut } from 'next-auth/react';
 import CreateLetterModal from 'components/modals/CreateLetterModal';
 import ShowLetterModal from 'components/modals/ShowLetterModal';
 import { useRouter } from 'next/router';
@@ -43,6 +43,7 @@ export default function Index(props: Props) {
                 <button className='btn' onClick={() => router.push('/rank')}>랭킹 보기</button>
                 <CreateLetterModal userList={userList} />
                 <ShowLetterModal letters={letters} />
+                <button onClick={() => signOut()} >로그아웃</button>
                 <h1 className='text-white'>{userName}의 벽난로</h1>
                 <h2 className='text-white'>{letterCount[userName]?.count ?? 0}개의 편지</h2>
 
