@@ -1,8 +1,6 @@
-import { MongoClient } from 'mongodb';
 import mongoose from 'mongoose';
 
 const MONGODB_URI = process.env.MONGODB_URI;
-const MONGODB_DB = process.env.MONGODB_DB;
 
 let cachedDb = global.mongoose;
 
@@ -16,32 +14,32 @@ if (!MONGODB_URI) {
     );
 }
 
-if (!MONGODB_DB) {
-    throw new Error(
-        'Please define the MONGODB_DB environment variable inside .env.local'
-    );
-}
-
 export async function connectToDatabase() {
+    // return;
+    console.log('+++ ??');
+    if (cachedDb && cachedDb.conn) {
+        console.log('=> using cached database ');
+        // console.log('+++ ???',  cachedDb?.promise);
+        return cachedDb.conn;
+    }
     if (cachedDb && cachedDb.serverConfig?.isConnected()) {
         console.log('=> using cached database instance');
         return Promise.resolve(cachedDb);
     }
 
-    if (!cachedDb.promise) {
+    if (!cachedDb?.promise) {
         const opts = {
+            maxPoolSize: 2,
             useNewUrlParser: true,
             useUnifiedTopology: true,
             bufferCommands: false,
         };
 
         cachedDb.promise = mongoose
-            .connect(MONGODB_URI, opts)
-            .then((mongoose) => {
-                return mongoose;
-            });
+            .createConnection(MONGODB_URI, opts);
     }
 
+    console.log('=> new database instance');
     cachedDb.conn = await cachedDb.promise;
     return cachedDb.conn;
 }
