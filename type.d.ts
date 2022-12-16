@@ -5,4 +5,5 @@ declare type LetterType = {
     content: string;
     anonymous: boolean;
     present: string[];
+    isRead: boolean;
 };

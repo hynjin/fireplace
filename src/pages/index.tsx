@@ -8,7 +8,7 @@ import React, {
 } from 'react';
 import styles from '../styles/Home.module.css';
 import { useForm } from 'react-hook-form';
-import { fetcher, postFetcher } from '../helper/Helper';
+import { fetcher, postFetcher, putFetcher } from '../helper/Helper';
 import useSWR from 'swr';
 import _ from 'lodash';
 import PostOffice from 'components/PostOffice';
@@ -85,7 +85,8 @@ export const getServerSideProps: GetServerSideProps = async (ctx) => {
     const letterCount = _.keyBy(groupedLetter, '_id');
     const letters = userName ? await fetch(baseUrl + '/api/letters' + `?name=${userName}`).then((res) => res.json()) : [];
     const users = await fetch(baseUrl + '/api/user-lists').then((res) => res.json());
-    const userList = _.difference(users[0]?.list, [userName]);
+    console.log('+++ ', _.map(users, 'name'));
+    const userList = _.difference(_.map(users, 'name'), [userName]);
 
     return {
         props: {  letterCount, letters, userName, userList },

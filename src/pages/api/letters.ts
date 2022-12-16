@@ -6,16 +6,21 @@ const Letter = require('../../models/Letter');
 
 const getAllLetters = (name?: string | string[]) => {
     if (name) {
-        return Letter.find({ to: name });
+        return Letter.find({ reciever: name });
     }
     return Letter.find().sort({ updated_at: -1 });
 };
+
+const getUnreadLetters = (filter) => {
+    return Letter.find({ isRead: filter });
+}
 
 const addLetter = (letter: any) => {
     try {
         // console.log('+++ add letters post', letter);
         return Letter.create({
             ...letter,
+            isRead: false,
             updated_at: new Date(),
         });
     } catch (e) {
@@ -38,12 +43,13 @@ export default async function lettersHandler(
     const { query, body, method } = req;
 
     // const con = 
-    await clientPromise;
+    await connectToDatabase();
 
     switch (method) {
         case 'GET':
-            const { name } = query;
-            const letters = await getAllLetters(name);
+            const { name, filter } = query;
+            
+            const letters = _.isNil(filter) ? await getAllLetters(name) : await getUnreadLetters(filter);
             // console.log('+++ call letters', name, letters);
             res.status(200).json(letters);
             break;

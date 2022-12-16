@@ -63,7 +63,7 @@ export default function RecieverList(props: Props) {
                         ) : (
                             filteredUserList.map((person) => (
                             <Combobox.Option
-                                key={person.id}
+                                key={`send-to-${person}`}
                                 className={({ active }) =>
                                 `relative cursor-default select-none py-2 pl-10 pr-4 ${
                                     active ? 'bg-gray-600 text-white' : 'text-gray-900'

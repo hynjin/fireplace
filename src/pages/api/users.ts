@@ -32,7 +32,7 @@ const getAllUsers = (name?: string | string[]) => {
 //     }
 // };
 
-export default async function lettersHandler(
+export default async function usersHandler(
     req: NextApiRequest,
     res: NextApiResponse
 ) {

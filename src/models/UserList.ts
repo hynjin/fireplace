@@ -1,7 +1,8 @@
 import mongoose from 'mongoose';
 
 const UserListSchema = new mongoose.Schema({
-    list: Array,
+    name: String,
+    ticket: Number,
 });
 
 const UserList = mongoose.models.UserList || mongoose.model('User-list', UserListSchema);

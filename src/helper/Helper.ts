@@ -14,6 +14,16 @@ export function postFetcher(url: string, body: any) {
     });
 }
 
+export function putFetcher(url: string, body: any) {
+    const stringfy = JSON.stringify(body);
+
+    return fetch(url, {
+        method: 'PUT',
+        headers: { 'Content-Type': 'application/json' },
+        body: stringfy,
+    });
+}
+
 export function getCharPattern(character) {
     const startKoreanAlphabetSyllableCharCode = '가'.charCodeAt(0);
     const initialConsonantIndices = [
