@@ -4,8 +4,6 @@ import CognitoProvider from 'next-auth/providers/cognito';
 import { NextApiRequest, NextApiResponse } from 'next';
 import { MongoDBAdapter } from '@next-auth/mongodb-adapter';
 import clientPromise from 'util/mongodbClient';
-import connectToDatabase from 'util/mongoose';
-
 
 export default NextAuth({
     session: {
