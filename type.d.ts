@@ -1,7 +1,7 @@
 declare type LetterType = {
     _id: string;
-    from: string;
-    to: string;
+    sender: string;
+    reciever: string;
     content: string;
     anonymous: boolean;
     present: string[];

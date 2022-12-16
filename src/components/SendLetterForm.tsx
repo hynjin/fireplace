@@ -17,8 +17,8 @@ type Props = {
 };
 
 type SendLetterType = {
-    from: string;
-    to: string;
+    sender: string;
+    reciever: string;
     content?: string;
     present?: string[];
     anonymous: boolean;
@@ -27,12 +27,12 @@ type SendLetterType = {
 export default function SendLetterForm(props: Props) {
     const { data: session } = useSession();
     const user = session?.user;
-    const userName = '히히'; // user.userName 사용
+    const userName =  user?.name;
 
     const { userList } = props;
 
-    const from = user?.name;
-    const [to, setTo] = useState('');
+    const sender = userName;
+    const [reciever, setReciever] = useState('');
     const [content, setContent] = useState('');
     const [isAnonymous, setAnonymous] = useState(false);
     const [present, setPresent] = useState<string[]>([]);
@@ -40,9 +40,10 @@ export default function SendLetterForm(props: Props) {
 
     const onClickSendLetter = useCallback(
         async (data: SendLetterType) => {
-            if (data?.to) {
+            if (data?.reciever) {
+                console.log('+++ ???', typeof data?.reciever);
                 await postFetcher('/api/letters', data);
-                location.reload(); //for letter list update
+                // location.reload(); //for letter list update
             } else {
                 setIsError(true);
             }
@@ -51,7 +52,7 @@ export default function SendLetterForm(props: Props) {
     );
 
     const handleChangeSelectTo = useCallback((e) => {
-        setTo(e.target.value);
+        setReciever(e.target.value);
         setIsError(false);
     }, []);
 
@@ -76,14 +77,14 @@ export default function SendLetterForm(props: Props) {
                 From {isAnonymous ? '익명' : user?.name}
                 <div>익명으로 보내기 <input type="checkbox" onChange={handleChangeAnonymous} /></div>
             </div>
-            <RecieverList userList={userList} />
+            <RecieverList userList={userList} reciever={reciever} setReciever={setReciever} />
             {isError && <div className='text-red-600'>받는 이를 선택해야합니다.</div>}
             <div>
                 + 선물
                     {_.map(PRESENT_TYPE, PRESENT => (
-                        <div key={`creat-to-${PRESENT}`} >
-                            <input type="checkbox" id={`creat-to-${PRESENT}`} value={PRESENT} onChange={handleChangeSelectPresent} />
-                            <label htmlFor={`creat-to-${PRESENT}`} >{PRESENT}</label>
+                        <div key={`creat-reciever-${PRESENT}`} >
+                            <input type="checkbox" id={`creat-reciever-${PRESENT}`} value={PRESENT} onChange={handleChangeSelectPresent} />
+                            <label htmlFor={`creat-reciever-${PRESENT}`} >{PRESENT}</label>
                         </div>
                     ))}
             </div>
@@ -96,7 +97,7 @@ export default function SendLetterForm(props: Props) {
             <button
                 type="button"
                 className="btn"
-                onClick={() => onClickSendLetter({from, to, content, anonymous: isAnonymous, present})}
+                onClick={() => onClickSendLetter({sender, reciever, content, anonymous: isAnonymous, present})}
             >
                 편지 보내기
             </button>
