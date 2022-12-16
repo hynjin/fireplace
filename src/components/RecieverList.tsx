@@ -12,33 +12,13 @@ import { CheckIcon, ChevronUpDownIcon } from '@heroicons/react/20/solid';
 
 type Props = {
     userList?: string[];
-    reciever: string;
     setReciever: (value) => void;
 };
 
-type SendLetterType = {
-    from: string;
-    to: string;
-    content?: string;
-    present?: string[];
-    anonymous: boolean;
-}
-
 export default function RecieverList(props: Props) {
-    const { userList, reciever, setReciever } = props;
-    const { data: session } = useSession();
-    const user = session?.user;
-    const userName = user?.name;
+    const { userList, setReciever } = props;
 
-
-    const from = userName;
-    const [to, setTo] = useState('');
-    const [content, setContent] = useState('');
-    const [isAnonymous, setAnonymous] = useState(false);
-    const [present, setPresent] = useState<string[]>([]);
-    const [isError, setIsError] = useState(false);
-
-    const [searchInput, setSearchInput] = useState('');
+    const [selected, setSelected] = useState('');
     const [query, setQuery] = useState('');
 
     const filteredUserList = useMemo(() => {
@@ -49,18 +29,17 @@ export default function RecieverList(props: Props) {
       });
     }, [query, userList]);
 
-
-    useEffect(() => console.log('+++ pre', present), [present]);
+    useEffect(() => setReciever(selected), [setReciever, selected]);
 
     return (
         <div className="w-72">
-            <Combobox value={[reciever]} onChange={setReciever}>
+            <Combobox value={selected} onChange={setSelected}>
                 <div className="relative mt-1">
                     <div className="relative w-full cursor-default overflow-hidden rounded-lg bg-white text-left shadow-md focus:outline-none focus-visible:ring-2 focus-visible:ring-white focus-visible:ring-opacity-75 focus-visible:ring-offset-2 focus-visible:ring-offset-teal-300 sm:text-sm">
                         <Combobox.Input
-                        className="w-full border-none py-2 pl-3 pr-10 text-sm leading-5 text-gray-900 focus:ring-0"
-                        displayValue={(user) => user}
-                        onChange={(event) => setQuery(event.target.value)}
+                            className="w-full border-none py-2 pl-3 pr-10 text-sm leading-5 text-gray-900 focus:ring-0"
+                            displayValue={(reciever: string) => reciever}
+                            onChange={(event) => setQuery(event.target.value)}
                         />
                         <Combobox.Button className="absolute inset-y-0 right-0 flex items-center pr-2">
                         <ChevronUpDownIcon

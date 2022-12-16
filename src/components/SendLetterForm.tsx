@@ -77,7 +77,7 @@ export default function SendLetterForm(props: Props) {
                 From {isAnonymous ? '익명' : user?.name}
                 <div>익명으로 보내기 <input type="checkbox" onChange={handleChangeAnonymous} /></div>
             </div>
-            <RecieverList userList={userList} reciever={reciever} setReciever={setReciever} />
+            <RecieverList userList={userList} setReciever={setReciever} />
             {isError && <div className='text-red-600'>받는 이를 선택해야합니다.</div>}
             <div>
                 + 선물
