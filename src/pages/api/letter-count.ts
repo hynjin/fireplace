@@ -22,17 +22,19 @@ export default async function letterCountHandler(
 ) {
     const { query, body, method } = req;
 
+    // const con = 
     await connectToDatabase();
 
     switch (method) {
         case 'GET':
             const { name } = query;
             const letters = await getLetterCount(name);
-            console.log('+++ +++', letters);
+            // console.log('+++ +++', letters);
             res.status(200).json(letters);
             break;
         default:
             res.setHeader('Allow', ['GET']);
             res.status(405).end(`Method ${method} Not Allowed`);
     }
+    // con.disconnect();
 }

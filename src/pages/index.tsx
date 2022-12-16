@@ -4,6 +4,7 @@ import React, {
     useCallback,
     useMemo,
     useEffect,
+    useRef,
 } from 'react';
 import styles from '../styles/Home.module.css';
 import { useForm } from 'react-hook-form';
@@ -42,11 +43,9 @@ export default function Index(props: Props) {
 
     return (
         <div className="">
-            {/* <iframe src="sounds/jingle_bells.mp3"  allow="autoplay" id="bgm" style={{display: "none"}}></iframe> */}
-
-            <audio id="bgm" loop controls>
+            {/* <audio id="bgm" autoPlay loop controls >
                 <source src="sounds/jingle_bells.mp3" />     
-            </audio>
+            </audio> */}
             <div className='absolute' style={{top: 100, left: 800, width: 500}}>
                 {showBubble &&
                     <>

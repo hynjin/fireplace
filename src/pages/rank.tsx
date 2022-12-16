@@ -108,7 +108,7 @@ export const getServerSideProps: GetServerSideProps = async (ctx) => {
     // const ranking = await fetch(baseUrl + '/api/rank').then((res) => res.json());
     const users = userName ? await fetch(baseUrl + '/api/users' + `?name=${userName}`).then((res) => res.json()) : [];
     const userList = _.map(users, 'name');
-console.log('+++ rnak', letters);
+// console.log('+++ rnak', letters);
     return {
         props: {  letterCount:0, letters, userName, userList },
     };

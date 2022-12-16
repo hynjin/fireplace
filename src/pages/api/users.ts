@@ -38,13 +38,14 @@ export default async function lettersHandler(
 ) {
     const { query, body, method } = req;
 
+    // const con = 
     await connectToDatabase();
 
     switch (method) {
         case 'GET':
             const { name } = query;
             const users = await getAllUsers(name);
-            console.log('+++ call users', name, users);
+            // console.log('+++ call users', name, users);
             res.status(200).json(users);
             break;
         // case 'POST':
@@ -61,4 +62,5 @@ export default async function lettersHandler(
             res.setHeader('Allow', ['GET', 'POST', 'DELETE']);
             res.status(405).end(`Method ${method} Not Allowed`);
     }
+    // con.disconnect();
 }
