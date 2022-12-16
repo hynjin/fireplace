@@ -1,5 +1,7 @@
 import type { NextApiRequest, NextApiResponse } from 'next';
 import clientPromise from 'util/mongodbClient';
+import connectToDatabase from 'util/mongoose';
+
 import _ from 'lodash';
 const User = require('../../models/User');
 
@@ -36,7 +38,7 @@ export default async function lettersHandler(
 ) {
     const { query, body, method } = req;
 
-    await clientPromise;
+    await connectToDatabase();
 
     switch (method) {
         case 'GET':

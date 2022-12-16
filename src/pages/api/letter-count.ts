@@ -1,6 +1,7 @@
 import type { NextApiRequest, NextApiResponse } from 'next';
 import { ObjectId } from 'mongodb';
 import clientPromise from 'util/mongodbClient';
+import connectToDatabase from 'util/mongoose';
 // import Letter from '../../models/Letter';
 import _ from 'lodash';
 const Letter = require('../../models/Letter');
@@ -21,7 +22,7 @@ export default async function letterCountHandler(
 ) {
     const { query, body, method } = req;
 
-    await clientPromise;
+    await connectToDatabase();
 
     switch (method) {
         case 'GET':
