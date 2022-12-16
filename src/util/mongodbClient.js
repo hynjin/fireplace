@@ -1,5 +1,4 @@
 import { MongoClient } from "mongodb"
-import mongoose from 'mongoose';
 
 const MONGODB_URI = process.env.MONGODB_URI;
 
@@ -16,7 +15,7 @@ if (!MONGODB_URI) {
   throw new Error("Please add your Mongo URI to .env.local");
 }
 
-if (process.env.NODE_ENV === "local") {
+if (process.env.NODE_ENV === "development") {
   // In development mode, use a global variable so that the value
   // is preserved across module reloads caused by HMR (Hot Module Replacement).
   if (!global._mongoClientPromise) {
@@ -28,7 +27,7 @@ if (process.env.NODE_ENV === "local") {
   clientPromise = global._mongoClientPromise;
 } else {
   // In production mode, it's best to not use a global variable.
-  console.log('+++ url', MONGODB_URI);
+  console.log('+++ production');
   client = new MongoClient(MONGODB_URI, options);
   clientPromise = client.connect();
 }

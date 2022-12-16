@@ -42,9 +42,9 @@ export default function Index(props: Props) {
 
     return (
         <div className="">
-            <iframe src="sounds/jingle_bells.mp3"  allow="autoplay" id="bgm" style={{display: "none"}}></iframe>
+            {/* <iframe src="sounds/jingle_bells.mp3"  allow="autoplay" id="bgm" style={{display: "none"}}></iframe> */}
 
-            <audio id="bgm" loop controls autoPlay>
+            <audio id="bgm" loop controls>
                 <source src="sounds/jingle_bells.mp3" />     
             </audio>
             <div className='absolute' style={{top: 100, left: 800, width: 500}}>
