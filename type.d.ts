@@ -4,5 +4,5 @@ declare type LetterType = {
     to: string;
     content: string;
     anonymous: boolean;
-    present: import('src/types/constants').PresentTypeUnion;
+    present: string[];
 };

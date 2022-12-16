@@ -1,3 +1,9 @@
+import { MongoClient } from 'mongodb'
+
+declare global {
+    var _mongoClientPromise: Promise<MongoClient>
+}
+
 type ValueOf<T> = T[keyof T];
 
 declare type UserType = {
@@ -14,7 +20,7 @@ declare type LetterType = {
     to: string;
     content: string;
     anonymous: boolean;
-    present: import('src/types/constants').PresentTypeUnion;
+    present: string[];
 };
 
 declare type RestaurantType = {

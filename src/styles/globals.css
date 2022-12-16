@@ -3,182 +3,184 @@
 @tailwind utilities;
 
 * {
-    font-family: MaruBuri, ChosunSm, MS Serif, New York, Times New Roman, Times,
-        serif;
-    -webkit-font-smoothing: antialiased;
-    -moz-osx-font-smoothing: grayscale;
-    overflow-wrap: break-word;
-    word-break: keep-all;
-    box-sizing: border-box;
+  font-family: MaruBuri, ChosunSm, MS Serif, New York, Times New Roman, Times,
+    serif;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+  overflow-wrap: break-word;
+  word-break: keep-all;
+  box-sizing: border-box;
 }
 
 @layer base {
-    html,
-    body {
-        @apply text-gray-900;
+  html,
+  body {
+    font-family: "DungGeunMo";
+    @apply text-gray-900;
+  }
+  h1 {
+    font-family: "DungGeunMo", serif;
+    @apply text-6xl text-gray-700 leading-none;
+  }
+  h2 {
+    font-family: "DungGeunMo", serif;
+    @apply text-4xl text-gray-700 leading-none;
+  }
+  h3 {
+    font-family: "DungGeunMo", serif;
+    @apply text-2xl text-gray-700 leading-none;
+  }
+  h4 {
+    font-family: "DungGeunMo", serif;
+    @apply text-lg text-gray-700 leading-none;
+  }
+  h5 {
+    font-family: "DungGeunMo", serif;
+    @apply text-base text-gray-700 leading-none;
+  }
+  h6 {
+    font-family: "DungGeunMo", serif;
+    @apply text-sm text-gray-700 leading-none;
+  }
+  p,
+  span {
+    @apply leading-normal;
+  }
+  form {
+    @apply mb-4 flex flex-col text-gray-700;
+  }
+  label {
+    @apply mb-1 text-sm font-bold;
+  }
+  input,
+  textarea {
+    @apply leading-normal placeholder-gray-300 caret-primary;
+  }
+  input[type="password"] {
+    font-family: "pass", "DungGeunMo", Helvetica, Arial, sans-serif;
+    font-size: 18px;
+    &::-webkit-input-placeholder {
+      transform: scale(0.77);
+      transform-origin: 0 50%;
     }
-    h1 {
-        font-family: 'Fashion Stamp', 'MaruBuri', 'ChosunSm', serif;
-        @apply text-6xl text-gray-700 leading-none;
+    &::-moz-placeholder {
+      font-size: 14px;
+      opacity: 1;
     }
-    h2 {
-        font-family: 'Fashion Stamp', 'MaruBuri', 'ChosunSm', serif;
-        @apply text-4xl text-gray-700 leading-none;
+    &:-ms-input-placeholder {
+      font-size: 14px;
+      font-family: "DungGeunMo", Helvetica, Arial, sans-serif;
     }
-    h3 {
-        font-family: 'Fashion Stamp', 'MaruBuri', 'ChosunSm', serif;
-        @apply text-2xl text-gray-700 leading-none;
-    }
-    h4 {
-        font-family: 'Fashion Stamp', 'MaruBuri', 'ChosunSm', serif;
-        @apply text-lg text-gray-700 leading-none;
-    }
-    h5 {
-        font-family: 'Fashion Stamp', 'MaruBuri', 'ChosunSm', serif;
-        @apply text-base text-gray-700 leading-none;
-    }
-    h6 {
-        font-family: 'Fashion Stamp', 'MaruBuri', 'ChosunSm', serif;
-        @apply text-sm text-gray-700 leading-none;
-    }
-    p,
-    span {
-        @apply leading-normal;
-    }
-    form {
-        @apply mb-4 flex flex-col text-gray-700;
-    }
-    label {
-        @apply mb-1 text-sm font-bold;
-    }
-    input,
-    textarea {
-        @apply leading-normal placeholder-gray-300 caret-primary;
-    }
-    input[type="password"] {
-        font-family: 'pass', 'Roboto', Helvetica, Arial, sans-serif;
-        font-size: 18px;
-        &::-webkit-input-placeholder {
-            transform: scale(0.77);
-            transform-origin: 0 50%;
-        }
-        &::-moz-placeholder {
-            font-size: 14px;
-            opacity: 1;
-        }
-        &:-ms-input-placeholder {
-            font-size: 14px;
-            font-family: 'Roboto', Helvetica, Arial, sans-serif;
-        }
-    }
-    input:focus,
-    textarea:focus {
-        @apply outline-none ring-0;
-    }
-    input:focus[readonly] {
-        @apply ring-0;
-    }
-    input:disabled {
-        @apply bg-gray-50;
-    }
-    button {
-        @apply focus:ring-0;
-    }
+  }
+  input:focus,
+  textarea:focus {
+    @apply outline-none ring-0;
+  }
+  input:focus[readonly] {
+    @apply ring-0;
+  }
+  input:disabled {
+    @apply bg-gray-50;
+  }
+  button {
+    @apply focus:ring-0;
+  }
 }
 
 @layer components {
-    .border {
-        @apply border-gray-700;
+  .border {
+    @apply border-gray-700;
+  }
+  .divide-x {
+    @apply divide-gray-300;
+  }
+  .divide-y {
+    @apply divide-gray-700;
+  }
+  .divide-more {
+    @apply divide-gray-200;
+  }
+  .input {
+    @apply mb-2 border border-gray-700 p-3 text-sm text-gray-900;
+  }
+  .input:focus-within {
+    @apply border-primary;
+  }
+  .input.error {
+    @apply border-red-700;
+  }
+  .description {
+    @apply mb-1 text-gray-700 text-xs;
+  }
+  .description.error {
+    @apply text-red-700;
+  }
+  .btn {
+    @apply py-2 px-4 bg-primary border border-primary text-sm text-white focus:ring-0;
+  }
+  .btn-light {
+    @apply bg-primary/10 border-primary/10 text-primary hover:bg-primary/20 hover:border-primary/20;
+  }
+  .btn-ghost {
+    @apply bg-transparent text-primary hover:bg-primary/10;
+  }
+  .btn-ghost.btn-gray {
+    @apply border-gray-700 text-gray-700 hover:bg-gray-50;
+  }
+  .btn-ghost.btn-red {
+    @apply border-red-700 text-red-700 hover:bg-red-50;
+  }
+  .btn-text {
+    @apply underline;
+  }
+  .triangle-up {
+    @apply w-0 h-0 text-gray-700;
+    border-left: 4px solid transparent;
+    border-right: 4px solid transparent;
+    border-bottom: 4px solid currentColor;
+  }
+  .triangle-down {
+    @apply w-0 h-0 text-gray-700;
+    border-left: 4px solid transparent;
+    border-right: 4px solid transparent;
+    border-top: 4px solid currentColor;
+  }
+  .star {
+    @apply relative w-0 h-0 text-gray-700;
+
+    display: inline-block;
+
+    margin-left: 0.9em;
+    margin-right: 0.9em;
+    margin-bottom: 1.2em;
+
+    border-right: 0.3em solid transparent;
+    border-bottom: 0.7em solid currentColor;
+    border-left: 0.3em solid transparent;
+
+    &:before,
+    &:after {
+      content: "";
+
+      display: block;
+      width: 0;
+      height: 0;
+
+      position: absolute;
+      top: 0.6em;
+      left: -1em;
+
+      border-right: 1em solid transparent;
+      border-bottom: 0.7em solid currentColor;
+      border-left: 1em solid transparent;
+
+      transform: rotate(-35deg);
     }
-    .divide-x {
-        @apply divide-gray-300;
+
+    &:after {
+      transform: rotate(35deg);
     }
-    .divide-y {
-        @apply divide-gray-700;
-    }
-    .divide-more{
-        @apply divide-gray-200;
-    }
-    .input {
-        @apply mb-2 border border-gray-700 p-3 text-sm text-gray-900;
-    }
-    .input:focus-within {
-        @apply border-primary;
-    }
-    .input.error {
-        @apply border-red-700;
-    }
-    .description {
-        @apply mb-1 text-gray-700 text-xs;
-    }
-    .description.error {
-        @apply text-red-700;
-    }
-    .btn {
-        @apply py-2 px-4 bg-primary border border-primary text-sm text-white focus:ring-0;
-    }
-    .btn-light {
-        @apply bg-primary/10 border-primary/10 text-primary hover:bg-primary/20 hover:border-primary/20;
-    }
-    .btn-ghost {
-        @apply bg-transparent text-primary hover:bg-primary/10;
-    }
-    .btn-ghost.btn-gray {
-        @apply border-gray-700 text-gray-700 hover:bg-gray-50;
-    }
-    .btn-ghost.btn-red {
-        @apply border-red-700 text-red-700 hover:bg-red-50;
-    }
-    .btn-text {
-        @apply underline;
-    }
-    .triangle-up {
-        @apply w-0 h-0 text-gray-700;
-        border-left: 4px solid transparent;
-        border-right: 4px solid transparent;
-        border-bottom: 4px solid currentColor;
-    }
-    .triangle-down {
-        @apply w-0 h-0 text-gray-700;
-        border-left: 4px solid transparent;
-        border-right: 4px solid transparent;
-        border-top: 4px solid currentColor;
-    }
-    .star {
-        @apply relative w-0 h-0 text-gray-700;
-        
-        display: inline-block;
-        
-        margin-left: .9em;
-        margin-right: .9em;
-        margin-bottom: 1.2em;
-        
-        border-right:  .3em solid transparent;
-        border-bottom: .7em  solid currentColor;
-        border-left:   .3em solid transparent;
-        
-        &:before, &:after {
-            content: '';
-            
-            display: block;
-            width: 0;
-            height: 0;
-            
-            position: absolute;
-            top: .6em;
-            left: -1em;
-            
-            border-right:  1em solid transparent;
-            border-bottom: .7em  solid currentColor;
-            border-left:   1em solid transparent;
-            
-            transform: rotate(-35deg);
-        }
-        
-        &:after {  
-            transform: rotate(35deg);
-        }
-    }
+  }
 }
 
 @layer utilities {
