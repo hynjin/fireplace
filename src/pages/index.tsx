@@ -58,7 +58,7 @@ export default function Index(props: Props) {
                 }
                 <h1 className='text-white'>{userName}의 벽난로</h1>
                 <h2 className='text-white'>{letterCount[userName]?.count ?? 0}개의 편지</h2>
-                <button onClick={() => setShowBubble(true)}>당신눈에 이건 개미로 보입니다</button>
+                <button onClick={() => setShowBubble(prev => !prev)}>당신눈에 이건 개미로 보입니다</button>
 
             </div>
             <Fireplace letters={letters} />
