@@ -3,7 +3,7 @@ import clientPromise from 'util/mongodbClient';
 import connectToDatabase from 'util/mongoose';
 
 import _ from 'lodash';
-const UserList = require('../../models/Userlist');
+const UserList = require('../../models/UserList');
 
 const getUserList = () => {
     return UserList.find();

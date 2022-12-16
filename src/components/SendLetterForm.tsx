@@ -41,9 +41,8 @@ export default function SendLetterForm(props: Props) {
     const onClickSendLetter = useCallback(
         async (data: SendLetterType) => {
             if (data?.reciever) {
-                console.log('+++ ???', typeof data?.reciever);
                 await postFetcher('/api/letters', data);
-                // location.reload(); //for letter list update
+                location.reload(); //for letter list update
             } else {
                 setIsError(true);
             }
