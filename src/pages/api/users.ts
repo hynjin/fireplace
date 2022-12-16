@@ -1,5 +1,4 @@
 import type { NextApiRequest, NextApiResponse } from 'next';
-import connectToDatabase from '../../util/mongoose';
 import clientPromise from 'util/mongodbClient';
 import _ from 'lodash';
 const User = require('../../models/User');

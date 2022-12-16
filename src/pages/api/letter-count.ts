@@ -1,6 +1,5 @@
 import type { NextApiRequest, NextApiResponse } from 'next';
 import { ObjectId } from 'mongodb';
-import connectToDatabase from '../../util/mongoose';
 import clientPromise from 'util/mongodbClient';
 // import Letter from '../../models/Letter';
 import _ from 'lodash';
