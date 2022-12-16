@@ -11,3 +11,57 @@ export function postFetcher(url: string, body: any) {
         body: stringfy,
     });
 }
+
+export function getCharPattern(character) {
+    const startKoreanAlphabetSyllableCharCode = '가'.charCodeAt(0);
+    const initialConsonantIndices = [
+      'ㄱ',
+      'ㄲ',
+      'ㄴ',
+      'ㄷ',
+      'ㄸ',
+      'ㄹ',
+      'ㅁ',
+      'ㅂ',
+      'ㅃ',
+      'ㅅ',
+      'ㅆ',
+      'ㅇ',
+      'ㅈ',
+      'ㅉ',
+      'ㅊ',
+      'ㅋ',
+      'ㅌ',
+      'ㅍ',
+      'ㅎ',
+    ];
+  
+    if (/[가-힣]/.test(character)) {
+      const charCode = character.charCodeAt(0) - startKoreanAlphabetSyllableCharCode;
+  
+      const begin = Math.floor(charCode / 28) * 28 + startKoreanAlphabetSyllableCharCode;
+      const end = begin + 27;
+  
+      const lastConsonantIndex = charCode % 28;
+      if (lastConsonantIndex > 0) {
+        return character;
+      }
+      return `[\\u${begin.toString(16)}-\\u${end.toString(16)}]`;
+    }
+  
+    if (/[ㄱ-ㅎ]/.test(character)) {
+      const initialConsonantIndex = _.findIndex(initialConsonantIndices, (consonant) => {
+        return consonant == character;
+      });
+  
+      const begin = initialConsonantIndex * 588 + startKoreanAlphabetSyllableCharCode;
+      const end = begin + 587;
+      return `[${character}\\u${begin.toString(16)}-\\u${end.toString(16)}]`;
+    }
+  
+    if (/[a-zA-z]/.test(character)) {
+      return `[${_.toLower(character)}|${_.toUpper(character)}]`;
+    }
+  
+    return _.escapeRegExp(character);
+  }

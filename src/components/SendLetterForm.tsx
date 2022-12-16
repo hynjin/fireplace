@@ -9,6 +9,7 @@ import _ from 'lodash';
 import { fetcher, postFetcher } from '../helper/Helper';
 import { useSession } from 'next-auth/react';
 import { PRESENT_TYPE } from 'types/constants';
+import RecieverList from './RecieverList';
 
 type Props = {
     setMove?: (t: boolean) => void;
@@ -75,17 +76,7 @@ export default function SendLetterForm(props: Props) {
                 From {isAnonymous ? '익명' : user?.name}
                 <div>익명으로 보내기 <input type="checkbox" onChange={handleChangeAnonymous} /></div>
             </div>
-            <div>
-                To
-                <select onChange={handleChangeSelectTo} value={to}>
-                    <option value="">선택</option>
-                    {_.map(userList, user => (
-                        <option value={user} key={`creat-to-${user}`}>
-                            {user}
-                        </option>
-                    ))}
-                </select>
-            </div>
+            <RecieverList userList={userList} />
             {isError && <div className='text-red-600'>받는 이를 선택해야합니다.</div>}
             <div>
                 + 선물

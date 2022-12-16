@@ -84,8 +84,8 @@ export const getServerSideProps: GetServerSideProps = async (ctx) => {
     const groupedLetter = await fetch(baseUrl + '/api/letter-count').then((res) => res.json());
     const letterCount = _.keyBy(groupedLetter, '_id');
     const letters = userName ? await fetch(baseUrl + '/api/letters' + `?name=${userName}`).then((res) => res.json()) : [];
-    const users = userName ? await fetch(baseUrl + '/api/users' + `?name=${userName}`).then((res) => res.json()) : [];
-    const userList = _.map(users, 'name');
+    const users = await fetch(baseUrl + '/api/user-lists').then((res) => res.json());
+    const userList = _.difference(users[0]?.list, [userName]);
 
     return {
         props: {  letterCount, letters, userName, userList },
