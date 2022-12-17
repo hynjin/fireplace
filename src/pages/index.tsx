@@ -29,7 +29,6 @@ export default function Index(props: Props) {
   const router = useRouter();
 
   const [showInfo, setShowInfo] = useState(false);
-  // const testSound = new Audio('sound/test.mp3');
 
   const { data } = useSWR(`/api/letters`, fetcher);
 
@@ -47,37 +46,13 @@ export default function Index(props: Props) {
           </h6>
         </div>
       </div>
-      <div className="hidden">
-        <audio id="bgm" loop controls autoPlay>
+      <div className="fixed">
+        <audio id="bgm" loop controls>
           <source src="sounds/jingle_bells.mp3" />
         </audio>
       </div>
-      <img
-        src="/images/fireplace.png"
-        className="absolute bottom-40 left-[50%] translate-x-[-50%] w-1/3 h-fit"
-      />
-      <Fireplace letters={letters} />
-      <div className="absolute top-12 left-[50%] translate-x-[-50%]">
-        {/* {showInfo && (
-          <>
-            <button className="btn" onClick={() => router.push("/rank")}>
-              <h6>랭킹 보기 </h6>
-            </button>
-            <CreateLetterModal userList={userList} />
-            <ShowLetterModal letters={letters} />
-            <button onClick={() => signOut()}>
-              <h6>로그아웃</h6>
-            </button>
-          </>
-        )} */}
-        <InfoModal userList={userList} letters={letters} open={showInfo} close={() => setShowInfo(false)} />
-        <div className="flex flex-col py-4 px-9 top-0 border-4 border-dashed border-green-600 rounded bg-red-700 z-10">
-          <h2 className="text-white text-center mb-4">{userName}의 벽난로</h2>
-          <h3 className="text-white text-center">
-            {letterCount[userName]?.count ?? 0}개의 선물
-          </h3>
-        </div>
-      </div>
+      <Fireplace letterCount={letters?.length ?? 0} />
+      <InfoModal userList={userList} letters={letters} open={showInfo} close={() => setShowInfo(false)} />
 
       <img src="/images/house_background.png" className="h-screen w-screen" />
     </div>
