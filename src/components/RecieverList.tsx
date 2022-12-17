@@ -1,14 +1,9 @@
-import React, {
-    useState,
-    useEffect,
-    useMemo,
-    Fragment,
-} from 'react';
-import _ from 'lodash';
-import { getCharPattern } from '../helper/Helper';
-import { useSession } from 'next-auth/react';
-import { Combobox, Transition } from '@headlessui/react';
-import { CheckIcon, ChevronUpDownIcon } from '@heroicons/react/20/solid';
+import React, { useState, useEffect, useMemo, Fragment } from "react";
+import _ from "lodash";
+import { getCharPattern } from "../helper/Helper";
+import { useSession } from "next-auth/react";
+import { Combobox, Transition } from "@headlessui/react";
+import { CheckIcon, ChevronUpDownIcon } from "@heroicons/react/20/solid";
 
 type Props = {
     userList?: string[];
@@ -19,18 +14,20 @@ type Props = {
 export default function RecieverList(props: Props) {
     const { userList, setReciever, isError } = props;
 
-    const [selected, setSelected] = useState('');
-    const [query, setQuery] = useState('');
+  const [selected, setSelected] = useState("");
+  const [query, setQuery] = useState("");
 
-    const filteredUserList = useMemo(() => {
-      const searchQueryPattern = RegExp(query.split('').map(getCharPattern).join(''));
+  const filteredUserList = useMemo(() => {
+    const searchQueryPattern = RegExp(
+      query.split("").map(getCharPattern).join("")
+    );
 
-      return _.filter(userList, (user) => {
-        return searchQueryPattern.test(user);
-      });
-    }, [query, userList]);
+    return _.filter(userList, (user) => {
+      return searchQueryPattern.test(user);
+    });
+  }, [query, userList]);
 
-    useEffect(() => setReciever(selected), [setReciever, selected]);
+  useEffect(() => setReciever(selected), [setReciever, selected]);
 
     return (
         <div>
@@ -108,5 +105,5 @@ export default function RecieverList(props: Props) {
             </div>
             )}
         </div>
-    );
+  );
 }

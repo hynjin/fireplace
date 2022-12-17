@@ -60,12 +60,16 @@ export default function SendLetterForm(props: Props) {
   useEffect(() => console.log("+++ pre", present), [present]);
 
   return (
-    <form className="">
-      <div>
-        <h6 className="mb-2">From. {isAnonymous ? "익명" : user?.name}</h6>
+    <form className="min-w-[600px]">
+      <div className="flex">
+        <h6 className="mb-2 mr-4">From. {isAnonymous ? "익명" : user?.name}</h6>
         <div className="flex items-center mb-4">
+          <input
+            type="checkbox"
+            className="mr-2"
+            onChange={handleChangeAnonymous}
+          />
           <h6 className="mr-1">익명으로 보내기</h6>
-          <input type="checkbox" onChange={handleChangeAnonymous} />
         </div>
       </div>
       <h6 className="mb-1">To. </h6>

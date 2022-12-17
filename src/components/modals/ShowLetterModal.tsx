@@ -39,8 +39,11 @@ export default function ShowLetterModal(props: Props) {
 
   return (
     <div>
-      <button className="btn" onClick={openModal}>
-        <h6>편지읽기</h6>
+      <button
+        className="bg-red-700 p-3 rounded hover:bg-green-600 w-fit"
+        onClick={openModal}
+      >
+        <h6 className="text-white">2. 나한테 온 편지를 모아 볼래</h6>
       </button>
       <Modal
         isOpen={modalIsOpen}

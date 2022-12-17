@@ -14,14 +14,16 @@ const customStyles = {
     zIndex: 30,
   },
   content: {
-    top: "50%",
+    top: "80%",
     left: "50%",
     right: "auto",
     bottom: "auto",
     overflow: "scroll",
     maxHeight: "calc(100% - 48px)",
+    minWidth: 600,
     marginRight: "-50%",
     transform: "translate(-50%, -50%)",
+    padding: 40,
   },
 };
 
@@ -54,21 +56,30 @@ export default function InfoModal(props: Props) {
         ariaHideApp={false}
         contentLabel="Create Letter Modal"
       >
-        <button className="btn" onClick={() => router.push("/rank")}>
-          <h6>랭킹 보기 </h6>
-        </button>
-        <CreateLetterModal userList={userList} />
-        <ShowLetterModal letters={letters} />
-        <button onClick={() => signOut()}>
-          <h6>로그아웃</h6>
-        </button>
-        <button
-          type="button"
-          className="p-3 border border-red-700"
-          onClick={close}
-        >
-          <h6 className="text-red-700">닫기</h6>
-        </button>
+        <h5 className="pb-4">무엇을 도와드릴까요?</h5>
+        <div className="flex flex-col gap-4 relative">
+          <CreateLetterModal userList={userList} />
+          <ShowLetterModal letters={letters} />
+          <button
+            className="bg-red-700 p-3 rounded hover:bg-green-600 w-fit"
+            onClick={() => router.push("/rank")}
+          >
+            <h6 className="text-white">3. 선물 랭킹을 확인할래 </h6>
+          </button>
+          <button
+            className="w-fit p-3 border border-gray-300 rounded"
+            onClick={() => signOut()}
+          >
+            <h6 className="text-gray-400 hover:text-red-400">로그아웃</h6>
+          </button>
+          <button
+            type="button"
+            className="absolute top-[-30%] right-[-5%]"
+            onClick={close}
+          >
+            <h2 className="text-red-700">X</h2>
+          </button>
+        </div>
       </Modal>
     </div>
   );
