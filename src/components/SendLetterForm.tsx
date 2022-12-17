@@ -84,14 +84,15 @@ export default function SendLetterForm(props: Props) {
         </div>
       )}
       <div className="p-4">
-        <h6 className="text-gray-800">함께 보낼 선물을 골라주세요.</h6>
+        <h6 className="text-gray-800 mb-4">함께 보낼 선물을 골라주세요.</h6>
         {_.map(PRESENT_TYPE, (PRESENT) => (
-          <div key={`creat-reciever-${PRESENT}`}>
+          <div className="py-1" key={`creat-reciever-${PRESENT}`}>
             <input
               type="checkbox"
               id={`creat-reciever-${PRESENT}`}
               value={PRESENT}
               onChange={handleChangeSelectPresent}
+              className="mr-2"
             />
             <label htmlFor={`creat-reciever-${PRESENT}`}>{PRESENT}</label>
           </div>

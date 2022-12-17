@@ -47,7 +47,7 @@ export default function InfoModal(props: Props) {
   // }
 
   return (
-    <div>
+    <div className="min-w-[600px]">
       <Modal
         isOpen={open}
         style={customStyles}

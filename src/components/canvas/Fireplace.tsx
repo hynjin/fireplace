@@ -14,16 +14,14 @@ export default function Fireplace(props: Props) {
   const userName = user?.name;
 
   return (
-    <div>
-      <img
-        src="/images/fireplace.png"
-        alt=""
-        className="absolute bottom-40 left-[50%] translate-x-[-50%] w-1/3 h-fit"
-      />
-      <Bonfire />
+    <div className="">
+      <div className="absolute bottom-40 left-[50%] translate-x-[-50%] w-1/3 h-fit">
+        <img src="/images/fireplace.png" alt="" className="" />
+        <Bonfire />
+      </div>
       <div className="absolute top-12 left-[50%] translate-x-[-50%]">
         <div className="flex flex-col py-4 px-9 top-0 border-4 border-dashed border-green-600 rounded bg-red-700 z-10">
-          <h2 className="text-white text-center mb-4">{userName}의 벽난로</h2>
+          <h3 className="text-white text-center mb-4">{userName}의 벽난로</h3>
           <h3 className="text-white text-center">{letterCount}개의 선물</h3>
         </div>
       </div>
