@@ -1,11 +1,9 @@
 export const PRESENT_TYPE = {
   //그냥 배열이면 안되나
-  MONEY: "💵 돈",
-  SKILL: "기술",
-  LOVE: "💝 사랑",
-  HONOR: "🎖 명예",
-  POWER: "👊 권력",
-  HEALTH: "💪 건강",
-  HOUSE: "🏠 부동산",
-  HUMAN: "인간관계",
+  money: "💵 돈",
+  love: "💝 사랑",
+  honor: "🎖 명예",
+  power: "👊 권력",
+  health: "💪 건강",
+  town: "🏠 부동산",
 };

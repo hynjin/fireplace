@@ -7,7 +7,7 @@ const LetterSchema = new mongoose.Schema({
     content: String,
     updated_at: Date,
     anonymous: Boolean,
-    present: Array,
+    present: String,
     isRead: Boolean,
 });
 
