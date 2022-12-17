@@ -86,5 +86,5 @@ export function getCharPattern(character) {
     const presentName = presentCopy?.[presentIndex];
     const imageType = presentType === 'honor' ? 'png' : 'jpeg';
     const presentImage = `/images/gift_category/${presentType + presentIndex}.${imageType}`;
-    return { presentName, presentImage };
+    return { presentName, presentImage, presentType };
   }
