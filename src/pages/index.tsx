@@ -33,11 +33,18 @@ export default function Index(props: Props) {
   const { data } = useSWR(`/api/letters`, fetcher);
 
   return (
-    <div className="relative">
+    <div className="relative overflow-hidden">
+      {/* 일개미 버튼 */}
       <div className="absolute right-40 bottom-[200px] w-1/5 h-1/5">
         <button onClick={() => setShowBubble(true)}>
           <img src="/images/gami.png" className="w-full h-full" />
         </button>
+        <div className="absolute py-4 px-9 top-[-50%] border-4 border-black rounded-full bg-white z-10">
+          <h6 className="text-black text-center leading-5">
+            안녕하세요! ㅇㅇㅇ 주인님! 당신의 집사 일개미예용.. 벽난로 앞에
+            선물이 도착했어요! 함 열어보세용!ㅋㅋ
+          </h6>
+        </div>
       </div>
       <div className="hidden">
         <audio id="bgm" loop controls autoPlay>
