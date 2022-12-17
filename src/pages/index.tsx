@@ -60,19 +60,21 @@ export default function Index(props: Props) {
         {showBubble && (
           <>
             <button className="btn" onClick={() => router.push("/rank")}>
-              랭킹 보기
+              <h6>랭킹 보기 </h6>
             </button>
             <CreateLetterModal userList={userList} />
             <ShowLetterModal letters={letters} />
-            <button onClick={() => signOut()}>로그아웃</button>
+            <button onClick={() => signOut()}>
+              <h6>로그아웃</h6>
+            </button>
           </>
         )}
 
-        <div className="flex flex-col py-4 px-9 top-0 border-4 border-dashed border-green-600 rounded bg-red-600 z-10">
-          <h1 className="text-white text-center mb-4">{userName}의 벽난로</h1>
-          <h2 className="text-white text-center">
-            {letterCount[userName]?.count ?? 0}개의 편지
-          </h2>
+        <div className="flex flex-col py-4 px-9 top-0 border-4 border-dashed border-green-600 rounded bg-red-700 z-10">
+          <h2 className="text-white text-center mb-4">{userName}의 벽난로</h2>
+          <h3 className="text-white text-center">
+            {letterCount[userName]?.count ?? 0}개의 선물
+          </h3>
         </div>
       </div>
 
