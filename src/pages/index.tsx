@@ -14,6 +14,7 @@ import Fireplace from "components/canvas/Fireplace";
 import { getSession, signOut } from "next-auth/react";
 import CreateLetterModal from "components/modals/CreateLetterModal";
 import ShowLetterModal from "components/modals/ShowLetterModal";
+import InfoModal from "components/modals/InfoModal";
 import { useRouter } from "next/router";
 
 type Props = {
@@ -27,7 +28,7 @@ export default function Index(props: Props) {
   const { letterCount, letters, userName, userList } = props;
   const router = useRouter();
 
-  const [showBubble, setShowBubble] = useState(false);
+  const [showInfo, setShowInfo] = useState(false);
   // const testSound = new Audio('sound/test.mp3');
 
   const { data } = useSWR(`/api/letters`, fetcher);
@@ -36,7 +37,7 @@ export default function Index(props: Props) {
     <div className="relative overflow-hidden">
       {/* 일개미 버튼 */}
       <div className="absolute right-40 bottom-[200px] w-1/5 h-1/5">
-        <button onClick={() => setShowBubble(true)}>
+        <button onClick={() => setShowInfo(true)}>
           <img src="/images/gami.png" className="w-full h-full" />
         </button>
         <div className="absolute py-4 px-9 top-[-50%] border-4 border-black rounded-full bg-white z-10">
@@ -57,7 +58,7 @@ export default function Index(props: Props) {
       />
       <Fireplace letters={letters} />
       <div className="absolute top-12 left-[50%] translate-x-[-50%]">
-        {showBubble && (
+        {/* {showInfo && (
           <>
             <button className="btn" onClick={() => router.push("/rank")}>
               <h6>랭킹 보기 </h6>
@@ -68,8 +69,8 @@ export default function Index(props: Props) {
               <h6>로그아웃</h6>
             </button>
           </>
-        )}
-
+        )} */}
+        <InfoModal userList={userList} letters={letters} open={showInfo} close={() => setShowInfo(false)} />
         <div className="flex flex-col py-4 px-9 top-0 border-4 border-dashed border-green-600 rounded bg-red-700 z-10">
           <h2 className="text-white text-center mb-4">{userName}의 벽난로</h2>
           <h3 className="text-white text-center">

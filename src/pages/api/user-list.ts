@@ -62,8 +62,10 @@ export default async function userListHandler(
             res.status(200).json(users);
             break;
         case 'POST':
-            console.log('+++ call letters post');
-            const result = await addUser(body);
+            console.log('+++ call letters post', body);
+            // const result = await addUser(body);
+
+            await spendTicket(body);
             // res.status(200).json(result.insertedId);
             break;
         case 'PUT':
