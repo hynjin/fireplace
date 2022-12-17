@@ -56,11 +56,11 @@ export default function GiftBox(props: Props) {
         setAlertOpen(false);
     }
 
-    await postFetcher("/api/letters", { letterId: letters[0]?._id });
-    await postFetcher("/api/user-list", { name: userName });
-    setTicket(ticket - 1);
-    setIsOpen(true);
-  }, [letters, openAlert, setTicket, ticket, userName]);
+    const openModal = useCallback(async () => {
+        if (ticket < 1) {
+            openAlert();
+            return;
+        }
 
         await postFetcher('/api/letters', { letterId: letter?._id });
         await postFetcher('/api/user-list', { name: userName });
@@ -70,8 +70,8 @@ export default function GiftBox(props: Props) {
     }, [letter, openAlert, setTicket, ticket, userName]);
 
     function closeModal() {
-    setIsOpen(false);
-  }
+        setIsOpen(false);
+    }
 
   return (
     <div className="absolute left-[30%] bottom-[50px] w-2/5 h-1/5">
@@ -82,8 +82,8 @@ export default function GiftBox(props: Props) {
         contentLabel="Create Letter Modal"
       >
         <div>
-          {letters[0].content}
-          {letters[0].present}
+          {letter?.content}
+          {letter?.present}
         </div>
         <button type="button" className="btn btn-ghost" onClick={closeModal}>
           닫기
