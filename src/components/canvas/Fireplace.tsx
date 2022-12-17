@@ -1,33 +1,34 @@
 import { GetServerSideProps } from "next";
-import React, {
-  useState,
-  useCallback,
-  useRef,
-  useEffect,
-  useMemo,
-} from "react";
-import styles from "../styles/Home.module.css";
-import { useForm } from "react-hook-form";
-import { fetcher, postFetcher } from "../../helper/Helper";
-import useSWR from "swr";
+import React from "react";
 import _ from "lodash";
-import NextImage from "next/image";
 import Bonfire from "./Bonfire";
+import { useSession } from "next-auth/react";
 
 type Props = {
-  letters: LetterType[];
+  letterCount: number;
 };
 
 export default function Fireplace(props: Props) {
-  const { letters } = props;
-
-  const canvasRef = useRef<HTMLCanvasElement>(null);
-
-  const fireplaceHeight = 621;
-  const fireplaceWidth = 795;
+  const { letterCount } = props;
+  const { data: session } = useSession();
+  const user = session?.user;
+  const userName = user?.name;
 
   return (
     <div>
+      <div className="absolute top-12 left-[50%] translate-x-[-50%]">
+        <div className="flex flex-col py-4 px-9 top-0 border-4 border-dashed border-green-600 rounded bg-red-700 z-10">
+          <h2 className="text-white text-center mb-4">{userName}의 벽난로</h2>
+          <h3 className="text-white text-center">
+            {letterCount}개의 선물
+          </h3>
+        </div>
+      </div>
+      <img
+        src="/images/fireplace.png"
+        alt=""
+        className="absolute bottom-40 left-[50%] translate-x-[-50%] w-fit h-2/3"
+      />
       <Bonfire />
     </div>
   );
