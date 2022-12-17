@@ -30,43 +30,57 @@ const customStyles = {
 
 type Props = {
     letters: LetterType[];
+    ticket: number;
+    setTicket: (n: number) => void;
 };
 
 export default function GiftBox(props: Props) {
-    const { letters } = props;
+    const { letters, ticket, setTicket } = props;
     const { data: session } = useSession();
     const user = session?.user;
     const userName =  user?.name;
 
-    const [modalIsOpen, setIsOpen] = useState(false);
-
     const letterCount = letters?.length ?? 0;
-    const randomIndex = useMemo(() => letterCount > 0 ? Math.floor((Math.random() * letterCount)) : 0, [letterCount]);
+
+    const [modalIsOpen, setIsOpen] = useState(false);
+    const [alertOpen, setAlertOpen] = useState(false);
+
+    const openAlert = useCallback(async () => {
+        setAlertOpen(true);
+    }, []);
+
+    function closeAlert() {
+        setAlertOpen(false);
+    }
 
     const openModal = useCallback(async () => {
-        console.log('+++ open', randomIndex, letters[randomIndex], letters[randomIndex]?._id);
-        await postFetcher('/api/letters', { letterId: letters[randomIndex]?._id });
+        if (ticket < 1) {
+            openAlert();
+            return;
+        }
+
+        await postFetcher('/api/letters', { letterId: letters[0]?._id });
         await postFetcher('/api/user-list', { name: userName });
+        setTicket(ticket - 1);
         setIsOpen(true);
-    }, [randomIndex, letters, userName]);
+    }, [letters, openAlert, setTicket, ticket, userName]);
 
     function closeModal() {
       setIsOpen(false);
     }
 
-
     return (
-        <>
+        <div className="absolute right-40 bottom-[50px] w-2/5 h-1/5">
             <Modal
-            isOpen={modalIsOpen}
-            style={customStyles}
-            ariaHideApp={false}
-            contentLabel="Create Letter Modal"
+                isOpen={modalIsOpen}
+                style={customStyles}
+                ariaHideApp={false}
+                contentLabel="Create Letter Modal"
             >
                 <div>
                     GiftBox
-                    {letters[randomIndex].content}
-                    {letters[randomIndex].present}
+                    {letters[0].content}
+                    {letters[0].present}
                 </div>
                 <button
                     type="button"
@@ -76,9 +90,31 @@ export default function GiftBox(props: Props) {
                     닫기
                 </button>
             </Modal>
-            <button onClick={openModal}>
-                <h2 className='text-white'>선물 상자</h2>
-            </button>
-        </>
+
+            <Modal
+                isOpen={alertOpen}
+                style={customStyles}
+                ariaHideApp={false}
+                contentLabel="Create Letter Modal"
+            >
+                <div>
+                    열람권이 부족해 선물을 열 수 없어요!<br />
+                    편지를 작성해 열람권을 모아보세요!
+                </div>
+                <button
+                    type="button"
+                    className="btn btn-ghost"
+                    onClick={closeAlert}
+                >
+                    닫기
+                </button>
+            </Modal>
+
+            {letterCount > 0 &&
+                <button onClick={openModal}>
+                    <h2 >선물 상자</h2>
+                </button>
+            }
+        </div>
     );
 }
