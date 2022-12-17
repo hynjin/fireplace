@@ -23,110 +23,107 @@ export default function SnowFlake() {
         windowWidth.current = document.body.offsetWidth;
     }, []);
     
-    const snowVersion1 = useCallback(() => {
-        const canvas = snowRef?.current;
-        const canvasContext = canvas?.getContext('2d');
+    // const snowVersion1 = useCallback(() => {
+    //     const canvas = snowRef?.current;
+    //     const canvasContext = canvas?.getContext('2d');
 
-        var flakes = [];
-        const flakeCount = 200;
-        let mX = -100;
-        let mY = -100;
+    //     var flakes = [];
+    //     const flakeCount = 200;
+    //     let mX = -100;
+    //     let mY = -100;
     
     
-    function snow() {
-        canvasContext.clearRect(0, 0, windowWidth.current, windowHeight.current);
+    // function snow() {
+    //     canvasContext.clearRect(0, 0, windowWidth.current, windowHeight.current);
     
-        for (var i = 0; i < flakeCount; i++) {
-            var flake = flakes[i],
-                x = mX,
-                y = mY,
-                minDist = 150,
-                x2 = flake.x,
-                y2 = flake.y;
+    //     for (var i = 0; i < flakeCount; i++) {
+    //         var flake = flakes[i],
+    //             x = mX,
+    //             y = mY,
+    //             minDist = 150,
+    //             x2 = flake.x,
+    //             y2 = flake.y;
     
-            var dist = Math.sqrt((x2 - x) * (x2 - x) + (y2 - y) * (y2 - y)),
-                dx = x2 - x,
-                dy = y2 - y;
+    //         var dist = Math.sqrt((x2 - x) * (x2 - x) + (y2 - y) * (y2 - y)),
+    //             dx = x2 - x,
+    //             dy = y2 - y;
     
-            if (dist < minDist) {
-                var force = minDist / (dist * dist),
-                    xcomp = (x - x2) / dist,
-                    ycomp = (y - y2) / dist,
-                    deltaV = force / 2;
+    //         if (dist < minDist) {
+    //             var force = minDist / (dist * dist),
+    //                 xcomp = (x - x2) / dist,
+    //                 ycomp = (y - y2) / dist,
+    //                 deltaV = force / 2;
     
-                flake.velX -= deltaV * xcomp;
-                flake.velY -= deltaV * ycomp;
+    //             flake.velX -= deltaV * xcomp;
+    //             flake.velY -= deltaV * ycomp;
     
-            } else {
-                flake.velX *= .98;
-                if (flake.velY <= flake.speed) {
-                    flake.velY = flake.speed
-                }
-                flake.velX += Math.cos(flake.step += .05) * flake.stepSize;
-            }
+    //         } else {
+    //             flake.velX *= .98;
+    //             if (flake.velY <= flake.speed) {
+    //                 flake.velY = flake.speed
+    //             }
+    //             flake.velX += Math.cos(flake.step += .05) * flake.stepSize;
+    //         }
     
-            canvasContext.fillStyle = "rgba(255,255,255," + flake.opacity + ")";
-            flake.y += flake.velY;
-            flake.x += flake.velX;
+    //         canvasContext.fillStyle = "rgba(255,255,255," + flake.opacity + ")";
+    //         flake.y += flake.velY;
+    //         flake.x += flake.velX;
                 
-            if (flake.y >= windowHeight.current || flake.y <= 0) {
-                reset(flake);
-            }
+    //         if (flake.y >= windowHeight.current || flake.y <= 0) {
+    //             reset(flake);
+    //         }
     
     
-            if (flake.x >= windowWidth.current || flake.x <= 0) {
-                reset(flake);
-            }
+    //         if (flake.x >= windowWidth.current || flake.x <= 0) {
+    //             reset(flake);
+    //         }
     
-            canvasContext.beginPath();
-            canvasContext.arc(flake.x, flake.y, flake.size, 0, Math.PI * 2);
-            canvasContext.fill();
-        }
-        requestAnimationFrame(snow);
-    };
+    //         canvasContext.beginPath();
+    //         canvasContext.arc(flake.x, flake.y, flake.size, 0, Math.PI * 2);
+    //         canvasContext.fill();
+    //     }
+    //     requestAnimationFrame(snow);
+    // };
     
-    function reset(flake) {
-        flake.x = Math.floor(Math.random() * windowWidth.current);
-        flake.y = 0;
-        flake.size = (Math.random() * 3) + 2;
-        flake.speed = (Math.random() * 1) + 0.5;
-        flake.velY = flake.speed;
-        flake.velX = 0;
-        flake.opacity = (Math.random() * 0.9) + 0.1;
-    }
+    // function reset(flake) {
+    //     flake.x = Math.floor(Math.random() * windowWidth.current);
+    //     flake.y = 0;
+    //     flake.size = (Math.random() * 3) + 2;
+    //     flake.speed = (Math.random() * 1) + 0.5;
+    //     flake.velY = flake.speed;
+    //     flake.velX = 0;
+    //     flake.opacity = (Math.random() * 0.9) + 0.1;
+    // }
     
-    function init() {
-        for (var i = 0; i < flakeCount; i++) {
-            var x = Math.floor(Math.random() * windowWidth.current),
-                y = Math.floor(Math.random() * windowHeight.current),
-                size = (Math.random() * 3) + 2,
-                speed = (Math.random() * 1) + 0.5,
-                opacity = (Math.random() * 0.5) + 0.3;
+    // function init() {
+    //     for (var i = 0; i < flakeCount; i++) {
+    //         var x = Math.floor(Math.random() * windowWidth.current),
+    //             y = Math.floor(Math.random() * windowHeight.current),
+    //             size = (Math.random() * 3) + 2,
+    //             speed = (Math.random() * 1) + 0.5,
+    //             opacity = (Math.random() * 0.5) + 0.3;
     
-            flakes.push({
-                speed: speed,
-                velY: speed,
-                velX: 0,
-                x: x,
-                y: y,
-                size: size,
-                stepSize: (Math.random()) / 30,
-                step: 0,
-                angle: 180,
-                opacity: opacity
-            });
-        }
-        snow();
-    };
-    
-    
-    init();
+    //         flakes.push({
+    //             speed: speed,
+    //             velY: speed,
+    //             velX: 0,
+    //             x: x,
+    //             y: y,
+    //             size: size,
+    //             stepSize: (Math.random()) / 30,
+    //             step: 0,
+    //             angle: 180,
+    //             opacity: opacity
+    //         });
+    //     }
+    //     snow();
+    //     };
+    // }, []);
 
-    }, []);
-
-    const snowVersion2 = useCallback(() => {
-        const canvas = snowRef?.current;
-        const canvasContext = canvas?.getContext('2d');
+    // const canvas = snowRef?.current;
+    // const canvasContext = useMemo(() => canvas?.getContext('2d'), [canvas]);
+    const snowVersion2 = useCallback((context) => {
+        if (!context) return;
         // Variables
         const snowAttributes = {
             particleCount: 400,   // Change amount of snowflakes
@@ -142,13 +139,6 @@ export default function SnowFlake() {
         
         function randomColor(colors) {
             return colors[Math.floor(Math.random() * colors.length)]
-        }
-        
-        function distance(x1, y1, x2, y2) {
-            const xDist = x2 - x1
-            const yDist = y2 - y1
-        
-            return Math.sqrt(Math.pow(xDist, 2) + Math.pow(yDist, 2))
         }
         
         // Objects
@@ -170,12 +160,12 @@ export default function SnowFlake() {
             }
         
             this.draw = () => {
-                canvasContext.beginPath()
-                canvasContext.arc(this.x, this.y, this.radius, 0, Math.PI * 2, false)
-                canvasContext.fillStyle = this.color
-                canvasContext.fill()
+                context.beginPath();
+                context.arc(this.x, this.y, this.radius, 0, Math.PI * 2, false);
+                context.fillStyle = this.color;
+                context.fill();
         
-                canvasContext.closePath()
+                context.closePath();
             }
         }
         
@@ -183,7 +173,6 @@ export default function SnowFlake() {
         let particles;
         function init() {
             particles = [];
-        
             for (let i = 0; i < snowAttributes.particleCount; i++) {
                 particles.push(
                     new Particle(
@@ -199,8 +188,8 @@ export default function SnowFlake() {
         
         // Animation Loop
         function animate() {
-            requestAnimationFrame(animate)
-            canvasContext?.clearRect(0, 0, windowWidth.current, windowHeight.current);
+            requestAnimationFrame(animate);
+            context?.clearRect(0, 0, windowWidth.current, windowHeight.current);
         
             particles.forEach(particle => {
                 particle.update();
@@ -209,12 +198,13 @@ export default function SnowFlake() {
         
         init();
         animate();
-
     }, []);
 
 
     useEffect(() => {
-        snowVersion2();
+        const context = snowRef?.current.getContext('2d');
+
+        snowVersion2(context);
     }, [snowVersion2]);
 
     return (

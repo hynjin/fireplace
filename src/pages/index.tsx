@@ -4,10 +4,11 @@ import React, {
     useCallback,
     useMemo,
     useEffect,
+    useRef,
 } from 'react';
 import styles from '../styles/Home.module.css';
 import { useForm } from 'react-hook-form';
-import { fetcher, postFetcher } from '../helper/Helper';
+import { fetcher, postFetcher, putFetcher } from '../helper/Helper';
 import useSWR from 'swr';
 import _ from 'lodash';
 import PostOffice from 'components/PostOffice';
@@ -26,10 +27,11 @@ type  Props = {
     letters: any;
     userName: string;
     userList?: string[];
+    userInfo: any;
 }
 
 export default function Index(props: Props) {
-    const { letterCount, letters, userName, userList } = props;
+    const { letterCount, letters, userName, userList, userInfo } = props;
     const router = useRouter();
 
     const [showBubble, setShowBubble] = useState(false);
@@ -42,11 +44,9 @@ export default function Index(props: Props) {
 
     return (
         <div className="">
-            {/* <iframe src="sounds/jingle_bells.mp3"  allow="autoplay" id="bgm" style={{display: "none"}}></iframe> */}
-
-            <audio id="bgm" loop controls>
+            {/* <audio id="bgm" autoPlay loop controls >
                 <source src="sounds/jingle_bells.mp3" />     
-            </audio>
+            </audio> */}
             <div className='absolute' style={{top: 100, left: 800, width: 500}}>
                 {showBubble &&
                     <>
@@ -58,6 +58,7 @@ export default function Index(props: Props) {
                 }
                 <h1 className='text-white'>{userName}의 벽난로</h1>
                 <h2 className='text-white'>{letterCount[userName]?.count ?? 0}개의 편지</h2>
+                <h2 className='text-white'>{userInfo?.ticket}개의 열람권</h2>
                 <button onClick={() => setShowBubble(prev => !prev)}>당신눈에 이건 개미로 보입니다</button>
 
             </div>
@@ -85,10 +86,11 @@ export const getServerSideProps: GetServerSideProps = async (ctx) => {
     const groupedLetter = await fetch(baseUrl + '/api/letter-count').then((res) => res.json());
     const letterCount = _.keyBy(groupedLetter, '_id');
     const letters = userName ? await fetch(baseUrl + '/api/letters' + `?name=${userName}`).then((res) => res.json()) : [];
-    const users = userName ? await fetch(baseUrl + '/api/users' + `?name=${userName}`).then((res) => res.json()) : [];
-    const userList = _.map(users, 'name');
+    const users = await fetch(baseUrl + '/api/user-list').then((res) => res.json());
+    const userList = _.difference(_.map(users, 'name'), [userName]);
+    const userInfo = _.find(users, { 'name': userName }) ;
 
     return {
-        props: {  letterCount, letters, userName, userList },
+        props: {  letterCount, letters, userName, userList, userInfo },
     };
 };
