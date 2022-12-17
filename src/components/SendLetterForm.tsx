@@ -68,25 +68,31 @@ export default function SendLetterForm(props: Props) {
   useEffect(() => console.log("+++ pre", present), [present]);
 
   return (
-    <form className="">
-      <div>
-        <h6 className="mb-2">From. {isAnonymous ? "익명" : user?.name}</h6>
+    <form className="min-w-[600px]">
+      <div className="flex">
+        <h6 className="mb-2 mr-4">From. {isAnonymous ? "익명" : user?.name}</h6>
         <div className="flex items-center mb-4">
+          <input
+            type="checkbox"
+            className="mr-2"
+            onChange={handleChangeAnonymous}
+          />
           <h6 className="mr-1">익명으로 보내기</h6>
-          <input type="checkbox" onChange={handleChangeAnonymous} />
         </div>
       </div>
-      <h6 className="mb-1">To. </h6>
-      <RecieverList userList={userList} setReciever={setReciever} />
-      {isError && (
-        <div className="text-red-600">
-          <h6>받는 이를 선택해야합니다.</h6>
-        </div>
-      )}
-      <div className="p-4">
+      <div className="flex items-center">
+        <h6 className="mb-2 mr-3">To: </h6>
+        <RecieverList userList={userList} setReciever={setReciever} />
+        {isError && (
+          <div className="text-red-600">
+            <h6>받는 이를 선택해야합니다.</h6>
+          </div>
+        )}
+      </div>
+      <div className="py-4">
         <h6 className="text-gray-800 mb-4">함께 보낼 선물을 골라주세요.</h6>
         {_.map(PRESENT_TYPE, (PRESENT) => (
-          <div className="py-1" key={`creat-reciever-${PRESENT}`}>
+          <div className="py-1 flex" key={`creat-reciever-${PRESENT}`}>
             <input
               type="checkbox"
               id={`creat-reciever-${PRESENT}`}
