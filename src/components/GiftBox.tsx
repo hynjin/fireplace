@@ -1,49 +1,60 @@
 import React, {
-    useState,
-    useCallback,
-    useRef,
-    useEffect,
-    useMemo,
-} from 'react';
-import _ from 'lodash';
-import Modal from 'react-modal';
-import { fetcher, postFetcher, putFetcher } from '../helper/Helper';
-import { useSession } from 'next-auth/react';
+  useState,
+  useCallback,
+  useRef,
+  useEffect,
+  useMemo,
+} from "react";
+import _ from "lodash";
+import Modal from "react-modal";
+import { fetcher, postFetcher, getPresentInfo } from "../helper/Helper";
+import { useSession } from "next-auth/react";
+import useSWR from "swr";
+
 
 const customStyles = {
-    overlay: {
-      backgroundColor: 'rgba(0, 0, 0, 0.7)',
-      overflow: 'auto',
-      zIndex: 30,
-    },
-    content: {
-      top: '50%',
-      left: '50%',
-      right: 'auto',
-      bottom: 'auto',
-      overflow: 'scroll',
-      maxHeight: 'calc(100% - 48px)',
-      marginRight: '-50%',
-      transform: 'translate(-50%, -50%)',
-    },
-  };
+  overlay: {
+    backgroundColor: "rgba(0, 0, 0, 0.7)",
+    overflow: "auto",
+    zIndex: 30,
+  },
+  content: {
+    top: "50%",
+    left: "50%",
+    right: "auto",
+    bottom: "auto",
+    overflow: "scroll",
+    maxHeight: "calc(100% - 48px)",
+    marginRight: "-50%",
+    transform: "translate(-50%, -50%)",
+  },
+};
 
 type Props = {
-    letters: LetterType[];
-    ticket: number;
-    setTicket: (n: number) => void;
+  ticket: number;
+  setTicket: (n: number) => void;
 };
 
 export default function GiftBox(props: Props) {
-    const { letters, ticket, setTicket } = props;
-    const { data: session } = useSession();
-    const user = session?.user;
-    const userName =  user?.name;
+  const { ticket, setTicket } = props;
+  const { data: session } = useSession();
+  const user = session?.user;
+  const userName = user?.name;
 
-    const letterCount = letters?.length ?? 0;
+  const [modalIsOpen, setIsOpen] = useState(false);
+  const [alertOpen, setAlertOpen] = useState(false);
 
-    const [modalIsOpen, setIsOpen] = useState(false);
-    const [alertOpen, setAlertOpen] = useState(false);
+  const { data: letters } = useSWR(`/api/letters?name=${userName}&isRead=false`, fetcher);
+
+  const [letter, setLetter] = useState(letters?.[0]);
+  const { sender, content, presentIndex = 0, present = '' } = letter ?? {};
+  const { presentName, presentImage } = getPresentInfo(present, presentIndex);
+
+  useEffect(() => {
+    if (letters?.length > 0 && !letter) {
+        setLetter(letters?.[0]);
+    }
+  }, [letters, letter]);
 
     const openAlert = useCallback(async () => {
         setAlertOpen(true);
@@ -59,62 +70,57 @@ export default function GiftBox(props: Props) {
             return;
         }
 
-        await postFetcher('/api/letters', { letterId: letters[0]?._id });
+        await postFetcher('/api/letters', { letterId: letter?._id });
         await postFetcher('/api/user-list', { name: userName });
+
         setTicket(ticket - 1);
         setIsOpen(true);
-    }, [letters, openAlert, setTicket, ticket, userName]);
+    }, [letter, openAlert, setTicket, ticket, userName]);
 
-    function closeModal() {
-      setIsOpen(false);
-    }
+    const closeModal = useCallback(() => {
+        setLetter(letters?.[0]);
+        setIsOpen(false);
+    }, [letters]);
 
-    return (
-        <div className="absolute right-40 bottom-[50px] w-2/5 h-1/5">
-            <Modal
-                isOpen={modalIsOpen}
-                style={customStyles}
-                ariaHideApp={false}
-                contentLabel="Create Letter Modal"
-            >
-                <div>
-                    GiftBox
-                    {letters[0].content}
-                    {letters[0].present}
-                </div>
-                <button
-                    type="button"
-                    className="btn btn-ghost"
-                    onClick={closeModal}
-                >
-                    닫기
-                </button>
-            </Modal>
-
-            <Modal
-                isOpen={alertOpen}
-                style={customStyles}
-                ariaHideApp={false}
-                contentLabel="Create Letter Modal"
-            >
-                <div>
-                    열람권이 부족해 선물을 열 수 없어요!<br />
-                    편지를 작성해 열람권을 모아보세요!
-                </div>
-                <button
-                    type="button"
-                    className="btn btn-ghost"
-                    onClick={closeAlert}
-                >
-                    닫기
-                </button>
-            </Modal>
-
-            {letterCount > 0 &&
-                <button onClick={openModal}>
-                    <h2 >선물 상자</h2>
-                </button>
-            }
+  return (
+    <div className="absolute left-[30%] bottom-[50px] w-2/5 h-1/5">
+      <Modal
+        isOpen={modalIsOpen}
+        style={customStyles}
+        ariaHideApp={false}
+        contentLabel="Create Letter Modal"
+      >
+        <div>
+            {sender}님이 {present && (presentName + '와(과) 함께')} 편지를 보냈어요.
+            {present && <img src={presentImage} />}
+            {content}
         </div>
-    );
+        <button type="button" className="btn btn-ghost" onClick={closeModal}>
+          닫기
+        </button>
+      </Modal>
+
+      <Modal
+        isOpen={alertOpen}
+        style={customStyles}
+        ariaHideApp={false}
+        contentLabel="Create Letter Modal"
+      >
+        <div>
+          열람권이 부족해 선물을 열 수 없어요!
+          <br />
+          편지를 작성해 열람권을 모아보세요!
+        </div>
+        <button type="button" className="btn btn-ghost" onClick={closeAlert}>
+          닫기
+        </button>
+      </Modal>
+
+      {letter && (
+        <button onClick={openModal} className="hover:scale-110">
+          <img src="/images/gift01.png" className="w-fit h-40" />
+        </button>
+      )}
+    </div>
+  );
 }

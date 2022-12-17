@@ -6,4 +6,15 @@ declare type LetterType = {
     anonymous: boolean;
     present: string[];
     isRead: boolean;
+    presentIndex: number;
+};
+
+
+declare type SendLetterType = {
+    sender: string;
+    reciever: string;
+    content?: string;
+    present?: string;
+    presentIndex?: number;
+    anonymous: boolean;
 };

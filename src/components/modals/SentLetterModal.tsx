@@ -1,7 +1,6 @@
 import React, { useState } from "react";
 import Modal from "react-modal";
-import SendLetterForm from "components/SendLetterForm";
-import LetterList from "components/LetterList";
+import { getPresentInfo } from "helper/Helper";
 
 const customStyles = {
   overlay: {
@@ -23,40 +22,32 @@ const customStyles = {
 };
 
 type Props = {
-  letters: LetterType[];
+  letter?: SendLetterType;
+  presentIndate?: number;
+  close: () => void;
 };
 
-export default function ShowLetterModal(props: Props) {
-  const { letters } = props;
-  const [modalIsOpen, setIsOpen] = useState(false);
+export default function SentLetterModal(props: Props) {
+  const { letter, close } = props;
+  const { reciever, presentIndex = 0, present = '' } = letter ?? {};
 
-  function openModal() {
-    setIsOpen(true);
-  }
-
-  function closeModal() {
-    setIsOpen(false);
-  }
+  const { presentName } = getPresentInfo(present, presentIndex);
 
   return (
     <div className="min-w-[600px]">
-      <button
-        className="bg-red-700 p-3 rounded hover:bg-green-600 w-fit"
-        onClick={openModal}
-      >
-        <h6 className="text-white">2. 나한테 온 편지를 모아 볼래</h6>
-      </button>
       <Modal
-        isOpen={modalIsOpen}
+        isOpen={!!letter}
         style={customStyles}
         ariaHideApp={false}
         contentLabel="Create Letter Modal"
       >
-        <LetterList letters={letters} />
+        <div>
+          {reciever}님에게 {present && (presentName + '와(과) 함께')} 편지를 보냈어요.
+        </div>
         <button
           type="button"
           className="p-3 border border-red-700"
-          onClick={closeModal}
+          onClick={close}
         >
           <h6 className="text-red-700">닫기</h6>
         </button>

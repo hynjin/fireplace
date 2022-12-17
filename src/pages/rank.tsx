@@ -19,7 +19,7 @@ import Fireplace from 'components/canvas/Fireplace';
 import { getSession } from 'next-auth/react';
 import CreateLetterModal from 'components/modals/CreateLetterModal';
 import ShowLetterModal from 'components/modals/ShowLetterModal';
-import { PRESENT_TYPE } from 'types/constants';
+import { PRESENT_NAME } from 'types/constants';
 import { useRouter } from 'next/router';
 
 type  Props = {
@@ -68,7 +68,7 @@ export default function Rank(props: Props) {
                 <div className="px-6 py-8 flex ">
                     <select onChange={handleChangeSelectRank} value={rankType}>
                         <option value=""></option>
-                        {_.map(PRESENT_TYPE, PRESENT => (
+                        {_.map(PRESENT_NAME, PRESENT => (
                             <option value={PRESENT} key={`creat-to-${PRESENT}`}>
                                 {PRESENT}
                             </option>
