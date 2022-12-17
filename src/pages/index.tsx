@@ -34,8 +34,15 @@ export default function Index(props: Props) {
 
   return (
     <div className="relative overflow-hidden">
+      <div className="fixed">
+        <audio id="bgm" loop controls>
+          <source src="sounds/jingle_bells.mp3" />
+        </audio>
+      </div>
+      <img src="/images/house_background.png" className="h-screen w-screen" />
+
       {/* 일개미 버튼 */}
-      <div className="absolute right-40 bottom-[200px] w-1/5 h-1/5">
+      <div className="absolute right-40 bottom-[20%] w-1/5 h-1/5">
         <button onClick={() => setShowInfo(true)}>
           <img src="/images/gami.png" className="w-full h-full" />
         </button>
@@ -46,15 +53,14 @@ export default function Index(props: Props) {
           </h6>
         </div>
       </div>
-      <div className="fixed">
-        <audio id="bgm" loop controls>
-          <source src="sounds/jingle_bells.mp3" />
-        </audio>
-      </div>
-      <Fireplace letterCount={letters?.length ?? 0} />
-      <InfoModal userList={userList} letters={letters} open={showInfo} close={() => setShowInfo(false)} />
 
-      <img src="/images/house_background.png" className="h-screen w-screen" />
+      <Fireplace letterCount={letters?.length ?? 0} />
+      <InfoModal
+        userList={userList}
+        letters={letters}
+        open={showInfo}
+        close={() => setShowInfo(false)}
+      />
     </div>
   );
 }
