@@ -1,23 +1,23 @@
-import React, { useState } from 'react';
-import Modal from 'react-modal';
-import SendLetterForm from 'components/SendLetterForm';
-import LetterList from 'components/LetterList';
+import React, { useState } from "react";
+import Modal from "react-modal";
+import SendLetterForm from "components/SendLetterForm";
+import LetterList from "components/LetterList";
 
 const customStyles = {
   overlay: {
-    backgroundColor: 'rgba(0, 0, 0, 0.7)',
-    overflow: 'auto',
+    backgroundColor: "rgba(0, 0, 0, 0.7)",
+    overflow: "auto",
     zIndex: 30,
   },
   content: {
-    top: '50%',
-    left: '50%',
-    right: 'auto',
-    bottom: 'auto',
-    overflow: 'scroll',
-    maxHeight: 'calc(100% - 48px)',
-    marginRight: '-50%',
-    transform: 'translate(-50%, -50%)',
+    top: "50%",
+    left: "50%",
+    right: "auto",
+    bottom: "auto",
+    overflow: "scroll",
+    maxHeight: "calc(100% - 48px)",
+    marginRight: "-50%",
+    transform: "translate(-50%, -50%)",
   },
 };
 
@@ -39,7 +39,9 @@ export default function ShowLetterModal(props: Props) {
 
   return (
     <div>
-      <button className="btn" onClick={openModal}>편지읽기</button>
+      <button className="btn" onClick={openModal}>
+        <h6>편지읽기</h6>
+      </button>
       <Modal
         isOpen={modalIsOpen}
         style={customStyles}
@@ -48,11 +50,11 @@ export default function ShowLetterModal(props: Props) {
       >
         <LetterList letters={letters} />
         <button
-            type="button"
-            className="btn btn-ghost"
-            onClick={closeModal}
+          type="button"
+          className="p-3 border border-red-700"
+          onClick={closeModal}
         >
-            닫기
+          <h6 className="text-red-700">닫기</h6>
         </button>
       </Modal>
     </div>
