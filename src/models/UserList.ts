@@ -5,6 +5,6 @@ const UserListSchema = new mongoose.Schema({
     ticket: Number,
 });
 
-const UserList = mongoose.models.UserList || mongoose.model('User-list', UserListSchema);
+var UserList = mongoose.models.UserList || mongoose.model('UserList', UserListSchema);
 
 module.exports = UserList;

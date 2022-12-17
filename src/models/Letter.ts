@@ -11,7 +11,7 @@ const LetterSchema = new mongoose.Schema({
     isRead: Boolean,
 });
 
-const Letter = mongoose.models.Letter || mongoose.model('Letter', LetterSchema);
+var Letter = mongoose.models.Letter || mongoose.model('Letter', LetterSchema);
 
 module.exports = Letter
 // export default Letter;

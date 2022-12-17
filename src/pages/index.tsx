@@ -27,10 +27,11 @@ type  Props = {
     letters: any;
     userName: string;
     userList?: string[];
+    userInfo: any;
 }
 
 export default function Index(props: Props) {
-    const { letterCount, letters, userName, userList } = props;
+    const { letterCount, letters, userName, userList, userInfo } = props;
     const router = useRouter();
 
     const [showBubble, setShowBubble] = useState(false);
@@ -57,6 +58,7 @@ export default function Index(props: Props) {
                 }
                 <h1 className='text-white'>{userName}의 벽난로</h1>
                 <h2 className='text-white'>{letterCount[userName]?.count ?? 0}개의 편지</h2>
+                <h2 className='text-white'>{userInfo?.ticket}개의 열람권</h2>
                 <button onClick={() => setShowBubble(prev => !prev)}>당신눈에 이건 개미로 보입니다</button>
 
             </div>
@@ -84,11 +86,11 @@ export const getServerSideProps: GetServerSideProps = async (ctx) => {
     const groupedLetter = await fetch(baseUrl + '/api/letter-count').then((res) => res.json());
     const letterCount = _.keyBy(groupedLetter, '_id');
     const letters = userName ? await fetch(baseUrl + '/api/letters' + `?name=${userName}`).then((res) => res.json()) : [];
-    const users = await fetch(baseUrl + '/api/user-lists').then((res) => res.json());
-    console.log('+++ ', _.map(users, 'name'));
+    const users = await fetch(baseUrl + '/api/user-list').then((res) => res.json());
     const userList = _.difference(_.map(users, 'name'), [userName]);
+    const userInfo = _.find(users, { 'name': userName }) ;
 
     return {
-        props: {  letterCount, letters, userName, userList },
+        props: {  letterCount, letters, userName, userList, userInfo },
     };
 };

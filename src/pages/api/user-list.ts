@@ -12,19 +12,15 @@ const getUserList = () => {
 const addUser = (letter: any) => {
     try {
         console.log('+++ add letters post unset',);
-        // _.forEach(letter, ll => {
-        //     UserList.create({
-        //         name: ll,
-        //         ticket: 1,
-        //         updated_at: new Date(),
-        //     });
-        // });
+        const t =            ["[PUBLY]문종혁", "Byeongsoo Kim","Byunghun Kim","Dahee Jeong","Donghun Lee","Eunbyeol Ko","Eunseo Kim","Gayeon Kim","Ha Luong","Heejun Kim","Hongjae Eum","Hungjoon Kim","Hyojoo Byun","Hyunjin Kim","Hyunsoo Lee","Hyunsun Park","Jaemin Chung","Jaesung Kim","Jaeyong Jung","Jieun Kim","Jiho Kim","Jiwon Ahn","Jiwon Cha","Jiwon Kim","Junghyun Son","Kwangjong Kim","Minhyo Kim","Minjeong Joo","Minjeong Joo","Minji Cho","Minsu Kwon","Myeongchan Kim","Naon Shin","Sehoon Park","Seoji Kang","Seoryun Lee","Seunghyun Lee","Seungkook Lee","Sinyoung Park","Sohee Jeong","Sol Oh","Sori Park","Soryoung Park","Sueun Chang","Suhee Choi","Sungwon Wi","Van Anh Nguyen","Woojin Hwang","Yevin Park","Yewon Moon","Youngjoon Oh","Yunha Bae"];
+        _.forEach(t, ll => {
+            UserList.create({
+                name: ll,
+                ticket: 1,
+                updated_at: new Date(),
+            });
+        });
 
-        return UserList.aggregate([
-            {
-              "$unset": 'list'
-            }
-          ]);
         // return UserList.create({
         //     ...letter,
         //     updated_at: new Date(),
