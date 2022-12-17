@@ -80,6 +80,7 @@ export default function GiftBox(props: Props) {
                     닫기
                 </button>
             </Modal>
+        </div>
 
   function closeModal() {
     setIsOpen(false);
