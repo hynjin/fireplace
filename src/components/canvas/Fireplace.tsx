@@ -1,4 +1,3 @@
-import { GetServerSideProps } from "next";
 import React from "react";
 import _ from "lodash";
 import Bonfire from "./Bonfire";

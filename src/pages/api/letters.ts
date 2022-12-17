@@ -39,23 +39,10 @@ const sendLetter = async (letter: any) => {
 
 const readLetter = async (body: any) => {
     try {
-console.log('+++ read', body);
-        const result = await Letter.updateOne(
+        const result = await  Letter.findOneAndUpdate(
             { "_id" : new ObjectId(body.letterId) },
             { $set: { isRead: true }, }
         );
-        console.log('+++', result);
-        // const result = await Letter.create({
-        //     ...letter,
-        //     isRead: false,
-        //     updated_at: new Date(),
-        // });
-        // if (result) {
-        //     await UserList.updateOne(
-        //         { "name" : letter.sender },
-        //         { $inc: { ticket: 1 }, }
-        //         );
-        // }
         return result;
     } catch (e) {
         console.log('error at add letters');

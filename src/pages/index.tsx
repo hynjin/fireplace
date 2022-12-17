@@ -17,28 +17,35 @@ import ShowLetterModal from "components/modals/ShowLetterModal";
 import InfoModal from "components/modals/InfoModal";
 import { useRouter } from "next/router";
 import ButtlerAnt from 'components/ButtlerAnt';
+import GiftBox from 'components/GiftBox';
 
 type Props = {
-  letterCount: any;
   letters: any;
   userList?: string[];
+  userInfo?: any;
 };
 
 export default function Index(props: Props) {
-  const { letterCount, letters, userList } = props;
+  const { letters, userList, userInfo } = props;
   const router = useRouter();
+
+  const [ticket, setTicket] = useState(userInfo?.ticket ?? 0);
 
   const { data } = useSWR(`/api/letters`, fetcher);
 
   return (
     <div className="relative overflow-hidden">
-      <div className="fixed">
+      <div className="fixed top-5 left-5">
         <audio id="bgm" loop controls>
           <source src="sounds/jingle_bells.mp3" />
         </audio>
       </div>
       <ButtlerAnt letters={letters} userList={userList} />
       <Fireplace letterCount={letters?.length ?? 0} />
+      <GiftBox letters={letters} ticket={ticket} setTicket={(n: number) => setTicket(n)} />
+      <div className="fixed top-5 right-5">
+          <h3 className="text-white text-center">남은 열람권 {ticket}</h3>
+      </div>
 
       <img src="/images/house_background.png" className="h-screen w-screen" />
     </div>
@@ -61,23 +68,19 @@ export const getServerSideProps: GetServerSideProps = async (ctx) => {
   const { user } = session;
   const { name } = user;
   const userName = name ?? "히히"; //로그인 도입 후 userName으로
-  const groupedLetter = await fetch(baseUrl + "/api/letter-count").then((res) =>
-    res.json()
-  );
-  const letterCount = _.keyBy(groupedLetter, "_id");
+
   const letters = userName
     ? await fetch(baseUrl + "/api/letters" + `?name=${userName}`).then((res) =>
         res.json()
       )
     : [];
-  const users = userName
-    ? await fetch(baseUrl + "/api/users" + `?name=${userName}`).then((res) =>
+  const users = await fetch(baseUrl + "/api/user-list").then((res) =>
         res.json()
-      )
-    : [];
-  const userList = _.map(users, "name");
+      );
+  const userList = _.difference(_.map(users, 'name'), [userName]);
+  const userInfo = _.find(users, { 'name': userName }) ;
 
   return {
-    props: { letterCount, letters, userList },
+    props: { letters, userList, userInfo },
   };
 };
