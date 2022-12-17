@@ -10,6 +10,7 @@ import { fetcher, postFetcher } from "../helper/Helper";
 import { useSession } from "next-auth/react";
 import { PRESENT_TYPE } from "types/constants";
 import RecieverList from "./RecieverList";
+import GiftList from "./GiftList";
 
 type Props = {
   setMove?: (t: boolean) => void;
@@ -47,23 +48,14 @@ export default function SendLetterForm(props: Props) {
     }
   }, []);
 
-  const handleChangeSelectTo = useCallback((e) => {
-    setReciever(e.target.value);
-    setIsError(false);
-  }, []);
+  useEffect(() => {
+      setIsError(false);
+  }, [reciever]);
 
   const handleChangeAnonymous = useCallback((e) => {
     setAnonymous(e.target.checked);
   }, []);
 
-  const handleChangeSelectPresent = useCallback((e) => {
-    const selectPresent = e.target.value;
-    if (e.target.checked) {
-      setPresent((prev) => prev.concat(selectPresent));
-    } else {
-      setPresent((prev) => prev.filter((p) => p !== selectPresent));
-    }
-  }, []);
 
   useEffect(() => console.log("+++ pre", present), [present]);
 
@@ -80,29 +72,11 @@ export default function SendLetterForm(props: Props) {
           <h6 className="mr-1">익명으로 보내기</h6>
         </div>
       </div>
-      <div className="flex items-center">
-        <h6 className="mb-2 mr-3">To: </h6>
-        <RecieverList userList={userList} setReciever={setReciever} />
-        {isError && (
-          <div className="text-red-600">
-            <h6>받는 이를 선택해야합니다.</h6>
-          </div>
-        )}
-      </div>
-      <div className="py-4">
+      <h6 className="mb-1">To. </h6>
+      <RecieverList userList={userList} setReciever={setReciever} isError={isError} />
+      <div className="p-4">
         <h6 className="text-gray-800 mb-4">함께 보낼 선물을 골라주세요.</h6>
-        {_.map(PRESENT_TYPE, (PRESENT) => (
-          <div className="py-1 flex" key={`creat-reciever-${PRESENT}`}>
-            <input
-              type="checkbox"
-              id={`creat-reciever-${PRESENT}`}
-              value={PRESENT}
-              onChange={handleChangeSelectPresent}
-              className="mr-2"
-            />
-            <label htmlFor={`creat-reciever-${PRESENT}`}>{PRESENT}</label>
-          </div>
-        ))}
+        <GiftList  setGift={setPresent}/>
       </div>
       <textarea
         className="border border-red-700 p-3 h-40"
