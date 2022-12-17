@@ -33,7 +33,7 @@ export default function GiftBox(props: Props) {
         close={() => setShowInfo(false)}
       />
       <div className="absolute right-40 bottom-[30%] w-1/5 h-1/5">
-        <button onClick={() => setShowInfo(true)}>
+        <button className="hover:scale-110" onClick={() => setShowInfo(true)}>
           <img src="/images/gami.png" className="w-full h-full" />
         </button>
         <div className="absolute py-4 px-9 top-[-50%] border-2 border-black rounded w-fit bg-white z-10">
