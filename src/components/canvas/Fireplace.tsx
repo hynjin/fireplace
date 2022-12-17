@@ -14,7 +14,7 @@ export default function Fireplace(props: Props) {
   const userName = user?.name;
 
   return (
-    <div className="fixed w-screen h-screen">
+    <div className="">
       <div className="absolute bottom-40 left-[50%] translate-x-[-50%] w-1/3 h-fit">
         <img src="/images/fireplace.png" alt="" className="" />
         <Bonfire />
