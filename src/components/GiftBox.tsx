@@ -51,6 +51,7 @@ export default function GiftBox(props: Props) {
 
     function closeAlert() {
         setAlertOpen(false);
+        location.reload(); //for letter list update
     }
 
     const openModal = useCallback(async () => {
@@ -78,7 +79,6 @@ export default function GiftBox(props: Props) {
                 contentLabel="Create Letter Modal"
             >
                 <div>
-                    GiftBox
                     {letters[0].content}
                     {letters[0].present}
                 </div>
