@@ -49,19 +49,18 @@ export default function SendLetterForm(props: Props) {
   }, []);
 
   useEffect(() => {
-      setIsError(false);
+    setIsError(false);
   }, [reciever]);
 
   const handleChangeAnonymous = useCallback((e) => {
     setAnonymous(e.target.checked);
   }, []);
 
-
   useEffect(() => console.log("+++ pre", present), [present]);
 
   return (
-    <form className="min-w-[600px]">
-      <div className="flex">
+    <form className="min-w-[600px] w-full">
+      <div className="flex w-full">
         <h6 className="mb-2 mr-4">From. {isAnonymous ? "익명" : user?.name}</h6>
         <div className="flex items-center mb-4">
           <input
@@ -72,15 +71,23 @@ export default function SendLetterForm(props: Props) {
           <h6 className="mr-1">익명으로 보내기</h6>
         </div>
       </div>
-      <h6 className="mb-1">To. </h6>
-      <RecieverList userList={userList} setReciever={setReciever} isError={isError} />
-      <div className="p-4">
-        <h6 className="text-gray-800 mb-4">함께 보낼 선물을 골라주세요.</h6>
-        <GiftList  setGift={setPresent}/>
+      <div className="flex items-center w-full my-3">
+        <h6 className="mb-1 mr-3">To. </h6>
+        <RecieverList
+          userList={userList}
+          setReciever={setReciever}
+          isError={isError}
+        />
+      </div>
+      <div className="py-4 mb-3">
+        <h6 className="text-gray-800 mb-4">
+          2023년, 이 사람이 가졌으면 하는 것! 함께 보낼 선물을 골라주세요.
+        </h6>
+        <GiftList setGift={setPresent} />
       </div>
       <textarea
         className="border border-red-700 p-3 h-40"
-        placeholder="올 한 해 함께한 동료에게"
+        placeholder="올 한 해 함께한 동료에게 따뜻한 편지를 적어보아요❤️"
         value={content}
         onChange={(e) => setContent(e.target.value)}
       />
