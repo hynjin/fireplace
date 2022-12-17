@@ -16,6 +16,7 @@ const customStyles = {
     bottom: "auto",
     overflow: "scroll",
     maxHeight: "calc(100% - 48px)",
+    minWidth: 600,
     marginRight: "-50%",
     transform: "translate(-50%, -50%)",
   },
@@ -38,7 +39,7 @@ export default function ShowLetterModal(props: Props) {
   }
 
   return (
-    <div>
+    <div className="min-w-[600px]">
       <button
         className="bg-red-700 p-3 rounded hover:bg-green-600 w-fit"
         onClick={openModal}
