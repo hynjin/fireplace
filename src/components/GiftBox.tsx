@@ -7,9 +7,10 @@ import React, {
 } from "react";
 import _ from "lodash";
 import Modal from "react-modal";
-import { fetcher, postFetcher } from "../helper/Helper";
+import { fetcher, postFetcher, getPresentInfo } from "../helper/Helper";
 import { useSession } from "next-auth/react";
 import useSWR from "swr";
+
 
 const customStyles = {
   overlay: {
@@ -44,9 +45,16 @@ export default function GiftBox(props: Props) {
   const [alertOpen, setAlertOpen] = useState(false);
 
   const { data: letters } = useSWR(`/api/letters?name=${userName}&isRead=false`, fetcher);
-  const letterCount = letters?.length ?? 0;
 
-  const letter = useMemo(() => letters?.[0], [letters]);
+  const [letter, setLetter] = useState(letters?.[0]);
+  const { sender, content, presentIndex = 0, present = '' } = letter ?? {};
+  const { presentName, presentImage } = getPresentInfo(present, presentIndex);
+
+  useEffect(() => {
+    if (letters?.length > 0 && !letter) {
+        setLetter(letters?.[0]);
+    }
+  }, [letters, letter]);
 
     const openAlert = useCallback(async () => {
         setAlertOpen(true);
@@ -69,9 +77,10 @@ export default function GiftBox(props: Props) {
         setIsOpen(true);
     }, [letter, openAlert, setTicket, ticket, userName]);
 
-    function closeModal() {
+    const closeModal = useCallback(() => {
+        setLetter(letters?.[0]);
         setIsOpen(false);
-    }
+    }, [letters]);
 
   return (
     <div className="absolute left-[30%] bottom-[50px] w-2/5 h-1/5">
@@ -82,8 +91,9 @@ export default function GiftBox(props: Props) {
         contentLabel="Create Letter Modal"
       >
         <div>
-          {letter?.content}
-          {letter?.present}
+            {sender}님이 {present && (presentName + '와(과) 함께')} 편지를 보냈어요.
+            {present && <img src={presentImage} />}
+            {content}
         </div>
         <button type="button" className="btn btn-ghost" onClick={closeModal}>
           닫기

@@ -1,6 +1,7 @@
-import React, { useState } from "react";
+import React, { useState, useCallback } from "react";
 import Modal from "react-modal";
 import SendLetterForm from "components/SendLetterForm";
+import SentLetterModal from 'components/modals/SentLetterModal';
 
 const customStyles = {
   overlay: {
@@ -26,6 +27,8 @@ export default function CreateLetterModal(props: Props) {
   const { userList } = props;
   const [modalIsOpen, setIsOpen] = useState(false);
 
+  const [letter, setLetter] = useState<SendLetterType>(undefined);
+
   function openModal() {
     setIsOpen(true);
   }
@@ -33,6 +36,11 @@ export default function CreateLetterModal(props: Props) {
   function closeModal() {
     setIsOpen(false);
   }
+
+  const setSentLetter = useCallback((data) => {
+    setLetter(data);
+    closeModal();
+  }, []);
 
   return (
     <div>
@@ -42,13 +50,15 @@ export default function CreateLetterModal(props: Props) {
       >
         <h6 className="text-white">1. 편지를 쓸래</h6>
       </button>
+      <SentLetterModal letter={letter} close={() => setLetter(undefined)}/>
+
       <Modal
         isOpen={modalIsOpen}
         style={customStyles}
         ariaHideApp={false}
         contentLabel="Create Letter Modal"
       >
-        <SendLetterForm userList={userList} />
+        <SendLetterForm userList={userList} setLetter={setSentLetter}/>
         <button
           type="button"
           className="bg-white p-3 border border-red-700 rounded w-full"

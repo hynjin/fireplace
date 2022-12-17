@@ -4,7 +4,7 @@ import { getCharPattern } from "../helper/Helper";
 import { useSession } from "next-auth/react";
 import { Listbox, Transition } from "@headlessui/react";
 import { CheckIcon, ChevronUpDownIcon } from "@heroicons/react/20/solid";
-import { PRESENT_TYPE } from "types/constants";
+import { PRESENT_NAME } from "types/constants";
 
 type Props = {
   setGift: (value) => void;
@@ -37,7 +37,7 @@ export default function GiftList(props: Props) {
             leaveTo="opacity-0"
           >
             <Listbox.Options className="absolute mt-1 max-h-60 w-full overflow-auto rounded-md bg-white py-1 text-base shadow-lg ring-1 ring-black ring-opacity-5 focus:outline-none sm:text-sm">
-              {_.map(PRESENT_TYPE, (present) => (
+              {_.map(PRESENT_NAME, (present) => (
                 <Listbox.Option
                   key={`creat-gift-${present}`}
                   className={({ active }) =>

@@ -23,15 +23,23 @@ type Props = {
   letters: any;
   userList?: string[];
   userInfo?: any;
+  userName: string;
 };
 
 export default function Index(props: Props) {
-  const { letters, userList, userInfo } = props;
+  const {  userName } = props;
   const router = useRouter();
 
-  const [ticket, setTicket] = useState(userInfo?.ticket ?? 0);
+  const { data: letters } = useSWR(`/api/letters?name=${userName}`, fetcher);
+  const { data: users } = useSWR(`/api/user-list`, fetcher);
 
-  const { data } = useSWR(`/api/letters`, fetcher);
+  const userList = useMemo(() => _.difference(_.map(users, 'name'), [userName]), [users, userName]);
+  const userInfo = useMemo(() => _.find(users, { 'name': userName }), [users, userName]);
+
+  const [ticket, setTicket] = useState(0);
+  useEffect(() => {
+    setTicket(userInfo?.ticket ?? 0);
+  }, [userInfo]);
 
   return (
     <div className="relative overflow-hidden">
@@ -81,6 +89,6 @@ export const getServerSideProps: GetServerSideProps = async (ctx) => {
   const userInfo = _.find(users, { 'name': userName }) ;
 
   return {
-    props: { letters, userList, userInfo },
+    props: { letters, userList, userInfo, userName },
   };
 };

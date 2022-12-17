@@ -8,21 +8,13 @@ import React, {
 import _ from "lodash";
 import { fetcher, postFetcher } from "../helper/Helper";
 import { useSession } from "next-auth/react";
-import { PRESENT_TYPE } from "types/constants";
 import RecieverList from "./RecieverList";
 import GiftList from "./GiftList";
 
 type Props = {
   setMove?: (t: boolean) => void;
   userList?: string[];
-};
-
-type SendLetterType = {
-  sender: string;
-  reciever: string;
-  content?: string;
-  present?: string[];
-  anonymous: boolean;
+  setLetter?: (t: SendLetterType) => void;
 };
 
 export default function SendLetterForm(props: Props) {
@@ -30,19 +22,24 @@ export default function SendLetterForm(props: Props) {
   const user = session?.user;
   const userName = user?.name;
 
-  const { userList } = props;
+  const { userList, setLetter } = props;
 
   const sender = userName;
   const [reciever, setReciever] = useState("");
   const [content, setContent] = useState("");
   const [isAnonymous, setAnonymous] = useState(false);
-  const [present, setPresent] = useState<string[]>([]);
+  const [present, setPresent] = useState<string>('');
   const [isError, setIsError] = useState(false);
 
   const onClickSendLetter = useCallback(async (data: SendLetterType) => {
+      const maxRandom = data?.present === 'honor' ? 1 : 5;
+    const randomIndex = Math.floor((Math.random() * maxRandom));
+
     if (data?.reciever) {
-      await postFetcher("/api/letters", data);
-      location.reload(); //for letter list update
+        const letter = { ...data, presentIndex: randomIndex};
+        
+        await postFetcher("/api/letters", letter);
+        setLetter(letter);
     } else {
       setIsError(true);
     }

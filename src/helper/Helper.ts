@@ -1,4 +1,5 @@
 import _ from 'lodash';
+import { PRESENT_TYPE, PRESENT_COPY } from "types/constants";
 
 export function fetcher(url: string) {
     return fetch(url).then((res) => res.json());
@@ -76,4 +77,14 @@ export function getCharPattern(character) {
     }
   
     return _.escapeRegExp(character);
+  }
+
+  export function getPresentInfo(present: string, presentIndex: number) {
+    const presentType = PRESENT_TYPE[present];
+    const presentCopy = PRESENT_COPY[presentType];
+
+    const presentName = presentCopy?.[presentIndex];
+    const imageType = presentType === 'honor' ? 'png' : 'jpeg';
+    const presentImage = `/images/gift_category/${presentType + presentIndex}.${imageType}`;
+    return { presentName, presentImage };
   }
