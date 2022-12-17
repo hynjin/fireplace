@@ -16,19 +16,17 @@ import CreateLetterModal from "components/modals/CreateLetterModal";
 import ShowLetterModal from "components/modals/ShowLetterModal";
 import InfoModal from "components/modals/InfoModal";
 import { useRouter } from "next/router";
+import ButtlerAnt from 'components/ButtlerAnt';
 
 type Props = {
   letterCount: any;
   letters: any;
-  userName: string;
   userList?: string[];
 };
 
 export default function Index(props: Props) {
-  const { letterCount, letters, userName, userList } = props;
+  const { letterCount, letters, userList } = props;
   const router = useRouter();
-
-  const [showInfo, setShowInfo] = useState(false);
 
   const { data } = useSWR(`/api/letters`, fetcher);
 
@@ -39,28 +37,10 @@ export default function Index(props: Props) {
           <source src="sounds/jingle_bells.mp3" />
         </audio>
       </div>
-      <img src="/images/house_background.png" className="h-screen w-screen" />
-
-      {/* 일개미 버튼 */}
-      <div className="absolute right-40 bottom-[20%] w-1/5 h-1/5">
-        <button onClick={() => setShowInfo(true)}>
-          <img src="/images/gami.png" className="w-full h-full" />
-        </button>
-        <div className="absolute py-4 px-9 top-[-50%] border-4 border-black rounded-full bg-white z-10">
-          <h6 className="text-black text-center leading-5">
-            안녕하세요! ㅇㅇㅇ 주인님! 당신의 집사 일개미예용.. 벽난로 앞에
-            선물이 도착했어요! 함 열어보세용!ㅋㅋ
-          </h6>
-        </div>
-      </div>
-
+      <ButtlerAnt letters={letters} userList={userList} />
       <Fireplace letterCount={letters?.length ?? 0} />
-      <InfoModal
-        userList={userList}
-        letters={letters}
-        open={showInfo}
-        close={() => setShowInfo(false)}
-      />
+
+      <img src="/images/house_background.png" className="h-screen w-screen" />
     </div>
   );
 }
@@ -98,6 +78,6 @@ export const getServerSideProps: GetServerSideProps = async (ctx) => {
   const userList = _.map(users, "name");
 
   return {
-    props: { letterCount, letters, userName, userList },
+    props: { letterCount, letters, userList },
   };
 };
