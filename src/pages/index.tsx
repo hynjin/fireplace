@@ -53,7 +53,7 @@ export default function Index(props: Props) {
       </div>
       <img
         src="/images/fireplace.png"
-        className="absolute bottom-40 left-[50%] translate-x-[-50%] w-fit h-2/3"
+        className="absolute bottom-40 left-[50%] translate-x-[-50%] w-1/3 h-fit"
       />
       <Fireplace letters={letters} />
       <div className="absolute top-12 left-[50%] translate-x-[-50%]">
