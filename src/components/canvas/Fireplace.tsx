@@ -18,9 +18,7 @@ export default function Fireplace(props: Props) {
     <div className="fixed w-screen h-screen">
       <div className="absolute bottom-40 left-[50%] translate-x-[-50%] w-1/3 h-fit">
         <img src="/images/fireplace.png" alt="" className="" />
-        <div className="absolute bottom-[-60px] left-[60%] translate-x-[-50%]">
-          <Bonfire />
-        </div>
+        <Bonfire />
       </div>
       <div className="absolute top-12 left-[50%] translate-x-[-50%]">
         <div className="flex flex-col py-4 px-9 top-0 border-4 border-dashed border-green-600 rounded bg-red-700 z-10">
