@@ -2,7 +2,9 @@ import type { NextApiRequest, NextApiResponse } from 'next';
 import clientPromise from 'util/mongodbClient';
 import connectToDatabase from 'util/mongoose';
 import _ from 'lodash';
+
 const Letter = require('../../models/Letter');
+const UserList = require('../../models/UserList');
 
 const getAllLetters = (name?: string | string[]) => {
     if (name) {
@@ -15,14 +17,20 @@ const getUnreadLetters = (filter) => {
     return Letter.find({ isRead: filter });
 }
 
-const addLetter = (letter: any) => {
+const addLetter = async (letter: any) => {
     try {
-        // console.log('+++ add letters post', letter);
-        return Letter.create({
+        const result = await Letter.create({
             ...letter,
             isRead: false,
             updated_at: new Date(),
         });
+        if (result) {
+            await UserList.updateOne(
+                { "name" : letter.sender },
+                { $inc: { ticket: 1 }, }
+                );
+        }
+        return result;
     } catch (e) {
         console.log('error at add letters');
     }

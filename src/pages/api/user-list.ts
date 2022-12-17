@@ -6,7 +6,7 @@ import _ from 'lodash';
 const UserList = require('../../models/UserList');
 
 const getUserList = () => {
-    return UserList.find();
+    return UserList.find().sort( { name: 1 } );
 };
 
 const addUser = (letter: any) => {
@@ -30,6 +30,13 @@ const addUser = (letter: any) => {
     }
 };
 
+const spendTicket = (body: any) => {
+    UserList.updateOne(
+        { "name" : body?.name },
+        { $inc: { ticket: -1 }, }
+    );
+
+};
 // const deleteLetter = (letter_id: any) => {
 //     try {
 //         return Letter.findOneAndDelete({ _id: letter_id });
@@ -60,7 +67,7 @@ export default async function userListHandler(
             // res.status(200).json(result.insertedId);
             break;
         case 'PUT':
-            await addUser(body);
+            await spendTicket(body);
             break;
         // case 'DELETE':
         //     const { letter_id } = body;
