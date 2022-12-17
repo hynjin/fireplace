@@ -15,15 +15,12 @@ export default function Bonfire(props: Props) {
   const bonFireImageRef = useRef<HTMLImageElement>();
 
   // Define the size of a frame
-  const frameWidth = 160.5;
-  const frameHeight = 246;
+  const frameWidth = 260.6;
+  const frameHeight = 346;
 
   // Rows and columns start from 0
   const row = useRef(0);
   const column = useRef(0);
-
-  const x = "46%";
-  const y = "55%";
 
   const intervalId = useRef(null);
 
@@ -70,10 +67,7 @@ export default function Bonfire(props: Props) {
   return (
     <canvas
       style={{
-        position: "absolute",
         zIndex: 1,
-        top: y,
-        left: x,
       }}
       id={"bonfire"}
       ref={bonFireRef}
