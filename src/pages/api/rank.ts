@@ -1,5 +1,6 @@
 import type { NextApiRequest, NextApiResponse } from 'next';
-import connectToDatabase from '../../util/mongoose';
+import clientPromise from 'util/mongodbClient';
+import connectToDatabase from 'util/mongoose';
 import _ from 'lodash';
 const Letter = require('../../models/Letter');
 
@@ -11,7 +12,7 @@ const getAllLetters = () => {
 
 const addLetter = (letter: any) => {
     try {
-        console.log('+++ add letters post', letter);
+        // console.log('+++ add letters post', letter);
         return Letter.create({
             ...letter,
             updated_at: new Date(),
@@ -35,26 +36,29 @@ export default async function lettersHandler(
 ) {
     const { query, body, method } = req;
 
+    // const con = 
     await connectToDatabase();
 
     switch (method) {
         case 'GET':
             const rank = await getAllLetters();
-            console.log('+++ call rank', rank);
+            // console.log('+++ call rank', rank);
             res.status(200).json(rank);
             break;
         case 'POST':
-            console.log('+++ call letters post');
+            // console.log('+++ call letters post');
             const result = await addLetter(body);
             res.status(200).json(result.insertedId);
             break;
         case 'DELETE':
             const { letter_id } = body;
-            console.log('+++ call restaurants delete', letter_id);
+            // console.log('+++ call restaurants delete', letter_id);
             await deleteLetter(letter_id);
             break;
         default:
             res.setHeader('Allow', ['GET', 'POST', 'DELETE']);
             res.status(405).end(`Method ${method} Not Allowed`);
     }
+
+    // con.disconnect();
 }

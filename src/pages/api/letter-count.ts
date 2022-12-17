@@ -1,6 +1,7 @@
 import type { NextApiRequest, NextApiResponse } from 'next';
 import { ObjectId } from 'mongodb';
-import connectToDatabase from '../../util/mongoose';
+import clientPromise from 'util/mongodbClient';
+import connectToDatabase from 'util/mongoose';
 // import Letter from '../../models/Letter';
 import _ from 'lodash';
 const Letter = require('../../models/Letter');
@@ -21,17 +22,19 @@ export default async function letterCountHandler(
 ) {
     const { query, body, method } = req;
 
+    // const con = 
     await connectToDatabase();
 
     switch (method) {
         case 'GET':
             const { name } = query;
             const letters = await getLetterCount(name);
-            console.log('+++ +++', letters);
+            // console.log('+++ +++', letters);
             res.status(200).json(letters);
             break;
         default:
             res.setHeader('Allow', ['GET']);
             res.status(405).end(`Method ${method} Not Allowed`);
     }
+    // con.disconnect();
 }

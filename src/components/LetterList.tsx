@@ -19,8 +19,8 @@ export default function LetterList(props: Props) {
             {_.map(letters, (letter, index) => {
                 return (
                     <div key={`letter-list-${index}`}>
-                        <div>From {letter.anonymous ? '익명'  : letter.from}</div>
-                        <div>To {letter.to}</div>
+                        <div>From {letter.anonymous ? '익명'  : letter.sender}</div>
+                        <div>To {letter.reciever}</div>
                         {letter.present && <div>+ 선물 {letter.present}</div>}
                         <div>{letter.content}</div>
                         <div>{letter.updated_at}</div>

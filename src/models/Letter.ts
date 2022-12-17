@@ -2,15 +2,16 @@ import mongoose from 'mongoose';
 import { ObjectId } from 'mongodb';
 
 const LetterSchema = new mongoose.Schema({
-    from: String,
-    to: String,
+    sender: String,
+    reciever: String,
     content: String,
     updated_at: Date,
     anonymous: Boolean,
-    present: String,
+    present: Array,
+    isRead: Boolean,
 });
 
-const Letter = mongoose.models.Letter || mongoose.model('Letter', LetterSchema);
+var Letter = mongoose.models.Letter || mongoose.model('Letter', LetterSchema);
 
 module.exports = Letter
 // export default Letter;

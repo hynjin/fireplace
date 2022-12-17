@@ -8,5 +8,3 @@ export const PRESENT_TYPE = { //그냥 배열이면 안되나
   HOUSE: '부동산',
   HUMAN: '인간관계',
 };
-
-export type PresentTypeUnion = ValueOf<typeof PRESENT_TYPE>;

@@ -2,7 +2,6 @@ import { MongoClient } from 'mongodb';
 import mongoose from 'mongoose';
 
 const MONGODB_URI = process.env.MONGODB_URI;
-const MONGODB_DB = process.env.MONGODB_DB;
 
 let cachedDb = global.mongoose;
 
@@ -13,12 +12,6 @@ if (!cachedDb) {
 if (!MONGODB_URI) {
     throw new Error(
         'Please define the MONGODB_URI environment variable inside .env.local'
-    );
-}
-
-if (!MONGODB_DB) {
-    throw new Error(
-        'Please define the MONGODB_DB environment variable inside .env.local'
     );
 }
 

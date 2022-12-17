@@ -3,7 +3,7 @@ import GoogleProvider from 'next-auth/providers/google';
 import CognitoProvider from 'next-auth/providers/cognito';
 import { NextApiRequest, NextApiResponse } from 'next';
 import { MongoDBAdapter } from '@next-auth/mongodb-adapter';
-import clientPromise from '../../../util/mognodb';
+import clientPromise from 'util/mongodbClient';
 
 export default NextAuth({
     session: {

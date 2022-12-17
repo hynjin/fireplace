@@ -1,5 +1,7 @@
 import type { NextApiRequest, NextApiResponse } from 'next';
-import connectToDatabase from '../../util/mongoose';
+import clientPromise from 'util/mongodbClient';
+import connectToDatabase from 'util/mongoose';
+
 import _ from 'lodash';
 const User = require('../../models/User');
 
@@ -30,19 +32,20 @@ const getAllUsers = (name?: string | string[]) => {
 //     }
 // };
 
-export default async function lettersHandler(
+export default async function usersHandler(
     req: NextApiRequest,
     res: NextApiResponse
 ) {
     const { query, body, method } = req;
 
+    // const con = 
     await connectToDatabase();
 
     switch (method) {
         case 'GET':
             const { name } = query;
             const users = await getAllUsers(name);
-            console.log('+++ call users', name, users);
+            // console.log('+++ call users', name, users);
             res.status(200).json(users);
             break;
         // case 'POST':
@@ -59,4 +62,5 @@ export default async function lettersHandler(
             res.setHeader('Allow', ['GET', 'POST', 'DELETE']);
             res.status(405).end(`Method ${method} Not Allowed`);
     }
+    // con.disconnect();
 }
