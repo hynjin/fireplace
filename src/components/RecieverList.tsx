@@ -105,7 +105,5 @@ export default function RecieverList(props: Props) {
             </div>
             )}
         </div>
-      </Combobox>
-    </div>
   );
 }

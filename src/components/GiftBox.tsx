@@ -45,22 +45,58 @@ export default function GiftBox(props: Props) {
   const [modalIsOpen, setIsOpen] = useState(false);
   const [alertOpen, setAlertOpen] = useState(false);
 
-  const openAlert = useCallback(async () => {
-    setAlertOpen(true);
-  }, []);
+    const openAlert = useCallback(async () => {
+        setAlertOpen(true);
+    }, []);
 
     function closeAlert() {
         setAlertOpen(false);
         location.reload(); //for letter list update
     }
 
-  const openModal = useCallback(async () => {
-    if (ticket < 1) {
-      openAlert();
-      return;
+    const openModal = useCallback(async () => {
+        if (ticket < 1) {
+            openAlert();
+            return;
+        }
+
+        await postFetcher('/api/letters', { letterId: letters[0]?._id });
+        await postFetcher('/api/user-list', { name: userName });
+        setTicket(ticket - 1);
+        setIsOpen(true);
+    }, [letters, openAlert, setTicket, ticket, userName]);
+
+    function closeModal() {
+    setIsOpen(false);
     }
 
-    return (
+//     return (
+        // <div className="absolute right-40 bottom-[50px] w-2/5 h-1/5">
+        //     <Modal
+        //         isOpen={modalIsOpen}
+        //         style={customStyles}
+        //         ariaHideApp={false}
+        //         contentLabel="Create Letter Modal"
+        //     >
+        //         <div>
+        //             {letters[0].content}
+        //             {letters[0].present}
+        //         </div>
+        //         <button
+        //             type="button"
+        //             className="btn btn-ghost"
+        //             onClick={closeModal}
+        //         >
+        //             닫기
+        //         </button>
+        //     </Modal>
+        // </div>
+
+//   function closeModal() {
+//     setIsOpen(false);
+//   }
+
+  return (
         <div className="absolute right-40 bottom-[50px] w-2/5 h-1/5">
             <Modal
                 isOpen={modalIsOpen}
@@ -80,29 +116,6 @@ export default function GiftBox(props: Props) {
                     닫기
                 </button>
             </Modal>
-        </div>
-
-  function closeModal() {
-    setIsOpen(false);
-  }
-
-  return (
-    <div className="absolute right-[30%] bottom-[50px] w-2/5 h-1/5">
-      <Modal
-        isOpen={modalIsOpen}
-        style={customStyles}
-        ariaHideApp={false}
-        contentLabel="Create Letter Modal"
-      >
-        <div>
-          GiftBox
-          {letters[0].content}
-          {letters[0].present}
-        </div>
-        <button type="button" className="btn btn-ghost" onClick={closeModal}>
-          닫기
-        </button>
-      </Modal>
 
       <Modal
         isOpen={alertOpen}
