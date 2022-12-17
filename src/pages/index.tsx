@@ -1,96 +1,86 @@
-import { GetServerSideProps } from 'next';
-import React, {
-    useState,
-    useCallback,
-    useMemo,
-    useEffect,
-    useRef,
-} from 'react';
-import styles from '../styles/Home.module.css';
-import { useForm } from 'react-hook-form';
-import { fetcher, postFetcher, putFetcher } from '../helper/Helper';
-import useSWR from 'swr';
-import _ from 'lodash';
-import PostOffice from 'components/PostOffice';
-import SnowFlake from 'components/canvas/SnowFlake';
-import Charactor from 'components/canvas/Charactor';
-import LetterList from 'components/LetterList';
-import SendLetterForm from 'components/SendLetterForm';
-import Fireplace from 'components/canvas/Fireplace';
-import { getSession, signOut } from 'next-auth/react';
-import CreateLetterModal from 'components/modals/CreateLetterModal';
-import ShowLetterModal from 'components/modals/ShowLetterModal';
-import { useRouter } from 'next/router';
+import { GetServerSideProps } from "next";
+import React, { useState, useCallback, useMemo, useEffect } from "react";
+import styles from "../styles/Home.module.css";
+import { useForm } from "react-hook-form";
+import { fetcher, postFetcher } from "../helper/Helper";
+import useSWR from "swr";
+import _ from "lodash";
+import PostOffice from "components/PostOffice";
+import SnowFlake from "components/canvas/SnowFlake";
+import Charactor from "components/canvas/Charactor";
+import LetterList from "components/LetterList";
+import SendLetterForm from "components/SendLetterForm";
+import Fireplace from "components/canvas/Fireplace";
+import { getSession, signOut } from "next-auth/react";
+import CreateLetterModal from "components/modals/CreateLetterModal";
+import ShowLetterModal from "components/modals/ShowLetterModal";
+import InfoModal from "components/modals/InfoModal";
+import { useRouter } from "next/router";
+import ButtlerAnt from 'components/ButtlerAnt';
+import GiftBox from 'components/GiftBox';
 
-type  Props = {
-    letterCount: any;
-    letters: any;
-    userName: string;
-    userList?: string[];
-    userInfo: any;
-}
+type Props = {
+  letters: any;
+  userList?: string[];
+  userInfo?: any;
+};
 
 export default function Index(props: Props) {
-    const { letterCount, letters, userName, userList, userInfo } = props;
-    const router = useRouter();
+  const { letters, userList, userInfo } = props;
+  const router = useRouter();
 
-    const [showBubble, setShowBubble] = useState(false);
-    // const testSound = new Audio('sound/test.mp3');
+  const [ticket, setTicket] = useState(userInfo?.ticket ?? 0);
 
-    const { data } = useSWR(
-        `/api/letters`,
-        fetcher
-    );
+  const { data } = useSWR(`/api/letters`, fetcher);
 
-    return (
-        <div className="">
-            {/* <audio id="bgm" autoPlay loop controls >
-                <source src="sounds/jingle_bells.mp3" />     
-            </audio> */}
-            <div className='absolute' style={{top: 100, left: 800, width: 500}}>
-                {showBubble &&
-                    <>
-                        <button className='btn' onClick={() => router.push('/rank')}>랭킹 보기</button>
-                        <CreateLetterModal userList={userList} />
-                        <ShowLetterModal letters={letters} />
-                        <button onClick={() => signOut()} >로그아웃</button>
-                    </>
-                }
-                <h1 className='text-white'>{userName}의 벽난로</h1>
-                <h2 className='text-white'>{letterCount[userName]?.count ?? 0}개의 편지</h2>
-                <h2 className='text-white'>{userInfo?.ticket}개의 열람권</h2>
-                <button onClick={() => setShowBubble(prev => !prev)}>당신눈에 이건 개미로 보입니다</button>
+  return (
+    <div className="relative overflow-hidden">
+      <div className="fixed top-5 left-5">
+        <audio id="bgm" loop controls>
+          <source src="sounds/jingle_bells.mp3" />
+        </audio>
+      </div>
+      <ButtlerAnt letters={letters} userList={userList} />
+      <Fireplace letterCount={letters?.length ?? 0} />
+      <GiftBox letters={letters} ticket={ticket} setTicket={(n: number) => setTicket(n)} />
+      <div className="fixed top-5 right-5">
+          <h3 className="text-white text-center">남은 열람권 {ticket}</h3>
+      </div>
 
-            </div>
-            <Fireplace letters={letters} />
-        </div>
-    );
+      <img src="/images/house_background.png" className="h-screen w-screen" />
+    </div>
+  );
 }
 
 export const getServerSideProps: GetServerSideProps = async (ctx) => {
-    const session = await getSession(ctx);
+  const session = await getSession(ctx);
 
-    if (!session) {
-        return {
-            redirect: {
-                destination: '/login',
-                permanent: false,
-            },
-        };
-    }
-
-    const baseUrl = `http://${ctx.req.headers.host}`;
-    const { user } = session;
-    const { name } = user;
-    const userName = name ?? '히히'; //로그인 도입 후 userName으로
-    const groupedLetter = await fetch(baseUrl + '/api/letter-count').then((res) => res.json());
-    const letterCount = _.keyBy(groupedLetter, '_id');
-    const letters = userName ? await fetch(baseUrl + '/api/letters' + `?name=${userName}`).then((res) => res.json()) : [];
-    const users = await fetch(baseUrl + '/api/user-list').then((res) => res.json());
-    const userList = _.difference(_.map(users, 'name'), [userName]);
-    const userInfo = _.find(users, { 'name': userName }) ;
-
+  if (!session) {
     return {
-        props: {  letterCount, letters, userName, userList, userInfo },
+      redirect: {
+        destination: "/login",
+        permanent: false,
+      },
     };
+  }
+
+  const baseUrl = `http://${ctx.req.headers.host}`;
+  const { user } = session;
+  const { name } = user;
+  const userName = name ?? "히히"; //로그인 도입 후 userName으로
+
+  const letters = userName
+    ? await fetch(baseUrl + "/api/letters" + `?name=${userName}`).then((res) =>
+        res.json()
+      )
+    : [];
+  const users = await fetch(baseUrl + "/api/user-list").then((res) =>
+        res.json()
+      );
+  const userList = _.difference(_.map(users, 'name'), [userName]);
+  const userInfo = _.find(users, { 'name': userName }) ;
+
+  return {
+    props: { letters, userList, userInfo },
+  };
 };

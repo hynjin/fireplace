@@ -1,25 +1,26 @@
-const colors = require('tailwindcss/colors');
+const colors = require("tailwindcss/colors");
 
 module.exports = {
-    purge: [
-        './src/pages/**/*.{js,ts,jsx,tsx}',
-        './src/components/**/*.{js,ts,jsx,tsx}',
-    ],
-    content: [
-        './src/pages/**/*.{js,ts,jsx,tsx}',
-        './src/components/**/*.{js,ts,jsx,tsx}',
-    ],
-    theme: {
-        colors: {
-            primary: '#AF9071',
-            red: colors.red,
-            gray: colors.slate,
-            black: colors.black,
-            white: colors.white,
-            current: 'currentColor',
-            transparent: 'transparent',
-        },
-        extend: {},
+  purge: [
+    "./src/pages/**/*.{js,ts,jsx,tsx}",
+    "./src/components/**/*.{js,ts,jsx,tsx}",
+  ],
+  content: [
+    "./src/pages/**/*.{js,ts,jsx,tsx}",
+    "./src/components/**/*.{js,ts,jsx,tsx}",
+  ],
+  theme: {
+    colors: {
+      primary: "#AF9071",
+      red: colors.red,
+      gray: colors.slate,
+      black: colors.black,
+      white: colors.white,
+      green: colors.green,
+      current: "currentColor",
+      transparent: "transparent",
     },
-    plugins: [],
+    extend: {},
+  },
+  plugins: [],
 };

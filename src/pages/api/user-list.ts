@@ -31,7 +31,7 @@ const addUser = (letter: any) => {
 };
 
 const spendTicket = (body: any) => {
-    UserList.updateOne(
+    return UserList.findOneAndUpdate(
         { "name" : body?.name },
         { $inc: { ticket: -1 }, }
     );
@@ -62,12 +62,12 @@ export default async function userListHandler(
             res.status(200).json(users);
             break;
         case 'POST':
-            console.log('+++ call letters post');
-            const result = await addUser(body);
-            // res.status(200).json(result.insertedId);
-            break;
-        case 'PUT':
-            await spendTicket(body);
+            console.log('+++ call letters post', body);
+            // const result = await addUser(body);
+
+            const result = await spendTicket(body);
+            console.log('++ resut');
+            res.status(200).json(result);
             break;
         // case 'DELETE':
         //     const { letter_id } = body;
@@ -75,7 +75,7 @@ export default async function userListHandler(
         //     await deleteLetter(letter_id);
         //     break;
         default:
-            res.setHeader('Allow', ['GET', 'POST', 'DELETE', 'PUT']);
+            res.setHeader('Allow', ['GET', 'POST', 'DELETE']);
             res.status(405).end(`Method ${method} Not Allowed`);
     }
     // con.disconnect();

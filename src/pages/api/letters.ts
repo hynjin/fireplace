@@ -2,6 +2,7 @@ import type { NextApiRequest, NextApiResponse } from 'next';
 import clientPromise from 'util/mongodbClient';
 import connectToDatabase from 'util/mongoose';
 import _ from 'lodash';
+import { ObjectId } from 'mongodb';
 
 const Letter = require('../../models/Letter');
 const UserList = require('../../models/UserList');
@@ -17,7 +18,7 @@ const getUnreadLetters = (filter) => {
     return Letter.find({ isRead: filter });
 }
 
-const addLetter = async (letter: any) => {
+const sendLetter = async (letter: any) => {
     try {
         const result = await Letter.create({
             ...letter,
@@ -30,6 +31,18 @@ const addLetter = async (letter: any) => {
                 { $inc: { ticket: 1 }, }
                 );
         }
+        return result;
+    } catch (e) {
+        console.log('error at add letters');
+    }
+};
+
+const readLetter = async (body: any) => {
+    try {
+        const result = await  Letter.findOneAndUpdate(
+            { "_id" : new ObjectId(body.letterId) },
+            { $set: { isRead: true }, }
+        );
         return result;
     } catch (e) {
         console.log('error at add letters');
@@ -63,9 +76,19 @@ export default async function lettersHandler(
             break;
         case 'POST':
             // console.log('+++ call letters post');
-            const result = await addLetter(body);
+            let result;
+            if (body?.letterId) {
+                result = await readLetter(body);
+            } else {
+                result = await sendLetter(body);
+            }
             res.status(200).json(result.insertedId);
             break;
+        // case 'PUT':
+        //     // console.log('+++ call letters post');
+        //     await readLetter(body);
+        //     res.status(200).json({});
+        //     break;
         case 'DELETE':
             const { letter_id } = body;
             // console.log('+++ call restaurants delete', letter_id);
