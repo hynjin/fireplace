@@ -27,7 +27,7 @@ export default function Index(props: Props) {
   const [ticket, setTicket] = useState(0);
   useEffect(() => {
       if (userInfo) {
-        setNeedTutorial(!userInfo?.userId);
+        setNeedTutorial(!!userInfo?.userId);
         setTicket(userInfo?.ticket ?? 0);
       }
   }, [userInfo]);
