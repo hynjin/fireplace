@@ -1,5 +1,5 @@
 import { GetServerSideProps } from "next";
-import React, { useState, useMemo, useEffect } from "react";
+import React, { useState, useMemo, useEffect, useCallback } from "react";
 import { fetcher } from "../helper/Helper";
 import useSWR from "swr";
 import _ from "lodash";
@@ -7,6 +7,7 @@ import Fireplace from "components/canvas/Fireplace";
 import { getSession } from "next-auth/react";
 import ButtlerAnt from 'components/ButtlerAnt';
 import GiftBox from 'components/GiftBox';
+import TutorialGiftBox from 'components/TutorialGiftBox';
 
 type Props = {
   userName: string;
@@ -18,9 +19,17 @@ export default function Index(props: Props) {
   const { data: users } = useSWR(`/api/user-list`, fetcher);
   const userInfo = useMemo(() => _.find(users, { 'name': userName }), [users, userName]);
 
+  const [needTutorial, setNeedTutorial] = useState(false);
+  const setDoneTutorial = useCallback(() => {
+    setNeedTutorial(false);
+  }, []);
+
   const [ticket, setTicket] = useState(0);
   useEffect(() => {
-    setTicket(userInfo?.ticket ?? 0);
+      if (userInfo) {
+        setNeedTutorial(!userInfo?.userId);
+        setTicket(userInfo?.ticket ?? 0);
+      }
   }, [userInfo]);
 
   return (
@@ -33,6 +42,7 @@ export default function Index(props: Props) {
       <ButtlerAnt />
       <Fireplace />
       <GiftBox ticket={ticket} setTicket={(n: number) => setTicket(n)} />
+      {needTutorial && <TutorialGiftBox setDoneTutorial={setDoneTutorial} />}
       <div className="fixed top-5 right-5">
           <h3 className="text-white text-center">남은 열람권 {ticket}</h3>
       </div>

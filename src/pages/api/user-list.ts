@@ -2,6 +2,7 @@ import type { NextApiRequest, NextApiResponse } from 'next';
 import clientPromise from 'util/mongodbClient';
 import connectToDatabase from 'util/mongoose';
 import _ from 'lodash';
+import { ObjectId } from 'mongodb';
 
 const UserList = require('../../models/UserList');
 
@@ -29,6 +30,14 @@ const addUser = (letter: any) => {
         console.log('error at add letters');
     }
 };
+
+const updateUser = (body: any) => {
+    const { userId, name } = body;
+    return UserList.findOneAndUpdate(
+        { "name" : name },
+        { $set: { userId: new ObjectId(userId) }, }
+    );
+}
 
 const spendTicket = (body: any) => {
     return UserList.findOneAndUpdate(
@@ -64,8 +73,13 @@ export default async function userListHandler(
         case 'POST':
             console.log('+++ call letters post', body);
             // const result = await addUser(body);
-
-            const result = await spendTicket(body);
+            const { userId } = body;
+            let result;
+            if (userId) {
+                result = await updateUser(body);
+            } else {
+                result = await spendTicket(body);
+            }
             console.log('++ resut');
             res.status(200).json(result);
             break;
