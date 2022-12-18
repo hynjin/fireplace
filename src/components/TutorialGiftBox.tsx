@@ -86,6 +86,9 @@ export default function TutorialGiftBox(props: Props) {
                 5. 가장 많은 편지를 보낸 사람에겐 깜짝 선물이 있어요!
                 <br />
                 6. 버그는 알아서 해결하거나 무시해주세요.^^
+                <br />
+                (단, 받을 사람 이름이 없는 경우엔 현진에게 슬며시 디엠을
+                보내주세요.)
               </h5>
             </div>
           </div>
