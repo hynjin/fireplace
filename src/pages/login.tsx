@@ -22,12 +22,11 @@ type SignInType = {
 };
 export default function SignIn(props: SignInType) {
   const { error } = props;
-  const router = useRouter();
   const [snow, setSnow] = useState(false);
 
   useEffect(() => {
     console.log("+++ snow");
-    setTimeout(() => setSnow(true), 1000);
+    setTimeout(() => setSnow(true), 100);
   }, []);
 
   return (

@@ -6,6 +6,7 @@ import CreateLetterModal from "components/modals/CreateLetterModal";
 import ShowAllLetterModal from "components/modals/ShowAllLetterModal";
 import { useRouter } from "next/router";
 import { getSession, signOut } from "next-auth/react";
+import TutorialButton from "components/TutorialButton";
 
 const customStyles = {
   overlay: {
@@ -54,6 +55,7 @@ export default function InfoModal(props: Props) {
           >
             <h6 className="text-white">3. 선물 랭킹을 확인할래 </h6>
           </button>
+          <TutorialButton />
           <button
             className="w-fit p-3 border border-gray-300 rounded"
             onClick={() => signOut()}

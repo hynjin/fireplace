@@ -7,7 +7,7 @@ import Fireplace from "components/canvas/Fireplace";
 import { getSession } from "next-auth/react";
 import ButtlerAnt from 'components/ButtlerAnt';
 import GiftBox from 'components/GiftBox';
-import TutorialGiftBox from 'components/TutorialGiftBox';
+import TutorialButton from 'components/TutorialButton';
 
 type Props = {
   userName: string;
@@ -41,8 +41,8 @@ export default function Index(props: Props) {
       </div>
       <ButtlerAnt />
       <Fireplace />
-      <GiftBox ticket={ticket} setTicket={(n: number) => setTicket(n)} />
-      {needTutorial && <TutorialGiftBox setDoneTutorial={setDoneTutorial} />}
+      {!needTutorial && <GiftBox ticket={ticket} setTicket={(n: number) => setTicket(n)} />}
+      {needTutorial && <TutorialButton setDoneTutorial={setDoneTutorial} isTutorial />}
       <div className="fixed top-5 right-5">
           <h3 className="text-white text-center">남은 열람권 {ticket}</h3>
       </div>
@@ -65,7 +65,6 @@ export const getServerSideProps: GetServerSideProps = async (ctx) => {
   }
 
   const { user } = session;
-  const { name } = user;
 
   return {
     props: { userName: user?.name },

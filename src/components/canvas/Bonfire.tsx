@@ -15,15 +15,17 @@ export default function Bonfire(props: Props) {
   const bonFireImageRef = useRef<HTMLImageElement>();
 
   // Define the size of a frame
-  const frameWidth = 160.5;
+  const fireWidth = 160;
+  const fireHeight = 246;
+  const frameWidth = 160;
   const frameHeight = 246;
 
   // Rows and columns start from 0
   const row = useRef(0);
   const column = useRef(0);
 
-  const x = "36%";
-  const y = "77%";
+  const x = "45%";
+  const y = "55%";
 
   const intervalId = useRef(null);
 
@@ -32,7 +34,7 @@ export default function Bonfire(props: Props) {
       const bonFire = bonFireRef?.current;
       const bonFireContext = bonFire?.getContext("2d");
 
-      bonFireContext?.clearRect(0, 0, frameHeight, frameWidth);
+      bonFireContext?.clearRect(0, 0, frameWidth, frameHeight);
       bonFireContext?.drawImage(
         bonFireImageRef,
         column.current * frameWidth,
@@ -74,11 +76,12 @@ export default function Bonfire(props: Props) {
         zIndex: 1,
         top: y,
         left: x,
+        width: "10%",
       }}
       id={"bonfire"}
       ref={bonFireRef}
-      height={frameHeight}
-      width={frameWidth}
+      height={fireHeight}
+      width={fireWidth}
     />
   );
 }

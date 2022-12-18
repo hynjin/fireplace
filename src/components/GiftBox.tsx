@@ -7,7 +7,12 @@ import React, {
 } from "react";
 import _ from "lodash";
 import Modal from "react-modal";
-import { fetcher, getPresentInfo, getRandomGiftBoxImage } from "helper/Helper";
+import {
+  fetcher,
+  postFetcher,
+  getPresentInfo,
+  getRandomGiftBoxImage,
+} from "helper/Helper";
 import { useSession } from "next-auth/react";
 import useSWR from "swr";
 
@@ -49,7 +54,7 @@ export default function GiftBox(props: Props) {
   );
 
   const [letter, setLetter] = useState(letters?.[0]);
-  const { sender, content, presentIndex = 0, present = "" } = letter ?? {};
+  const { sender, content, presentIndex = 0, present = "", anonymous } = letter ?? {};
   const { presentName, presentImage } = getPresentInfo(present, presentIndex);
 
   const giftBoxUrl = useMemo(() => getRandomGiftBoxImage(), []);
@@ -74,8 +79,8 @@ export default function GiftBox(props: Props) {
       return;
     }
 
-    // await postFetcher("/api/letters", { letterId: letter?._id });
-    // await postFetcher("/api/user-list", { userName });
+    await postFetcher("/api/letters", { letterId: letter?._id });
+    await postFetcher("/api/user-list", { userName });
 
     setTicket(ticket - 1);
     setIsOpen(true);
@@ -96,12 +101,12 @@ export default function GiftBox(props: Props) {
       >
         <div>
           <h6 className="leading-8">
-            {sender} 님이 <br /> [ {present && presentName} ] <br /> 과(와) 함께
+            {anonymous ? '익명' : sender } 님이 <br /> [ {present && presentName} ] <br /> 과(와) 함께
             편지를 보냈어요.
           </h6>
           <h6 className="mt-4">
             {present && <img src={presentImage} />}
-            {content}
+            <h6 className="mt-4">{content}</h6>
           </h6>
         </div>
         <button

@@ -21,8 +21,7 @@ const customStyles = {
   },
 };
 
-type Props = {
-};
+type Props = {};
 
 export default function ShowAllLetterModal(props: Props) {
   const [modalIsOpen, setIsOpen] = useState(false);
@@ -52,7 +51,7 @@ export default function ShowAllLetterModal(props: Props) {
         <LetterList />
         <button
           type="button"
-          className="p-3 border border-red-700"
+          className="p-3 border border-red-700 w-full rounded"
           onClick={closeModal}
         >
           <h6 className="text-red-700">닫기</h6>
