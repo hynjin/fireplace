@@ -45,7 +45,8 @@ export default function SentLetterModal(props: Props) {
         <div className="p-4 flex flex-col justify-center">
           <h4 className="leading-8">
             {reciever}님에게
-            <br />[ {present && presentName} ]<br />와 함께 편지를 보냈어요.
+            <br />[ {present && presentName} ]<br />
+            과(와) 함께 편지를 보냈어요.
           </h4>
         </div>
         <button
