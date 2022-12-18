@@ -80,7 +80,7 @@ export default async function userListHandler(
             } else {
                 result = await spendTicket(body);
             }
-            console.log('++ resut');
+            console.log('++ resut', result);
             res.status(200).json(result);
             break;
         // case 'DELETE':
