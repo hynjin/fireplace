@@ -23,7 +23,6 @@ export default async function configHandler(
     switch (method) {
         case 'GET':
             const result = await getConfig();
-            console.log('+++ re', result);
             res.status(200).json(result);
             break;
         default:
