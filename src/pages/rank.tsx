@@ -46,7 +46,7 @@ export default function Rank(props: Props) {
       <SnowFlake />
       <div className="flex flex-col h-fit">
         <div className="px-6 py-8 flex flex-col justify-between items-center gap-6">
-          <h1 className="text-white">2023년 퍼블리 랭킹</h1>
+          <h1 className="text-white">🏆 2023년 퍼블리 랭킹 🏆</h1>
           <div className="bg-white w-full h-[1px]" />
         </div>
       </div>
@@ -54,22 +54,31 @@ export default function Rank(props: Props) {
         style={{ zIndex: 100 }}
         className="flex flex-col grow h-full p-6 items-center justify-center"
       >
-        <div className="h-fit flex flex-col flex-1">
-          <select onChange={handleChangeSelectRank} value={rankType}>
-            <option value=""></option>
-            {_.map(PRESENT_NAME, (PRESENT) => (
-              <option value={PRESENT} key={`creat-to-${PRESENT}`}>
-                {PRESENT}
-              </option>
-            ))}
-          </select>{" "}
-          을 가장 많이 얻을 사람은?
+        <div className="h-fit flex flex-col">
+          <h5 className="w-full">
+            <select
+              className="p-3 rounded w-full"
+              onChange={handleChangeSelectRank}
+              value={rankType}
+            >
+              <option value=""></option>
+              {_.map(PRESENT_NAME, (PRESENT) => (
+                <option value={PRESENT} key={`creat-to-${PRESENT}`}>
+                  {PRESENT}
+                </option>
+              ))}
+            </select>{" "}
+          </h5>
+          <h5 className="text-white mt-2">을 가장 많이 얻은 사람은?</h5>
+        </div>
+        <div className="bg-white flex-1 w-2/3 border my-6 p-6 border-green-600 rounded opacity-75">
+          ww
         </div>
         <button
-          className="bg-white w-fit p-6 rounded"
+          className="bg-white w-fit p-6 rounded shadow-md"
           onClick={() => router.push("/")}
         >
-          <h3>돌아가기</h3>
+          <h4>돌아가기</h4>
         </button>
       </div>
       {/* <div className="flex-1 flex flex-col divide-y">
