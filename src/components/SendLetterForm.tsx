@@ -5,7 +5,7 @@ import React, {
   useMemo,
 } from "react";
 import _ from "lodash";
-import { fetcher, postFetcher } from "../helper/Helper";
+import { fetcher, postFetcher, getRandomNumber } from "helper/Helper";
 import { useSession } from "next-auth/react";
 import RecieverList from "./RecieverList";
 import GiftList from "./GiftList";
@@ -34,7 +34,7 @@ export default function SendLetterForm(props: Props) {
 
   const onClickSendLetter = useCallback(async (data: SendLetterType) => {
       const maxRandom = data?.present === 'honor' ? 1 : 5;
-    const randomIndex = Math.floor((Math.random() * maxRandom));
+    const randomIndex = getRandomNumber(maxRandom);
 
     if (data?.reciever) {
         const letter = { ...data, presentIndex: randomIndex};

@@ -7,7 +7,7 @@ import React, {
 } from "react";
 import _ from "lodash";
 import Modal from "react-modal";
-import { fetcher, postFetcher, getPresentInfo } from "../helper/Helper";
+import { fetcher, getPresentInfo, getRandomGiftBoxImage } from "helper/Helper";
 import { useSession } from "next-auth/react";
 import useSWR from "swr";
 
@@ -51,6 +51,8 @@ export default function GiftBox(props: Props) {
   const [letter, setLetter] = useState(letters?.[0]);
   const { sender, content, presentIndex = 0, present = "" } = letter ?? {};
   const { presentName, presentImage } = getPresentInfo(present, presentIndex);
+
+  const giftBoxUrl = getRandomGiftBoxImage();
 
   useEffect(() => {
     if (letters?.length > 0 && !letter) {
@@ -135,7 +137,7 @@ export default function GiftBox(props: Props) {
 
       {letter && (
         <button onClick={openModal} className="hover:scale-110">
-          <img src="/images/gift01.png" className="w-fit h-40" />
+          <img src={giftBoxUrl} className="w-fit h-40" />
         </button>
       )}
     </div>

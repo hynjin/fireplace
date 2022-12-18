@@ -7,7 +7,7 @@ import React, {
 } from "react";
 import _ from "lodash";
 import Modal from "react-modal";
-import { fetcher, postFetcher, getPresentInfo } from "../helper/Helper";
+import { fetcher, postFetcher, getRandomGiftBoxImage } from "../helper/Helper";
 import { useSession } from "next-auth/react";
 import useSWR from "swr";
 
@@ -40,6 +40,7 @@ export default function TutorialGiftBox(props: Props) {
   const name = user?.name;
   const userId = user?.userId;
 
+  const giftBoxUrl = getRandomGiftBoxImage();
   const [isOpen, setIsOpen] = useState(false);
 
   const openModal = useCallback(() => {
@@ -73,7 +74,7 @@ export default function TutorialGiftBox(props: Props) {
       </Modal>
 
         <button onClick={openModal} className="hover:scale-110">
-          <img src="/images/gift02.png" className="w-fit h-40" />
+          <img src={giftBoxUrl} className="w-fit h-40" />
         </button>
     </div>
   );

@@ -88,3 +88,14 @@ export function getCharPattern(character) {
 
     return { presentName, presentImage, presentType };
   }
+
+  export function getRandomNumber(max: number) {
+    return Math.floor((Math.random() * max));
+  }
+
+  export function getRandomGiftBoxImage() {
+    const randomIndex = getRandomNumber(4);
+    const giftBoxImage = `/images/gift0${randomIndex}.png`;
+
+    return giftBoxImage;
+  };
