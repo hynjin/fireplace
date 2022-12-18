@@ -24,8 +24,8 @@ export default function Bonfire(props: Props) {
   const row = useRef(0);
   const column = useRef(0);
 
-  const x = "33%";
-  const y = "75%";
+  const x = "45%";
+  const y = "55%";
 
   const intervalId = useRef(null);
 
@@ -76,7 +76,7 @@ export default function Bonfire(props: Props) {
         zIndex: 1,
         top: y,
         left: x,
-        width: 200,
+        width: "10%",
       }}
       id={"bonfire"}
       ref={bonFireRef}
