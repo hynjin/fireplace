@@ -14,10 +14,6 @@ const getAllLetters = (name?: string | string[], unRead?: boolean) => {
     return Letter.find().sort({ updated_at: -1 });
 };
 
-const getUnreadLetters = (filter) => {
-    return Letter.find({ isRead: filter });
-}
-
 const sendLetter = async (letter: any) => {
     try {
         const result = await Letter.create({

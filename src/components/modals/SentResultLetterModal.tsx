@@ -28,7 +28,7 @@ type Props = {
   close: () => void;
 };
 
-export default function SentLetterModal(props: Props) {
+export default function SentResultLetterModal(props: Props) {
   const { letter, close } = props;
   const { reciever, presentIndex = 0, present = "" } = letter ?? {};
 

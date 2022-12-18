@@ -1,23 +1,14 @@
 import React, {
   useState,
-  useCallback,
-  useRef,
-  useEffect,
-  useMemo,
 } from "react";
 import _ from "lodash";
-import Modal from "react-modal";
-import { fetcher, postFetcher, putFetcher } from "../helper/Helper";
 import { useSession } from "next-auth/react";
 import InfoModal from "components/modals/InfoModal";
 
 type Props = {
-  letters: LetterType[];
-  userList?: string[];
 };
 
 export default function GiftBox(props: Props) {
-  const { letters, userList } = props;
   const { data: session } = useSession();
   const user = session?.user;
   const userName = user?.name;
@@ -27,8 +18,6 @@ export default function GiftBox(props: Props) {
   return (
     <>
       <InfoModal
-        userList={userList}
-        letters={letters}
         open={showInfo}
         close={() => setShowInfo(false)}
       />

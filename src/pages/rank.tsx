@@ -13,27 +13,68 @@ import SendLetterForm from "components/SendLetterForm";
 import Fireplace from "components/canvas/Fireplace";
 import { getSession } from "next-auth/react";
 import CreateLetterModal from "components/modals/CreateLetterModal";
-import ShowLetterModal from "components/modals/ShowLetterModal";
+import ShowAllLetterModal from "components/modals/ShowAllLetterModal";
 import { PRESENT_NAME } from "types/constants";
 import { useRouter } from "next/router";
 
 type Props = {
-  letterCount: number;
-  letters: any;
-  userName: string;
-  userList?: string[];
 };
 
-export default function Rank(props: Props) {
-  const { letterCount, letters, userName, userList } = props;
-  const router = useRouter();
-  // const groupedLetter = _.groupby(letters, 'present');
-  const [rankType, setRankType] = useState("");
+const MAX_RANK = 20;
 
-  const { data } = useSWR(`/api/letters`, fetcher);
-  // console.log('+++ ran', groupedLetter);
+export default function Rank(props: Props) {
+  const router = useRouter();
+
+  const heavySenderOption = "💌 편지 많이 보낸 사람"
+  const rankOption = [heavySenderOption, ..._.values(PRESENT_NAME)];
+  const [rankType, setRankType] = useState(heavySenderOption);
+
+  const { data: letters } = useSWR(`/api/letters`, fetcher);
+
+  const lettersGroupedByGift = useMemo(() => _.groupBy(letters, 'present'), [letters])
+
+  const rankByGift = useMemo(() => {
+    const groupedByName = _.groupBy(lettersGroupedByGift[rankType], 'reciever');
+
+    const letterCount = _.map(groupedByName, (grouped, name) => {
+      return {
+        reciever: name,
+        count: grouped?.length,
+        rankType: rankType,
+      }
+    });
+    const orderedRank = _.orderBy(letterCount, 'count', 'desc');
+
+    return _.take(orderedRank, MAX_RANK);
+  }, [lettersGroupedByGift, rankType]);
+
+  const rankHeavySender = useMemo(() => {
+    const lettersGroupedBySender = _.groupBy(letters, 'sender');
+    const letterCount = _.map(lettersGroupedBySender, (grouped, name) => {
+      return {
+        reciever: name,
+        count: grouped?.length,
+      }
+    });
+    const orderedRank = _.orderBy(letterCount, 'count', 'desc');
+
+    return _.take(orderedRank, MAX_RANK);
+  }, [letters]);
+
   const handleChangeSelectRank = useCallback((e) => {
+      console.log(e.target.value);
     setRankType(e.target.value);
+  }, []);
+
+  const getMedal = useCallback((rank: number) => {
+    if (rank === 0){
+      return '🥇';
+    } else if (rank === 1) {
+      return '🥈';
+    } else if (rank === 2) {
+      return '🥉';
+    }
+    return '';
   }, []);
 
   return (
@@ -61,56 +102,30 @@ export default function Rank(props: Props) {
               onChange={handleChangeSelectRank}
               value={rankType}
             >
-              <option value=""></option>
-              {_.map(PRESENT_NAME, (PRESENT) => (
-                <option value={PRESENT} key={`creat-to-${PRESENT}`}>
-                  {PRESENT}
+              {_.map(rankOption, (option) => (
+                <option value={option} key={`rank-option-${option}`}>
+                  {option}{option !== heavySenderOption && ' 많이 받은 사람'}
                 </option>
               ))}
             </select>{" "}
           </h5>
-          <h5 className="text-white mt-2">을 가장 많이 얻은 사람은?</h5>
         </div>
         <div className="bg-white flex flex-col flex-1 max-h-[600px] gap-8 items-center w-1/3 border my-6 py-6 px-12 border-green-800 rounded-lg opacity-75 overflow-y-scroll">
-          <div className="flex flex-col h-fit gap-2 pb-5 w-full border-0 border-b border-green-800">
-            <h3>1위. 🥇 hyunjin kim</h3>
-            <h5>보낸 편지: n개</h5>
-          </div>
-
-          <div className="flex flex-col h-fit gap-2 pb-5 w-full border-0 border-b border-green-800">
-            <h3>1위. 🥇 hyunjin kim</h3>
-            <h5>보낸 편지: n개</h5>
-          </div>
-
-          <div className="flex flex-col h-fit gap-2 pb-5 w-full border-0 border-b border-green-800">
-            <h3>1위. 🥇 hyunjin kim</h3>
-            <h5>보낸 편지: n개</h5>
-          </div>
-
-          <div className="flex flex-col h-fit gap-2 pb-5 w-full border-0 border-b border-green-800">
-            <h3>1위. 🥇 hyunjin kim</h3>
-            <h5>보낸 편지: n개</h5>
-          </div>
-
-          <div className="flex flex-col h-fit gap-2 pb-5 w-full border-0 border-b border-green-800">
-            <h3>1위. 🥇 hyunjin kim</h3>
-            <h5>보낸 편지: n개</h5>
-          </div>
-
-          <div className="flex flex-col h-fit gap-2 pb-5 w-full border-0 border-b border-green-800">
-            <h3>1위. 🥇 hyunjin kim</h3>
-            <h5>보낸 편지: n개</h5>
-          </div>
-
-          <div className="flex flex-col h-fit gap-2 pb-5 w-full border-0 border-b border-green-800">
-            <h3>1위. 🥇 hyunjin kim</h3>
-            <h5>보낸 편지: n개</h5>
-          </div>
-
-          <div className="flex flex-col h-fit gap-2 pb-5 w-full border-0 border-b border-green-800">
-            <h3>1위. 🥇 hyunjin kim</h3>
-            <h5>보낸 편지: n개</h5>
-          </div>
+          {rankType === heavySenderOption ? (
+            _.map(rankHeavySender, (rank, index) => (
+              <div key={`rank-${rankType}-${index}`} className="flex flex-col h-fit gap-2 pb-5 w-full border-0 border-b border-green-800">
+                <h3>{index + 1}위. {getMedal(index)} {rank?.reciever}</h3>
+                <h5>보낸 편지: {rank?.count}개</h5>
+              </div>
+              ))
+          ):(
+            _.map(rankByGift, (rank, index) => (
+              <div key={`rank-${rankType}-${index}`} className="flex flex-col h-fit gap-2 pb-5 w-full border-0 border-b border-green-800">
+                <h3>{index + 1}위. 🥇 {rank?.reciever}</h3>
+                <h5>받은 {rankType}: {rank?.count}개</h5>
+              </div>
+              ))
+          )}
         </div>
         <button
           className="bg-white w-fit p-6 rounded shadow-md"
@@ -119,44 +134,23 @@ export default function Rank(props: Props) {
           <h4>돌아가기</h4>
         </button>
       </div>
-      {/* <div className="flex-1 flex flex-col divide-y">
-                <div className="flex-1 p-3 pl-0 flex gap-3 divide-x">
-                    <div className="pl-3 basis-1/4">
-                        <Fireplace letters={letters} />
-                    </div>
-                </div>
-            </div> */}
     </div>
   );
 }
 
 export const getServerSideProps: GetServerSideProps = async (ctx) => {
-  // const session = await getSession(ctx);
+  const session = await getSession(ctx);
 
-  // if (!session) {
-  //     return {
-  //         redirect: {
-  //             destination: '/login',
-  //             permanent: false,
-  //         },
-  //     };
-  // }
-  const baseUrl = `http://${ctx.req.headers.host}`;
-  const { name } = ctx.query;
-  // const { count: letterCount } = await fetch(baseUrl + '/api/letter-count').then((res) => res.json());
-  const userName = name ?? "히히"; //로그인 도입 후 userName으로
-  const letters = await fetch(baseUrl + "/api/letters").then((res) =>
-    res.json()
-  );
-  // const ranking = await fetch(baseUrl + '/api/rank').then((res) => res.json());
-  const users = userName
-    ? await fetch(baseUrl + "/api/users" + `?name=${userName}`).then((res) =>
-        res.json()
-      )
-    : [];
-  const userList = _.map(users, "name");
-  // console.log('+++ rnak', letters);
+  if (!session) {
+      return {
+          redirect: {
+              destination: '/login',
+              permanent: false,
+          },
+      };
+  }
+
   return {
-    props: { letterCount: 0, letters, userName, userList },
+    props: {},
   };
 };

@@ -1,19 +1,17 @@
 import React, {
   useState,
   useCallback,
-  useRef,
   useEffect,
   useMemo,
 } from "react";
 import _ from "lodash";
-import { fetcher, postFetcher } from "../helper/Helper";
+import { fetcher, postFetcher, getRandomNumber } from "helper/Helper";
 import { useSession } from "next-auth/react";
 import RecieverList from "./RecieverList";
 import GiftList from "./GiftList";
+import useSWR from "swr";
 
 type Props = {
-  setMove?: (t: boolean) => void;
-  userList?: string[];
   setLetter?: (t: SendLetterType) => void;
 };
 
@@ -22,7 +20,10 @@ export default function SendLetterForm(props: Props) {
   const user = session?.user;
   const userName = user?.name;
 
-  const { userList, setLetter } = props;
+  const { setLetter } = props;
+
+  const { data: users } = useSWR(`/api/user-list`, fetcher);
+  const userList = useMemo(() => _.difference(_.map(users, 'name'), [userName]), [users, userName]);
 
   const sender = userName;
   const [reciever, setReciever] = useState("");
@@ -32,8 +33,7 @@ export default function SendLetterForm(props: Props) {
   const [isError, setIsError] = useState(false);
 
   const onClickSendLetter = useCallback(async (data: SendLetterType) => {
-      const maxRandom = data?.present === 'honor' ? 1 : 5;
-    const randomIndex = Math.floor((Math.random() * maxRandom));
+    const randomIndex = data?.present === 'honor' ? 0 : getRandomNumber(5);
 
     if (data?.reciever) {
         const letter = { ...data, presentIndex: randomIndex};
@@ -43,7 +43,7 @@ export default function SendLetterForm(props: Props) {
     } else {
       setIsError(true);
     }
-  }, []);
+  }, [setLetter]);
 
   useEffect(() => {
     setIsError(false);

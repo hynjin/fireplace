@@ -6,13 +6,24 @@ import React, {
   useMemo,
 } from "react";
 import _ from "lodash";
+import { fetcher, postFetcher, getPresentInfo } from "helper/Helper";
+import useSWR from "swr";
+import { useSession } from "next-auth/react";
 
 type Props = {
-  letters: LetterType[];
+  // letters: LetterType[];
 };
 
 export default function LetterList(props: Props) {
-  const { letters } = props;
+  // const { letters } = props;
+  const { data: session } = useSession();
+  const user = session?.user;
+  const userName = user?.name;
+
+  const { data: letters } = useSWR(
+    `/api/letters?name=${userName}`,
+    fetcher
+  );
 
   return (
     <div className="divide-y overflow-y">

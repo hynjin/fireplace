@@ -1,17 +1,23 @@
-import React from "react";
+import React, { useMemo } from "react";
 import _ from "lodash";
 import Bonfire from "./Bonfire";
+import { fetcher, postFetcher, getPresentInfo } from "helper/Helper";
 import { useSession } from "next-auth/react";
+import useSWR from "swr";
 
 type Props = {
-  letterCount: number;
 };
 
 export default function Fireplace(props: Props) {
-  const { letterCount } = props;
   const { data: session } = useSession();
   const user = session?.user;
   const userName = user?.name;
+
+  const { data: letters } = useSWR(
+    `/api/letters?name=${userName}&isRead=false`,
+    fetcher
+  );
+  const letterCount = useMemo(() => letters?.length, [letters]);
 
   return (
     <div className="">

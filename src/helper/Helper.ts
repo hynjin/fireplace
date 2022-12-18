@@ -84,7 +84,18 @@ export function getCharPattern(character) {
     const presentCopy = PRESENT_COPY[presentType];
 
     const presentName = presentCopy?.[presentIndex];
-    const imageType = presentType === 'honor' ? 'png' : 'jpeg';
-    const presentImage = `/images/gift_category/${presentType + presentIndex}.${imageType}`;
+    const presentImage = `/images/gift_category/${presentType + presentIndex}.jpeg`;
+
     return { presentName, presentImage, presentType };
   }
+
+  export function getRandomNumber(max: number) {
+    return Math.floor((Math.random() * max));
+  }
+
+  export function getRandomGiftBoxImage() {
+    const randomIndex = getRandomNumber(4);
+    const giftBoxImage = `/images/gift0${randomIndex}.png`;
+
+    return giftBoxImage;
+  };

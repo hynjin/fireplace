@@ -3,7 +3,7 @@ import Modal from "react-modal";
 import SendLetterForm from "components/SendLetterForm";
 import LetterList from "components/LetterList";
 import CreateLetterModal from "components/modals/CreateLetterModal";
-import ShowLetterModal from "components/modals/ShowLetterModal";
+import ShowAllLetterModal from "components/modals/ShowAllLetterModal";
 import { useRouter } from "next/router";
 import { getSession, signOut } from "next-auth/react";
 
@@ -28,25 +28,13 @@ const customStyles = {
 };
 
 type Props = {
-  letters: LetterType[];
-  userList: string[];
   open: boolean;
   close: () => void;
 };
 
 export default function InfoModal(props: Props) {
-  const { letters, userList, open, close } = props;
+  const { open, close } = props;
   const router = useRouter();
-
-  // const [modalIsOpen, setIsOpen] = useState(false);
-
-  // function openModal() {
-  //   setIsOpen(true);
-  // }
-
-  // function closeModal() {
-  //   setIsOpen(false);
-  // }
 
   return (
     <div className="min-w-[600px]">
@@ -58,8 +46,8 @@ export default function InfoModal(props: Props) {
       >
         <h5 className="pb-4">무엇을 도와드릴까요?</h5>
         <div className="flex flex-col gap-4 relative">
-          <CreateLetterModal userList={userList} />
-          <ShowLetterModal letters={letters} />
+          <CreateLetterModal />
+          <ShowAllLetterModal />
           <button
             className="bg-red-700 p-3 rounded hover:bg-green-600 w-fit"
             onClick={() => router.push("/rank")}
