@@ -5,8 +5,7 @@ import { fetcher, postFetcher, getPresentInfo } from "helper/Helper";
 import { useSession } from "next-auth/react";
 import useSWR from "swr";
 
-type Props = {
-};
+type Props = {};
 
 export default function Fireplace(props: Props) {
   const { data: session } = useSession();
@@ -28,7 +27,9 @@ export default function Fireplace(props: Props) {
       <div className="absolute top-12 left-[50%] translate-x-[-50%]">
         <div className="flex flex-col py-4 px-9 top-0 border-4 border-dashed border-green-600 rounded bg-red-700 z-10">
           <h3 className="text-white text-center mb-4">{userName}의 벽난로</h3>
-          <h3 className="text-white text-center">{letterCount}개의 선물</h3>
+          <h4 className="text-white text-center">
+            {letterCount}개의 선물을 받았어요❤️
+          </h4>
         </div>
       </div>
     </div>
