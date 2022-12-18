@@ -118,12 +118,18 @@ export default function GiftBox(props: Props) {
         contentLabel="Create Letter Modal"
       >
         <div>
-          열람권이 부족해 선물을 열 수 없어요!
-          <br />
-          편지를 작성해 열람권을 모아보세요!
+          <h6 className="leading-8">
+            열람권이 부족해 선물을 열 수 없어요!
+            <br />
+            편지를 작성해 열람권을 모아보세요!
+          </h6>
         </div>
-        <button type="button" className="btn btn-ghost" onClick={closeAlert}>
-          닫기
+        <button
+          type="button"
+          className="w-full border border-red-700 rounded p-3 my-4 "
+          onClick={closeAlert}
+        >
+          <h6 className="text-red-700">닫기</h6>
         </button>
       </Modal>
 
