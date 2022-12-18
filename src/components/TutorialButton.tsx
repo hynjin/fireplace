@@ -56,7 +56,11 @@ export default function TutorialButton(props: Props) {
   }, [userId, name, setDoneTutorial]);
 
   return (
-    <div className={needTutorial && "absolute left-[40%] bottom-[50px] w-2/5 h-1/5"}>
+    <div
+      className={
+        needTutorial && "absolute left-[40%] bottom-[50px] w-2/5 h-1/5"
+      }
+    >
       <Modal
         isOpen={isOpen}
         style={customStyles}
@@ -88,7 +92,7 @@ export default function TutorialButton(props: Props) {
                 <br />
                 6. 버그는 알아서 해결하거나 무시해주세요.^^
                 <br />
-                (단, 받을 사람 이름이 없는 경우엔 현진에게 슬며시 디엠을
+                (단, 받는 사람 이름이 없는 경우엔 현진에게 슬며시 디엠을
                 보내주세요.)
               </h5>
             </div>
@@ -109,11 +113,11 @@ export default function TutorialButton(props: Props) {
         </button>
       ) : (
         <button
-            className="bg-red-700 p-3 rounded hover:bg-green-600 w-fit"
-            onClick={openModal}
-          >
-            <h6 className="text-white">4. 튜토리얼을 다시 볼래 </h6>
-          </button>
+          className="bg-red-700 p-3 rounded hover:bg-green-600 w-fit"
+          onClick={openModal}
+        >
+          <h6 className="text-white">4. 튜토리얼을 다시 볼래 </h6>
+        </button>
       )}
     </div>
   );

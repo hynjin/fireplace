@@ -24,8 +24,8 @@ export default function Bonfire(props: Props) {
   const row = useRef(0);
   const column = useRef(0);
 
-  const x = "36%";
-  const y = "77%";
+  const x = "33%";
+  const y = "75%";
 
   const intervalId = useRef(null);
 
@@ -34,7 +34,7 @@ export default function Bonfire(props: Props) {
       const bonFire = bonFireRef?.current;
       const bonFireContext = bonFire?.getContext("2d");
 
-      bonFireContext?.clearRect(0, 0, frameWidth, frameHeight );
+      bonFireContext?.clearRect(0, 0, frameWidth, frameHeight);
       bonFireContext?.drawImage(
         bonFireImageRef,
         column.current * frameWidth,

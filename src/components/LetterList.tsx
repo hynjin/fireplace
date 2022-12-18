@@ -20,28 +20,31 @@ export default function LetterList(props: Props) {
   const user = session?.user;
   const userName = user?.name;
 
-  const { data: letters } = useSWR(
-    `/api/letters?name=${userName}`,
-    fetcher
-  );
+  const { data: letters } = useSWR(`/api/letters?name=${userName}`, fetcher);
 
   return (
     <div className="divide-y overflow-y">
       {_.map(letters, (letter, index) => {
         return (
-          <div className="gap-3" key={`letter-list-${index}`}>
-            <div className="py-3">
-              <h6>From {letter.anonymous ? "익명" : letter.sender}</h6>
+          <div className="flex flex-col gap-6" key={`letter-list-${index}`}>
+            <div className="py-3 gap-3 border-0 border-t border-b border-gray-100">
+              <h6>From. {letter.anonymous ? "익명" : letter.sender}</h6>
+              <div className="py-1">
+                <h6>To. {letter.reciever}</h6>
+              </div>
             </div>
-            <div className="py-1">
-              <h6>To {letter.reciever}</h6>
-            </div>
-            {letter.present && <div>+ 선물 {letter.present}</div>}
-            <div>
-              <h6>{letter.content}</h6>
-            </div>
-            <div className="mb-6">
-              <h6>{letter.updated_at}</h6>
+            <div className="bg-gray-100 rounded p-6 mb-6">
+              {letter.present && (
+                <div className="pb-4 border-0 border-b border-gray-200">
+                  <h6>함께 동봉된 선물이 있어요! [ {letter.present} ]</h6>
+                </div>
+              )}
+              <div className="py-4 border-0 border-b border-gray-200">
+                <h6>{letter.content}</h6>
+              </div>
+              <div className="pt-4">
+                <h6>{letter.updated_at}</h6>
+              </div>
             </div>
           </div>
         );
