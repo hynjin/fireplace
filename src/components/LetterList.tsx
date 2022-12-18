@@ -26,8 +26,8 @@ export default function LetterList(props: Props) {
     <div className="divide-y overflow-y">
       {_.map(letters, (letter, index) => {
         return (
-          <div className="flex flex-col gap-6" key={`letter-list-${index}`}>
-            <div className="py-3 gap-3 border-0 border-t border-b border-gray-100">
+          <div className="flex flex-col gap-2" key={`letter-list-${index}`}>
+            <div className="pt-4 pb-1 gap-3">
               <h6>From. {letter.anonymous ? "익명" : letter.sender}</h6>
               <div className="py-1">
                 <h6>To. {letter.reciever}</h6>
