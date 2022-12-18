@@ -11,7 +11,6 @@ import { fetcher, postFetcher, getPresentInfo } from "../helper/Helper";
 import { useSession } from "next-auth/react";
 import useSWR from "swr";
 
-
 const customStyles = {
   overlay: {
     backgroundColor: "rgba(0, 0, 0, 0.7)",
@@ -44,43 +43,46 @@ export default function GiftBox(props: Props) {
   const [modalIsOpen, setIsOpen] = useState(false);
   const [alertOpen, setAlertOpen] = useState(false);
 
-  const { data: letters } = useSWR(`/api/letters?name=${userName}&isRead=false`, fetcher);
+  const { data: letters } = useSWR(
+    `/api/letters?name=${userName}&isRead=false`,
+    fetcher
+  );
 
   const [letter, setLetter] = useState(letters?.[0]);
-  const { sender, content, presentIndex = 0, present = '' } = letter ?? {};
+  const { sender, content, presentIndex = 0, present = "" } = letter ?? {};
   const { presentName, presentImage } = getPresentInfo(present, presentIndex);
 
   useEffect(() => {
     if (letters?.length > 0 && !letter) {
-        setLetter(letters?.[0]);
+      setLetter(letters?.[0]);
     }
   }, [letters, letter]);
 
-    const openAlert = useCallback(async () => {
-        setAlertOpen(true);
-    }, []);
+  const openAlert = useCallback(async () => {
+    setAlertOpen(true);
+  }, []);
 
-    function closeAlert() {
-        setAlertOpen(false);
+  function closeAlert() {
+    setAlertOpen(false);
+  }
+
+  const openModal = useCallback(async () => {
+    if (ticket < 1) {
+      openAlert();
+      return;
     }
 
-    const openModal = useCallback(async () => {
-        if (ticket < 1) {
-            openAlert();
-            return;
-        }
+    await postFetcher("/api/letters", { letterId: letter?._id });
+    await postFetcher("/api/user-list", { name: userName });
 
-        await postFetcher('/api/letters', { letterId: letter?._id });
-        await postFetcher('/api/user-list', { name: userName });
+    setTicket(ticket - 1);
+    setIsOpen(true);
+  }, [letter, openAlert, setTicket, ticket, userName]);
 
-        setTicket(ticket - 1);
-        setIsOpen(true);
-    }, [letter, openAlert, setTicket, ticket, userName]);
-
-    const closeModal = useCallback(() => {
-        setLetter(letters?.[0]);
-        setIsOpen(false);
-    }, [letters]);
+  const closeModal = useCallback(() => {
+    setLetter(letters?.[0]);
+    setIsOpen(false);
+  }, [letters]);
 
   return (
     <div className="absolute left-[30%] bottom-[50px] w-2/5 h-1/5">
@@ -91,12 +93,21 @@ export default function GiftBox(props: Props) {
         contentLabel="Create Letter Modal"
       >
         <div>
-            {sender}님이 {present && (presentName + '와(과) 함께')} 편지를 보냈어요.
+          <h6 className="leading-8">
+            {sender} 님이 <br /> [ {present && presentName} ] <br /> 과(와) 함께
+            편지를 보냈어요.
+          </h6>
+          <h6 className="mt-4">
             {present && <img src={presentImage} />}
             {content}
+          </h6>
         </div>
-        <button type="button" className="btn btn-ghost" onClick={closeModal}>
-          닫기
+        <button
+          type="button"
+          className="p-3 border border-red-700 rounded w-full my-4"
+          onClick={closeModal}
+        >
+          <h6 className="text-red-700 hover:text-red-300">확인!</h6>
         </button>
       </Modal>
 
