@@ -102,8 +102,8 @@ export default function RecieverList(props: Props) {
         </Combobox>
       </div>
       {isError && (
-        <div className="text-red-900">
-          <h6>받는 이를 선택해야합니다.</h6>
+        <div className="mt-4">
+          <h6 className="text-red-700">!! 받는 이를 선택해야합니다.</h6>
         </div>
       )}
     </div>
