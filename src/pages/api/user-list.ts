@@ -71,7 +71,7 @@ export default async function userListHandler(
             res.status(200).json(users);
             break;
         case 'POST':
-            console.log('+++ call letters post', body);
+            // console.log('+++ call letters post', body);
             // const result = await addUser(body);
             const { userId } = body;
             let result;
@@ -80,7 +80,7 @@ export default async function userListHandler(
             } else {
                 result = await spendTicket(body);
             }
-            console.log('++ resut', result);
+            // console.log('++ resut', result);
             res.status(200).json(result);
             break;
         // case 'DELETE':

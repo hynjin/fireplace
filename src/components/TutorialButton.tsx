@@ -31,11 +31,12 @@ const customStyles = {
 };
 
 type Props = {
-  setDoneTutorial: () => void;
+  needTutorial?: boolean;
+  setDoneTutorial?: () => void;
 };
 
-export default function TutorialGiftBox(props: Props) {
-  const { setDoneTutorial } = props;
+export default function TutorialButton(props: Props) {
+  const { needTutorial, setDoneTutorial } = props;
   const { data: session } = useSession();
   const user = session?.user;
   const name = user?.name;
@@ -50,12 +51,12 @@ export default function TutorialGiftBox(props: Props) {
 
   const closeModal = useCallback(async () => {
     await postFetcher("/api/user-list", { userId, name });
-    setDoneTutorial();
+    setDoneTutorial?.();
     setIsOpen(false);
   }, [userId, name, setDoneTutorial]);
 
   return (
-    <div className="absolute left-[40%] bottom-[50px] w-2/5 h-1/5">
+    <div className={needTutorial && "absolute left-[40%] bottom-[50px] w-2/5 h-1/5"}>
       <Modal
         isOpen={isOpen}
         style={customStyles}
@@ -102,9 +103,18 @@ export default function TutorialGiftBox(props: Props) {
         </button>
       </Modal>
 
-      <button onClick={openModal} className="hover:scale-110">
-        <img src={giftBoxUrl} className="w-fit h-40" />
-      </button>
+      {needTutorial ? (
+        <button onClick={openModal} className="hover:scale-110">
+          <img src={giftBoxUrl} className="w-fit h-40" />
+        </button>
+      ) : (
+        <button
+            className="bg-red-700 p-3 rounded hover:bg-green-600 w-fit"
+            onClick={openModal}
+          >
+            <h6 className="text-white">4. 튜토리얼을 다시 볼래 </h6>
+          </button>
+      )}
     </div>
   );
 }

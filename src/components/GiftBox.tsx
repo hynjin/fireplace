@@ -7,7 +7,7 @@ import React, {
 } from "react";
 import _ from "lodash";
 import Modal from "react-modal";
-import { fetcher, getPresentInfo, getRandomGiftBoxImage } from "helper/Helper";
+import { fetcher, postFetcher, getPresentInfo, getRandomGiftBoxImage } from "helper/Helper";
 import { useSession } from "next-auth/react";
 import useSWR from "swr";
 
@@ -74,8 +74,8 @@ export default function GiftBox(props: Props) {
       return;
     }
 
-    // await postFetcher("/api/letters", { letterId: letter?._id });
-    // await postFetcher("/api/user-list", { userName });
+    await postFetcher("/api/letters", { letterId: letter?._id });
+    await postFetcher("/api/user-list", { userName });
 
     setTicket(ticket - 1);
     setIsOpen(true);
