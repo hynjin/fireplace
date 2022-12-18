@@ -25,14 +25,22 @@ type Props = {
 };
 
 export default function Rank(props: Props) {
-  const { letterCount, letters, userName, userList } = props;
+//   const { letterCount, letters, userName, userList } = props;
   const router = useRouter();
   // const groupedLetter = _.groupby(letters, 'present');
   const [rankType, setRankType] = useState("");
 
-  const { data } = useSWR(`/api/letters`, fetcher);
-  // console.log('+++ ran', groupedLetter);
+  const { data: letters } = useSWR(`/api/letters`, fetcher);
+  console.log('+++ ran', letters);
+
+  const lettersGroupedByGift = useMemo(() => _.groupBy(letters, 'present'), [letters])
+  console.log('+++', lettersGroupedByGift);
+
+  const rankByGif = useMemo(() => {
+
+  }, [rankType, lettersGroupedByGift]);
   const handleChangeSelectRank = useCallback((e) => {
+      console.log(e.target.value);
     setRankType(e.target.value);
   }, []);
 
@@ -131,16 +139,16 @@ export default function Rank(props: Props) {
 }
 
 export const getServerSideProps: GetServerSideProps = async (ctx) => {
-  // const session = await getSession(ctx);
+  const session = await getSession(ctx);
 
-  // if (!session) {
-  //     return {
-  //         redirect: {
-  //             destination: '/login',
-  //             permanent: false,
-  //         },
-  //     };
-  // }
+  if (!session) {
+      return {
+          redirect: {
+              destination: '/login',
+              permanent: false,
+          },
+      };
+  }
   const baseUrl = `http://${ctx.req.headers.host}`;
   const { name } = ctx.query;
   // const { count: letterCount } = await fetch(baseUrl + '/api/letter-count').then((res) => res.json());

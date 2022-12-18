@@ -33,8 +33,7 @@ export default function SendLetterForm(props: Props) {
   const [isError, setIsError] = useState(false);
 
   const onClickSendLetter = useCallback(async (data: SendLetterType) => {
-      const maxRandom = data?.present === 'honor' ? 1 : 5;
-    const randomIndex = getRandomNumber(maxRandom);
+    const randomIndex = data?.present === 'honor' ? 0 : getRandomNumber(5);
 
     if (data?.reciever) {
         const letter = { ...data, presentIndex: randomIndex};
@@ -44,7 +43,7 @@ export default function SendLetterForm(props: Props) {
     } else {
       setIsError(true);
     }
-  }, []);
+  }, [setLetter]);
 
   useEffect(() => {
     setIsError(false);

@@ -32,9 +32,7 @@ export default function SignIn(props: SignInType) {
 
   return (
     <div className="relative overflow-hidden">
-      {/* 눈송이에 버튼이 가려져서...집위로 눈이 오게 하려면 눈에 zindex주고 그 위에 투명 버튼 만들어야... */}
       <SnowFlake />
-      {/* 배경만 왜 반응형으로 된거지... */}
       <div className="absolute bottom-[-40px] left-[50%] translate-x-[-50%] z-[10] w-1/3">
         <button onClick={() => signIn("google")} className="w-fit h-fit">
           <img className="h-full w-full" src="/images/house.png" />
