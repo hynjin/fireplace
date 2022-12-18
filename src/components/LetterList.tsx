@@ -1,21 +1,13 @@
-import React, {
-  useState,
-  useCallback,
-  useRef,
-  useEffect,
-  useMemo,
-} from "react";
+import React from "react";
 import _ from "lodash";
-import { fetcher, postFetcher, getPresentInfo } from "helper/Helper";
+import { fetcher } from "helper/Helper";
 import useSWR from "swr";
 import { useSession } from "next-auth/react";
 
 type Props = {
-  // letters: LetterType[];
 };
 
 export default function LetterList(props: Props) {
-  // const { letters } = props;
   const { data: session } = useSession();
   const user = session?.user;
   const userName = user?.name;
