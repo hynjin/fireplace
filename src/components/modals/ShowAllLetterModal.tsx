@@ -1,6 +1,5 @@
 import React, { useState } from "react";
 import Modal from "react-modal";
-import SendLetterForm from "components/SendLetterForm";
 import LetterList from "components/LetterList";
 
 const customStyles = {
@@ -23,11 +22,9 @@ const customStyles = {
 };
 
 type Props = {
-  letters: LetterType[];
 };
 
-export default function ShowLetterModal(props: Props) {
-  const { letters } = props;
+export default function ShowAllLetterModal(props: Props) {
   const [modalIsOpen, setIsOpen] = useState(false);
 
   function openModal() {
@@ -52,7 +49,7 @@ export default function ShowLetterModal(props: Props) {
         ariaHideApp={false}
         contentLabel="Create Letter Modal"
       >
-        <LetterList letters={letters} />
+        <LetterList />
         <button
           type="button"
           className="p-3 border border-red-700"

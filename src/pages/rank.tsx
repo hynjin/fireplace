@@ -13,7 +13,7 @@ import SendLetterForm from "components/SendLetterForm";
 import Fireplace from "components/canvas/Fireplace";
 import { getSession } from "next-auth/react";
 import CreateLetterModal from "components/modals/CreateLetterModal";
-import ShowLetterModal from "components/modals/ShowLetterModal";
+import ShowAllLetterModal from "components/modals/ShowAllLetterModal";
 import { PRESENT_NAME } from "types/constants";
 import { useRouter } from "next/router";
 

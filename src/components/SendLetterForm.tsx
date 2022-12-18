@@ -1,7 +1,6 @@
 import React, {
   useState,
   useCallback,
-  useRef,
   useEffect,
   useMemo,
 } from "react";
@@ -10,10 +9,9 @@ import { fetcher, postFetcher } from "../helper/Helper";
 import { useSession } from "next-auth/react";
 import RecieverList from "./RecieverList";
 import GiftList from "./GiftList";
+import useSWR from "swr";
 
 type Props = {
-  setMove?: (t: boolean) => void;
-  userList?: string[];
   setLetter?: (t: SendLetterType) => void;
 };
 
@@ -22,7 +20,10 @@ export default function SendLetterForm(props: Props) {
   const user = session?.user;
   const userName = user?.name;
 
-  const { userList, setLetter } = props;
+  const { setLetter } = props;
+
+  const { data: users } = useSWR(`/api/user-list`, fetcher);
+  const userList = useMemo(() => _.difference(_.map(users, 'name'), [userName]), [users, userName]);
 
   const sender = userName;
   const [reciever, setReciever] = useState("");
