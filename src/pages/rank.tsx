@@ -25,7 +25,7 @@ const MAX_RANK = 20;
 export default function Rank(props: Props) {
   const router = useRouter();
 
-  const heavySenderOption = "편지 많이 보낸사람"
+  const heavySenderOption = "💌 편지 많이 보낸 사람"
   const rankOption = [heavySenderOption, ..._.values(PRESENT_NAME)];
   const [rankType, setRankType] = useState(heavySenderOption);
 
@@ -66,6 +66,17 @@ export default function Rank(props: Props) {
     setRankType(e.target.value);
   }, []);
 
+  const getMedal = useCallback((rank: number) => {
+    if (rank === 0){
+      return '🥇';
+    } else if (rank === 1) {
+      return '🥈';
+    } else if (rank === 2) {
+      return '🥉';
+    }
+    return '';
+  }, []);
+
   return (
     <div
       style={{
@@ -93,18 +104,17 @@ export default function Rank(props: Props) {
             >
               {_.map(rankOption, (option) => (
                 <option value={option} key={`rank-option-${option}`}>
-                  {option}
+                  {option}{option !== heavySenderOption && ' 많이 받은 사람'}
                 </option>
               ))}
             </select>{" "}
           </h5>
-          <h5 className="text-white mt-2">을 가장 많이 얻은 사람은?</h5>
         </div>
         <div className="bg-white flex flex-col flex-1 max-h-[600px] gap-8 items-center w-1/3 border my-6 py-6 px-12 border-green-800 rounded-lg opacity-75 overflow-y-scroll">
           {rankType === heavySenderOption ? (
             _.map(rankHeavySender, (rank, index) => (
               <div key={`rank-${rankType}-${index}`} className="flex flex-col h-fit gap-2 pb-5 w-full border-0 border-b border-green-800">
-                <h3>{index + 1}위. 🥇 {rank?.reciever}</h3>
+                <h3>{index + 1}위. {getMedal(index)} {rank?.reciever}</h3>
                 <h5>보낸 편지: {rank?.count}개</h5>
               </div>
               ))
@@ -112,7 +122,7 @@ export default function Rank(props: Props) {
             _.map(rankByGift, (rank, index) => (
               <div key={`rank-${rankType}-${index}`} className="flex flex-col h-fit gap-2 pb-5 w-full border-0 border-b border-green-800">
                 <h3>{index + 1}위. 🥇 {rank?.reciever}</h3>
-                <h5>보낸 선물: {rank?.count}개</h5>
+                <h5>받은 {rankType}: {rank?.count}개</h5>
               </div>
               ))
           )}
