@@ -52,7 +52,7 @@ export default function GiftBox(props: Props) {
   const { sender, content, presentIndex = 0, present = "" } = letter ?? {};
   const { presentName, presentImage } = getPresentInfo(present, presentIndex);
 
-  const giftBoxUrl = getRandomGiftBoxImage();
+  const giftBoxUrl = useMemo(() => getRandomGiftBoxImage(), []);
 
   useEffect(() => {
     if (letters?.length > 0 && !letter) {

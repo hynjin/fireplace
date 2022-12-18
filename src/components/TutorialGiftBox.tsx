@@ -40,7 +40,7 @@ export default function TutorialGiftBox(props: Props) {
   const name = user?.name;
   const userId = user?.userId;
 
-  const giftBoxUrl = getRandomGiftBoxImage();
+  const giftBoxUrl = useMemo(() => getRandomGiftBoxImage(), []);
   const [isOpen, setIsOpen] = useState(false);
 
   const openModal = useCallback(() => {
