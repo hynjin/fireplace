@@ -28,7 +28,9 @@ const customStyles = {
     right: "auto",
     bottom: "auto",
     overflow: "scroll",
-    maxHeight: "calc(100% - 48px)",
+    maxHeight: "calc(100% - 200px)",
+    minWidth: 600,
+    maxWidth: 600,
     marginRight: "-50%",
     transform: "translate(-50%, -50%)",
   },
@@ -54,7 +56,13 @@ export default function GiftBox(props: Props) {
   );
 
   const [letter, setLetter] = useState(letters?.[0]);
-  const { sender, content, presentIndex = 0, present = "", anonymous } = letter ?? {};
+  const {
+    sender,
+    content,
+    presentIndex = 0,
+    present = "",
+    anonymous,
+  } = letter ?? {};
   const { presentName, presentImage } = getPresentInfo(present, presentIndex);
 
   const giftBoxUrl = useMemo(() => getRandomGiftBoxImage(), []);
@@ -101,8 +109,8 @@ export default function GiftBox(props: Props) {
       >
         <div>
           <h6 className="leading-8">
-            {anonymous ? '익명' : sender } 님이 <br /> [ {present && presentName} ] <br /> 과(와) 함께
-            편지를 보냈어요.
+            {anonymous ? "익명" : sender} 님이 <br /> [ {present && presentName}{" "}
+            ] <br /> 과(와) 함께 편지를 보냈어요.
           </h6>
           <h6 className="mt-4">
             {present && <img src={presentImage} />}
