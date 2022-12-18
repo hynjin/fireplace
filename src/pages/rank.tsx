@@ -95,7 +95,7 @@ export default function Rank(props: Props) {
               className="p-3 rounded w-full"
               onChange={handleChangeSelectRank}
               value={rankType}
-              disabled
+              disabled={blocked}
             >
               {_.map(rankOption, (option) => (
                 <option value={option} key={`rank-option-${option}`}>
