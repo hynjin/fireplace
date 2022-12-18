@@ -24,7 +24,14 @@ export default function LetterList(props: Props) {
 
   return (
     <div className="divide-y overflow-y">
-      {_.map(letters, (letter, index) => {
+      {_.isEmpty(letters) ? (
+        <div className="flex flex-col gap-6">
+          <div className="py-3 gap-3 border-0 border-t border-b border-gray-100">
+            <h6>아직 받은 편지가 없어요!</h6>
+          </div>
+        </div>
+      ) : (
+        _.map(letters, (letter, index) => {
         return (
           <div className="flex flex-col gap-2" key={`letter-list-${index}`}>
             <div className="pt-4 pb-1 gap-3">
@@ -48,7 +55,7 @@ export default function LetterList(props: Props) {
             </div>
           </div>
         );
-      })}
+      }))}
     </div>
   );
 }

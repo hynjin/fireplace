@@ -54,7 +54,7 @@ export default function GiftBox(props: Props) {
   );
 
   const [letter, setLetter] = useState(letters?.[0]);
-  const { sender, content, presentIndex = 0, present = "" } = letter ?? {};
+  const { sender, content, presentIndex = 0, present = "", anonymous } = letter ?? {};
   const { presentName, presentImage } = getPresentInfo(present, presentIndex);
 
   const giftBoxUrl = useMemo(() => getRandomGiftBoxImage(), []);
@@ -101,7 +101,7 @@ export default function GiftBox(props: Props) {
       >
         <div>
           <h6 className="leading-8">
-            {sender} 님이 <br /> [ {present && presentName} ] <br /> 과(와) 함께
+            {anonymous ? '익명' : sender } 님이 <br /> [ {present && presentName} ] <br /> 과(와) 함께
             편지를 보냈어요.
           </h6>
           <h6 className="mt-4">
