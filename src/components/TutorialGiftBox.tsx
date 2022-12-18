@@ -24,7 +24,7 @@ const customStyles = {
     bottom: "auto",
     overflow: "scroll",
     maxHeight: "calc(100% - 48px)",
-    minWidth: 800,
+    minWidth: 450,
     marginRight: "-50%",
     transform: "translate(-50%, -50%)",
   },
@@ -92,7 +92,7 @@ export default function TutorialGiftBox(props: Props) {
         </div>
         <button
           type="button"
-          className="p-3 border border-red-700 rounded w-fit px-8 my-4"
+          className="p-3 border border-red-700 rounded w-full px-8 my-4 "
           onClick={closeModal}
         >
           <h6 className="text-red-700 hover:text-red-300 ">확인!</h6>
