@@ -7,7 +7,12 @@ import React, {
 } from "react";
 import _ from "lodash";
 import Modal from "react-modal";
-import { fetcher, postFetcher, getPresentInfo, getRandomGiftBoxImage } from "helper/Helper";
+import {
+  fetcher,
+  postFetcher,
+  getPresentInfo,
+  getRandomGiftBoxImage,
+} from "helper/Helper";
 import { useSession } from "next-auth/react";
 import useSWR from "swr";
 
@@ -101,7 +106,7 @@ export default function GiftBox(props: Props) {
           </h6>
           <h6 className="mt-4">
             {present && <img src={presentImage} />}
-            {content}
+            <h6 className="mt-4">{content}</h6>
           </h6>
         </div>
         <button
