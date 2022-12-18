@@ -206,6 +206,7 @@ export default function SnowFlake() {
 
   return (
     <canvas
+      className="z-10"
       style={{
         position: "absolute",
         zIndex: 2,
