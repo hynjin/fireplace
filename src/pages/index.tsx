@@ -42,7 +42,7 @@ export default function Index(props: Props) {
       <ButtlerAnt />
       <Fireplace />
       {!needTutorial && <GiftBox ticket={ticket} setTicket={(n: number) => setTicket(n)} />}
-      <TutorialButton setDoneTutorial={setDoneTutorial} needTutorial={needTutorial} />
+      {needTutorial && <TutorialButton setDoneTutorial={setDoneTutorial} isTutorial />}
       <div className="fixed top-5 right-5">
           <h3 className="text-white text-center">남은 열람권 {ticket}</h3>
       </div>

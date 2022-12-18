@@ -31,12 +31,12 @@ const customStyles = {
 };
 
 type Props = {
-  needTutorial?: boolean;
+  isTutorial?: boolean;
   setDoneTutorial?: () => void;
 };
 
 export default function TutorialButton(props: Props) {
-  const { needTutorial, setDoneTutorial } = props;
+  const { isTutorial, setDoneTutorial } = props;
   const { data: session } = useSession();
   const user = session?.user;
   const name = user?.name;
@@ -58,7 +58,7 @@ export default function TutorialButton(props: Props) {
   return (
     <div
       className={
-        needTutorial && "absolute left-[40%] bottom-[50px] w-2/5 h-1/5"
+        isTutorial ? "absolute left-[40%] bottom-[50px] w-2/5 h-1/5" : ""
       }
     >
       <Modal
@@ -107,7 +107,7 @@ export default function TutorialButton(props: Props) {
         </button>
       </Modal>
 
-      {needTutorial ? (
+      {isTutorial ? (
         <button onClick={openModal} className="hover:scale-110">
           <img src={giftBoxUrl} className="w-fit h-40" />
         </button>
