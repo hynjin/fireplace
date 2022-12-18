@@ -24,6 +24,7 @@ const customStyles = {
     bottom: "auto",
     overflow: "scroll",
     maxHeight: "calc(100% - 48px)",
+    minWidth: 800,
     marginRight: "-50%",
     transform: "translate(-50%, -50%)",
   },
@@ -61,21 +62,46 @@ export default function TutorialGiftBox(props: Props) {
         ariaHideApp={false}
         contentLabel="Create Letter Modal"
       >
-        <div>
-          튜토리얼
+        <div className="p-6 flex gap-6 justify-center justify-between">
+          <div className="flex flex-col">
+            <h6 className="py-3 px-6 border border-black rounded-full leading-6">
+              편지를 보내는 방법과
+              <br /> 간단한 규칙을 설명해드릴게요!
+            </h6>
+            <img src="/images/gami_02.png" className="h-60 w-fit" />
+          </div>
+          <div className="flex flex-col flex-1">
+            <h2 className="py-3 mx-auto text-center mb-4"> 💡 튜토리얼 💡</h2>
+            <div className="py-4 px-8 bg-gray-100 rounded-lg">
+              <h5 className="leading-10">
+                1. 열람권을 이용해 나에게 도착한 편지를 읽을 수 있어요.
+                <br />
+                2. 열람권은 처음 1개가 주어지며, 다른 사람에게 편지를 보내면
+                얻을 수 있어요.
+                <br />
+                3. 편지는 일개미를 통해 보낼 수 있어요.
+                <br />
+                4. 실시간 랭킹은 일개미를 통해 확인 가능해요.
+                <br />
+                5. 가장 많은 편지를 보낸 사람에겐 깜짝 선물이 있어요!
+                <br />
+                6. 버그는 알아서 해결하거나 무시해주세요.^^
+              </h5>
+            </div>
+          </div>
         </div>
         <button
           type="button"
-          className="p-3 border border-red-700 rounded w-full my-4"
+          className="p-3 border border-red-700 rounded w-fit px-8 my-4"
           onClick={closeModal}
         >
-          <h6 className="text-red-700 hover:text-red-300">확인!</h6>
+          <h6 className="text-red-700 hover:text-red-300 ">확인!</h6>
         </button>
       </Modal>
 
-        <button onClick={openModal} className="hover:scale-110">
-          <img src={giftBoxUrl} className="w-fit h-40" />
-        </button>
+      <button onClick={openModal} className="hover:scale-110">
+        <img src={giftBoxUrl} className="w-fit h-40" />
+      </button>
     </div>
   );
 }
