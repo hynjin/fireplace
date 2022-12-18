@@ -71,8 +71,46 @@ export default function Rank(props: Props) {
           </h5>
           <h5 className="text-white mt-2">을 가장 많이 얻은 사람은?</h5>
         </div>
-        <div className="bg-white flex-1 w-2/3 border my-6 p-6 border-green-600 rounded opacity-75">
-          ww
+        <div className="bg-white flex flex-col flex-1 max-h-[600px] gap-8 items-center w-1/3 border my-6 py-6 px-12 border-green-800 rounded-lg opacity-75 overflow-y-scroll">
+          <div className="flex flex-col h-fit gap-2 pb-5 w-full border-0 border-b border-green-800">
+            <h3>1위. 🥇 hyunjin kim</h3>
+            <h5>보낸 편지: n개</h5>
+          </div>
+
+          <div className="flex flex-col h-fit gap-2 pb-5 w-full border-0 border-b border-green-800">
+            <h3>1위. 🥇 hyunjin kim</h3>
+            <h5>보낸 편지: n개</h5>
+          </div>
+
+          <div className="flex flex-col h-fit gap-2 pb-5 w-full border-0 border-b border-green-800">
+            <h3>1위. 🥇 hyunjin kim</h3>
+            <h5>보낸 편지: n개</h5>
+          </div>
+
+          <div className="flex flex-col h-fit gap-2 pb-5 w-full border-0 border-b border-green-800">
+            <h3>1위. 🥇 hyunjin kim</h3>
+            <h5>보낸 편지: n개</h5>
+          </div>
+
+          <div className="flex flex-col h-fit gap-2 pb-5 w-full border-0 border-b border-green-800">
+            <h3>1위. 🥇 hyunjin kim</h3>
+            <h5>보낸 편지: n개</h5>
+          </div>
+
+          <div className="flex flex-col h-fit gap-2 pb-5 w-full border-0 border-b border-green-800">
+            <h3>1위. 🥇 hyunjin kim</h3>
+            <h5>보낸 편지: n개</h5>
+          </div>
+
+          <div className="flex flex-col h-fit gap-2 pb-5 w-full border-0 border-b border-green-800">
+            <h3>1위. 🥇 hyunjin kim</h3>
+            <h5>보낸 편지: n개</h5>
+          </div>
+
+          <div className="flex flex-col h-fit gap-2 pb-5 w-full border-0 border-b border-green-800">
+            <h3>1위. 🥇 hyunjin kim</h3>
+            <h5>보낸 편지: n개</h5>
+          </div>
         </div>
         <button
           className="bg-white w-fit p-6 rounded shadow-md"
