@@ -17,7 +17,7 @@ export default function Rank(props: Props) {
   const router = useRouter();
 
   const { data: config = []} = useSWR(`/api/config`, fetcher);
-  const blocked = useMemo(() => !config?.[0]?.blocked, [config]);
+  const blocked = useMemo(() => config?.[0]?.blocked, [config]);
 
   const heavySenderOption = "💌 편지 많이 보낸 사람"
   const rankOption = [heavySenderOption, ..._.values(PRESENT_NAME)];
