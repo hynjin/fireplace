@@ -88,7 +88,7 @@ export default function GiftBox(props: Props) {
     }
 
     await postFetcher("/api/letters", { letterId: letter?._id });
-    await postFetcher("/api/user-list", { userName });
+    await postFetcher("/api/user-list", { name: userName });
 
     setTicket(ticket - 1);
     setIsOpen(true);
