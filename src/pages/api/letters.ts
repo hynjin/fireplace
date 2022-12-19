@@ -7,7 +7,7 @@ import { ObjectId } from 'mongodb';
 const Letter = require('../../models/Letter');
 const UserList = require('../../models/UserList');
 
-const getAllLetters = (userId?: string, name?: string | string[], unRead?: boolean) => {
+const getAllLetters = (userId?: string | string[], name?: string | string[], unRead?: boolean) => {
     if (name && !userId) {
         return {};
     }
