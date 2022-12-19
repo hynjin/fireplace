@@ -1,6 +1,7 @@
 import React from "react";
 import _ from "lodash";
-import { fetcher } from "helper/Helper";
+import { fetcher, getPresentInfo } from "helper/Helper";
+import { getDateByFormat } from "helper/DateHelper";
 import useSWR from "swr";
 import { useSession } from "next-auth/react";
 
@@ -25,6 +26,8 @@ export default function LetterList(props: Props) {
         </div>
       ) : (
         _.map(letters, (letter, index) => {
+          const { presentName, presentImage } = getPresentInfo(letter?.present, letter?.presentIndex);
+
         return (
           <div className="flex flex-col gap-2" key={`letter-list-${index}`}>
             <div className="pt-4 pb-1 gap-3">
@@ -36,14 +39,15 @@ export default function LetterList(props: Props) {
             <div className="bg-gray-100 rounded p-6 mb-6">
               {letter.present && (
                 <div className="pb-4 border-0 border-b border-gray-200">
-                  <h6>함께 동봉된 선물이 있어요! [ {letter.present} ]</h6>
+                  <h6>함께 동봉된 선물이 있어요! [ {letter.present} {presentName} ]</h6>
                 </div>
               )}
               <div className="py-4 border-0 border-b border-gray-200">
-                <h6>{letter.content}</h6>
+              {letter?.present && <img src={presentImage} />}
+                <h6 className="mt-4" style={{whiteSpace: 'pre-wrap'}}>{letter.content}</h6>
               </div>
               <div className="pt-4">
-                <h6>{letter.updated_at}</h6>
+                <h6>{getDateByFormat(letter.updated_at, 'YYYY년 M월 D일 a hh:mm:ss')}</h6>
               </div>
             </div>
           </div>

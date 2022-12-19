@@ -11,7 +11,7 @@ import { useRouter } from "next/router";
 type Props = {
 };
 
-const MAX_RANK = 20;
+const MAX_RANK = 10;
 
 export default function Rank(props: Props) {
   const router = useRouter();

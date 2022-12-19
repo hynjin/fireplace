@@ -110,13 +110,13 @@ export default function GiftBox(props: Props) {
       >
         <div>
           <h6 className="leading-8">
-            {anonymous ? '익명' : sender } 님이 <br /> {present && `[ ${presentName} ] <br /> 과(와) 함께`}
+            {anonymous ? '익명' : sender } 님이 <br /> {present && <>[ ${presentName} ] <br /> 과(와) 함께</>}
             편지를 보냈어요.
           </h6>
-          <h6 className="mt-4">
+          <div className="mt-4" style={{ wordBreak: 'keep-all'}}>
             {present && <img src={presentImage} />}
-            <h6 className="mt-4">{content}</h6>
-          </h6>
+            <h6 className="mt-4" style={{whiteSpace: 'pre-wrap'}}>{content}</h6>
+          </div>
         </div>
         <button
           type="button"
