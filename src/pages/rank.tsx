@@ -17,7 +17,7 @@ export default function Rank(props: Props) {
   const router = useRouter();
 
   const { data: config = []} = useSWR(`/api/config`, fetcher);
-  const blocked = useMemo(() => config?.[0]?.blocked, [config]);
+  const blocked = useMemo(() => !config?.[0]?.blocked, [config]);
 
   const heavySenderOption = "💌 편지 많이 보낸 사람"
   const rankOption = [heavySenderOption, ..._.values(PRESENT_NAME)];
@@ -30,33 +30,48 @@ export default function Rank(props: Props) {
   const rankByGift = useMemo(() => {
     const groupedByName = _.groupBy(lettersGroupedByGift[rankType], 'reciever');
 
-    const letterCount = _.map(groupedByName, (grouped, name) => {
-      return {
-        reciever: name,
-        count: grouped?.length,
-        rankType: rankType,
+    const groupedName = {};
+    _.forEach(groupedByName, (grouped, name) => {
+      const count = grouped?.length ?? 0;
+      if (groupedName[count]) {
+        groupedName[count].push(name);
+      } else {
+        _.set(groupedName, count, [name]);
       }
     });
-    const orderedRank = _.orderBy(letterCount, 'count', 'desc');
+    const letterCount = _.map(groupedName, (name, count) => {
+      return {
+        name,
+        count: Number(count),
+      }
+    });
+    const orderedRank = _.orderBy(letterCount, 'count','desc')
 
     return _.take(orderedRank, MAX_RANK);
   }, [lettersGroupedByGift, rankType]);
 
   const rankHeavySender = useMemo(() => {
-    const lettersGroupedBySender = _.groupBy(letters, 'sender');
-    const letterCount = _.map(lettersGroupedBySender, (grouped, name) => {
-      return {
-        reciever: name,
-        count: grouped?.length,
+    const countLetters = _.countBy(letters, 'sender');
+    const groupedName = {};
+    _.forEach(countLetters, (count, name) => {
+      if (groupedName[count]) {
+        groupedName[count].push(name);
+      } else {
+        _.set(groupedName, count, [name]);
       }
     });
-    const orderedRank = _.orderBy(letterCount, 'count', 'desc');
+    const letterCount = _.map(groupedName, (name, count) => {
+      return {
+        name,
+        count: Number(count),
+      }
+    });
+    const orderedRank = _.orderBy(letterCount, 'count','desc')
 
     return _.take(orderedRank, MAX_RANK);
   }, [letters]);
 
   const handleChangeSelectRank = useCallback((e) => {
-      console.log(e.target.value);
     setRankType(e.target.value);
   }, []);
 
@@ -110,14 +125,24 @@ export default function Rank(props: Props) {
             (rankType === heavySenderOption ? (
               _.map(rankHeavySender, (rank, index) => (
                 <div key={`rank-${rankType}-${index}`} className="flex flex-col h-fit gap-2 pb-5 w-full border-0 border-b border-green-800">
-                  <h3>{index + 1}위. {getMedal(index)} {rank?.reciever}</h3>
+                  <div className="flex flex-row w-full">
+                    <h3>{index + 1}위. {getMedal(index)} </h3>
+                    <div style={{whiteSpace: 'pre-wrap'}}>
+                      <h3> {_.join(rank?.name, '\n ' )}</h3>
+                    </div>
+                  </div>
                   <h5>보낸 편지: {rank?.count}개</h5>
                 </div>
                 ))
             ):(
               _.map(rankByGift, (rank, index) => (
                 <div key={`rank-${rankType}-${index}`} className="flex flex-col h-fit gap-2 pb-5 w-full border-0 border-b border-green-800">
-                  <h3>{index + 1}위. 🥇 {rank?.reciever}</h3>
+                  <div className="flex flex-row w-full">
+                    <h3>{index + 1}위. {getMedal(index)} </h3>
+                    <div style={{whiteSpace: 'pre-wrap'}}>
+                      <h3> {_.join(rank?.name, '\n ' )}</h3>
+                    </div>
+                  </div>
                   <h5>받은 {rankType}: {rank?.count}개</h5>
                 </div>
                 ))
