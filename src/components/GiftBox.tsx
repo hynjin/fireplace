@@ -51,7 +51,7 @@ export default function GiftBox(props: Props) {
   const [modalIsOpen, setIsOpen] = useState(false);
   const [alertOpen, setAlertOpen] = useState(false);
 
-  const { data: letters } = useSWR(
+  const { data: letters, mutate } = useSWR(
     `/api/letters?name=${userName}&isRead=false&userId=${userId}`,
     fetcher
   );
@@ -87,13 +87,12 @@ export default function GiftBox(props: Props) {
       openAlert();
       return;
     }
-
     await postFetcher("/api/letters", { letterId: letter?._id });
     await postFetcher("/api/user-list", { name: userName });
-
+    await mutate([...letters.slice(1)]);
     setTicket(ticket - 1);
     setIsOpen(true);
-  }, [letter, openAlert, setTicket, ticket, userName]);
+  }, [letter, letters, mutate, openAlert, setTicket, ticket, userName]);
 
   const closeModal = useCallback(() => {
     setLetter(letters?.[0]);
@@ -110,7 +109,7 @@ export default function GiftBox(props: Props) {
       >
         <div>
           <h6 className="leading-8">
-            {anonymous ? '익명' : sender } 님이 <br /> {present && <>[ ${presentName} ] <br /> 과(와) 함께</>}
+            {anonymous ? '익명' : sender } 님이 <br /> {present && <>[ {presentName} ] <br /> 과(와) 함께</>}
             편지를 보냈어요.
           </h6>
           <div className="mt-4" style={{ wordBreak: 'keep-all'}}>
