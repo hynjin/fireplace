@@ -46,12 +46,13 @@ export default function GiftBox(props: Props) {
   const { data: session } = useSession();
   const user = session?.user;
   const userName = user?.name;
+  const userId = user?.userId;
 
   const [modalIsOpen, setIsOpen] = useState(false);
   const [alertOpen, setAlertOpen] = useState(false);
 
   const { data: letters } = useSWR(
-    `/api/letters?name=${userName}&isRead=false`,
+    `/api/letters?name=${userName}&isRead=false&userId=${userId}`,
     fetcher
   );
 

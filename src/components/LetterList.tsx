@@ -11,8 +11,9 @@ export default function LetterList(props: Props) {
   const { data: session } = useSession();
   const user = session?.user;
   const userName = user?.name;
+  const userId = user?.userId;
 
-  const { data: letters } = useSWR(`/api/letters?name=${userName}`, fetcher);
+  const { data: letters } = useSWR(`/api/letters?name=${userName}&userId=${userId}`, fetcher);
 
   return (
     <div className="divide-y overflow-y">

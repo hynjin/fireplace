@@ -7,11 +7,14 @@ import { ObjectId } from 'mongodb';
 const Letter = require('../../models/Letter');
 const UserList = require('../../models/UserList');
 
-const getAllLetters = (name?: string | string[], unRead?: boolean) => {
+const getAllLetters = (userId?: string, name?: string | string[], unRead?: boolean) => {
+    if (name && !userId) {
+        return {};
+    }
     if (name) {
         return Letter.find({ reciever: name, isRead: !unRead }).sort({ updated_at: -1 });
     }
-    return Letter.find().sort({ updated_at: -1 });
+    return Letter.find({}, {sender:1, reciever:1, present:1}).sort({ updated_at: -1 });
 };
 
 const sendLetter = async (letter: any) => {
@@ -64,10 +67,9 @@ export default async function lettersHandler(
 
     switch (method) {
         case 'GET':
-            const { name, isRead } = query;
+            const { name, isRead, userId } = query;
             
-            const letters = await getAllLetters(name, !!isRead);//_.isNil(filter) ? await getAllLetters(name) : await getUnreadLetters(filter);
-            // console.log('+++ call letters', name, letters);
+            const letters = await getAllLetters(userId, name, !!isRead);//_.isNil(filter) ? await getAllLetters(name) : await getUnreadLetters(filter);
             res.status(200).json(letters);
             break;
         case 'POST':
