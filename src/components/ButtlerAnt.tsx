@@ -21,7 +21,7 @@ export default function GiftBox(props: Props) {
         open={showInfo}
         close={() => setShowInfo(false)}
       />
-      <div className="absolute right-40 bottom-[30%] w-1/5 h-1/5">
+      <div className="absolute right-[150px] bottom-[30%] w-1/5 h-1/5 z-10">
         <button className="hover:scale-110" onClick={() => setShowInfo(true)}>
           <img src="/images/gami.png" className="w-full h-full" />
         </button>

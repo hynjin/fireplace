@@ -120,7 +120,7 @@ export default function Rank(props: Props) {
             </select>{" "}
           </h5>
         </div>
-        <div className="bg-white flex flex-col flex-1 max-h-[600px] gap-8 items-center w-1/3 border my-6 py-6 px-12 border-green-800 rounded-lg bg-opacity-75  overflow-y-scroll">
+        <div className="bg-white flex flex-col flex-1 max-h-[600px] min-w-[350px] gap-8 items-center w-1/3 border my-6 py-6 px-12 border-green-800 rounded-lg bg-opacity-75  overflow-y-scroll">
           {blocked ? <img src="/images/60sec.jpeg" className="h-full w-full opacity-100 " /> :
             (rankType === heavySenderOption ? (
               _.map(rankHeavySender, (rank, index) => (

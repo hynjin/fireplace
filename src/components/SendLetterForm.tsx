@@ -53,10 +53,8 @@ export default function SendLetterForm(props: Props) {
     setAnonymous(e.target.checked);
   }, []);
 
-  useEffect(() => console.log("+++ pre", present), [present]);
-
   return (
-    <form className="min-w-[600px] w-full">
+    <form className="min-w-[350px] w-full">
       <div className="flex w-full">
         <h6 className="mb-2 mr-4">From. {isAnonymous ? "익명" : user?.name}</h6>
         <div className="flex items-center mb-4">

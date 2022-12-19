@@ -15,7 +15,7 @@ const customStyles = {
     bottom: "auto",
     overflow: "scroll",
     maxHeight: "calc(100% - 200px)",
-    minWidth: 600,
+    minWidth: 350,
     maxWidth: 600,
     marginRight: "-50%",
     transform: "translate(-50%, -50%)",
