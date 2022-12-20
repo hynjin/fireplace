@@ -51,7 +51,8 @@ export default function Rank(props: Props) {
   }, [lettersGroupedByGift, rankType]);
 
   const rankHeavySender = useMemo(() => {
-    const countLetters = _.countBy(letters, 'sender');
+    const excludeLetters = _.filter(letters, letter => !_.includes(['Hyunjin Kim', "Dahee Jeong"], letter?.sender));
+    const countLetters = _.countBy(excludeLetters, 'sender');
     const groupedName = {};
     _.forEach(countLetters, (count, name) => {
       if (groupedName[count]) {
