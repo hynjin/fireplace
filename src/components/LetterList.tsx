@@ -6,9 +6,11 @@ import useSWR from "swr";
 import { useSession } from "next-auth/react";
 
 type Props = {
+  listRef: any;
 };
 
 export default function LetterList(props: Props) {
+  const { listRef } = props
   const { data: session } = useSession();
   const user = session?.user;
   const userName = user?.name;
@@ -17,7 +19,7 @@ export default function LetterList(props: Props) {
   const { data: letters } = useSWR(`/api/letters?name=${userName}&userId=${userId}`, fetcher);
 
   return (
-    <div className="divide-y overflow-y">
+    <div ref={listRef} className="p-4 divide-y overflow-y">
       {_.isEmpty(letters) ? (
         <div className="flex flex-col gap-6">
           <div className="py-3 gap-3 border-0 border-t border-b border-gray-100">
