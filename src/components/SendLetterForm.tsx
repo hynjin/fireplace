@@ -33,6 +33,10 @@ export default function SendLetterForm(props: Props) {
   const [isError, setIsError] = useState(false);
 
   const onClickSendLetter = useCallback(async (data: SendLetterType) => {
+    if (data?.sender === "Myeongchan Kim") {
+      window.alert('명찬은 작성 금지입니다.');
+      return;
+    }
     const randomIndex = data?.present === 'honor' ? 0 : getRandomNumber(5);
 
     if (data?.reciever) {

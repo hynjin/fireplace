@@ -51,7 +51,7 @@ export default function Rank(props: Props) {
   }, [lettersGroupedByGift, rankType]);
 
   const rankHeavySender = useMemo(() => {
-    const excludeLetters = _.filter(letters, letter => !_.includes(['Hyunjin Kim', "Dahee Jeong"], letter?.sender));
+    const excludeLetters = _.filter(letters, letter => !_.includes(['Hyunjin Kim', "Dahee Jeong", "Sinyoung Park", "Hongjae Eum"], letter?.sender));
     const countLetters = _.countBy(excludeLetters, 'sender');
     const groupedName = {};
     _.forEach(countLetters, (count, name) => {
@@ -149,9 +149,8 @@ export default function Rank(props: Props) {
                 ))
             )
           )}
-          
-
         </div>
+        <h6 className="text-white pb-4">✄API 돌리신 신영과 홍재는 랭킹에서 제외되었습니다.✄</h6>
         <button
           className="bg-white w-fit p-6 rounded shadow-md"
           onClick={() => router.push("/")}
