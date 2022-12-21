@@ -5,6 +5,7 @@ import _ from 'lodash';
 import { ObjectId } from 'mongodb';
 import { unstable_getServerSession } from "next-auth/next"
 import { authOptions } from "./auth/[...nextauth]"
+import { toISOString } from 'helper/DateHelper';
 
 const Letter = require('../../models/Letter');
 const UserList = require('../../models/UserList');
@@ -75,7 +76,15 @@ export default async function lettersHandler(
 ) {
     const { query, body, method } = req;
     const session = await unstable_getServerSession(req, res, authOptions)
+    // const members = ["[PUBLY]문종혁", "Byeongsoo Kim","Byunghun Kim","Dahee Jeong","Donghun Lee","Eunbyeol Ko","Eunseo Kim","Gayeon Kim","Ha Luong","Heejun Kim","Hongjae Eum","Hungjoon Kim","Hyojoo Byun","Hyunjin Kim","Hyunsoo Lee","Hyunsun Park","Jaemin Chung","Jaesung Kim","Jaeyong Jung","Jieun Kim","Jiho Kim","Jiwon Ahn","Jiwon Cha","Jiwon Kim","Junghyun Son","Kwangjong Kim","Minhyo Kim","Minjeong Joo","Minjeong Joo","Minji Cho","Minsu Kwon","Myeongchan Kim","Naon Shin","Sehoon Park","Seoji Kang","Seoryun Lee","Seunghyun Lee","Seungkook Lee","Sinyoung Park","Sohee Jeong","Sol Oh","Sori Park","Soryoung Park","Sueun Chang","Suhee Choi","Sungwon Wi","Van Anh Nguyen","Woojin Hwang","Yevin Park","Yewon Moon","Youngjoon Oh","Yunha Bae"];
 
+    // const letters = await Letter.find({ sender: {$nin: members}});
+    // // await _.forEach(letters, async letter => {
+    // //     const tt = await Letter.findOneAndDelete({_id: letter?._id});
+    // // });
+    
+    // res.status(200).json(letters);
+    // return;
     if (session) {
         await connectToDatabase();
     
