@@ -66,7 +66,8 @@ export default async function usersHandler(
                 res.setHeader('Allow', ['GET', 'POST', 'DELETE']);
                 res.status(405).end(`Method ${method} Not Allowed`);
         }
+    } else {
+        res.status(401).end('Not Authorized');
     }
-    res.status(401).end('Not Authorized');
     // con.disconnect();
 }

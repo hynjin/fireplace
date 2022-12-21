@@ -108,8 +108,9 @@ export default async function lettersHandler(
                 res.setHeader('Allow', ['GET', 'POST', 'DELETE']);
                 res.status(405).end(`Method ${method} Not Allowed`);
         }
+    } else {
+        res.status(401).end('Not Authorized');
     }
-    res.status(401).end('Not Authorized');
 
     // const con = 
     // con.disconnect();
