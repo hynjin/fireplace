@@ -3,6 +3,8 @@ import clientPromise from 'util/mongodbClient';
 import connectToDatabase from 'util/mongoose';
 import _ from 'lodash';
 import { ObjectId } from 'mongodb';
+import { unstable_getServerSession } from "next-auth/next"
+import { authOptions } from "./auth/[...nextauth]"
 
 const UserList = require('../../models/UserList');
 
@@ -62,38 +64,40 @@ export default async function userListHandler(
     res: NextApiResponse
 ) {
     const { query, body, method } = req;
+    const session = await unstable_getServerSession(req, res, authOptions)
 
-    const client =  await clientPromise;
-    // const con = 
-    await connectToDatabase();
+    if (session) {
+        await connectToDatabase();
 
-    switch (method) {
-        case 'GET':
-            const users = await getUserList(query);
-            // console.log('+++ call users',  users);
-            res.status(200).json(users);
-            break;
-        case 'POST':
-            // console.log('+++ call letters post', body);
-            // const result = await addUser(body);
-            const { userId } = body;
-            let result;
-            if (userId) {
-                result = await updateUser(body);
-            } else {
-                result = await spendTicket(body);
-            }
-            // console.log('++ resut', result);
-            res.status(200).json(result);
-            break;
-        // case 'DELETE':
-        //     const { letter_id } = body;
-        //     console.log('+++ call restaurants delete', letter_id);
-        //     await deleteLetter(letter_id);
-        //     break;
-        default:
-            res.setHeader('Allow', ['GET', 'POST', 'DELETE']);
-            res.status(405).end(`Method ${method} Not Allowed`);
+        switch (method) {
+            case 'GET':
+                const users = await getUserList(query);
+                // console.log('+++ call users',  users);
+                res.status(200).json(users);
+                break;
+            case 'POST':
+                // console.log('+++ call letters post', body);
+                // const result = await addUser(body);
+                const { userId } = body;
+                let result;
+                if (userId) {
+                    result = await updateUser(body);
+                } else {
+                    result = await spendTicket(body);
+                }
+                // console.log('++ resut', result);
+                res.status(200).json(result);
+                break;
+            // case 'DELETE':
+            //     const { letter_id } = body;
+            //     console.log('+++ call restaurants delete', letter_id);
+            //     await deleteLetter(letter_id);
+            //     break;
+            default:
+                res.setHeader('Allow', ['GET', 'POST', 'DELETE']);
+                res.status(405).end(`Method ${method} Not Allowed`);
+        }
     }
+    res.status(401).end('Not Authorized');
     // con.disconnect();
 }

@@ -5,7 +5,7 @@ import { NextApiRequest, NextApiResponse } from 'next';
 import { MongoDBAdapter } from '@next-auth/mongodb-adapter';
 import clientPromise from 'util/mongodbClient';
 
-export default NextAuth({
+export const authOptions: NextAuthOptions = {
     session: {
         strategy: 'database',
         maxAge: 60 * 60 * 24 * 365 * 20,
@@ -39,4 +39,6 @@ export default NextAuth({
             return session;
         },
     },
-});
+};
+
+export default NextAuth(authOptions);

@@ -3,6 +3,8 @@ import clientPromise from 'util/mongodbClient';
 import connectToDatabase from 'util/mongoose';
 import _ from 'lodash';
 import { ObjectId } from 'mongodb';
+import { unstable_getServerSession } from "next-auth/next"
+import { authOptions } from "./auth/[...nextauth]"
 
 const Letter = require('../../models/Letter');
 const UserList = require('../../models/UserList');
@@ -72,38 +74,43 @@ export default async function lettersHandler(
     res: NextApiResponse
 ) {
     const { query, body, method } = req;
+    const session = await unstable_getServerSession(req, res, authOptions)
+
+    if (session) {
+        await connectToDatabase();
+    
+        switch (method) {
+            case 'GET':            
+                const letters = await getAllLetters(query);//_.isNil(filter) ? await getAllLetters(name) : await getUnreadLetters(filter);
+                res.status(200).json(letters);
+                break;
+            case 'POST':
+                console.log('+++ call letters post', body);
+                let result;
+                if (body?.letterId) {
+                    result = await readLetter(body);
+                } else {
+                    result = await sendLetter(body);
+                }
+                res.status(200).json(result.insertedId);
+                break;
+            // case 'PUT':
+            //     // console.log('+++ call letters post');
+            //     await readLetter(body);
+            //     res.status(200).json({});
+            //     break;
+            case 'DELETE':
+                const { letter_id } = body;
+                // console.log('+++ call restaurants delete', letter_id);
+                await deleteLetter(letter_id);
+                break;
+            default:
+                res.setHeader('Allow', ['GET', 'POST', 'DELETE']);
+                res.status(405).end(`Method ${method} Not Allowed`);
+        }
+    }
+    res.status(401).end('Not Authorized');
 
     // const con = 
-    await connectToDatabase();
-
-    switch (method) {
-        case 'GET':            
-            const letters = await getAllLetters(query);//_.isNil(filter) ? await getAllLetters(name) : await getUnreadLetters(filter);
-            res.status(200).json(letters);
-            break;
-        case 'POST':
-            // console.log('+++ call letters post');
-            let result;
-            if (body?.letterId) {
-                result = await readLetter(body);
-            } else {
-                result = await sendLetter(body);
-            }
-            res.status(200).json(result.insertedId);
-            break;
-        // case 'PUT':
-        //     // console.log('+++ call letters post');
-        //     await readLetter(body);
-        //     res.status(200).json({});
-        //     break;
-        case 'DELETE':
-            const { letter_id } = body;
-            // console.log('+++ call restaurants delete', letter_id);
-            await deleteLetter(letter_id);
-            break;
-        default:
-            res.setHeader('Allow', ['GET', 'POST', 'DELETE']);
-            res.status(405).end(`Method ${method} Not Allowed`);
-    }
     // con.disconnect();
 }

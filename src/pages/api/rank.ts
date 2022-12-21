@@ -3,6 +3,8 @@ import clientPromise from 'util/mongodbClient';
 import connectToDatabase from 'util/mongoose';
 import _ from 'lodash';
 const Letter = require('../../models/Letter');
+import { unstable_getServerSession } from "next-auth/next"
+import { authOptions } from "./auth/[...nextauth]"
 
 const getAllLetters = () => {
     return Letter.aggregate([
@@ -35,30 +37,31 @@ export default async function lettersHandler(
     res: NextApiResponse
 ) {
     const { query, body, method } = req;
+    const session = await unstable_getServerSession(req, res, authOptions)
 
-    // const con = 
-    await connectToDatabase();
+    if (session) {
+        await connectToDatabase();
 
-    switch (method) {
-        case 'GET':
-            const rank = await getAllLetters();
-            // console.log('+++ call rank', rank);
-            res.status(200).json(rank);
-            break;
-        case 'POST':
-            // console.log('+++ call letters post');
-            const result = await addLetter(body);
-            res.status(200).json(result.insertedId);
-            break;
-        case 'DELETE':
-            const { letter_id } = body;
-            // console.log('+++ call restaurants delete', letter_id);
-            await deleteLetter(letter_id);
-            break;
-        default:
-            res.setHeader('Allow', ['GET', 'POST', 'DELETE']);
-            res.status(405).end(`Method ${method} Not Allowed`);
+        switch (method) {
+            case 'GET':
+                const rank = await getAllLetters();
+                // console.log('+++ call rank', rank);
+                res.status(200).json(rank);
+                break;
+            case 'POST':
+                // console.log('+++ call letters post');
+                const result = await addLetter(body);
+                res.status(200).json(result.insertedId);
+                break;
+            case 'DELETE':
+                const { letter_id } = body;
+                // console.log('+++ call restaurants delete', letter_id);
+                await deleteLetter(letter_id);
+                break;
+            default:
+                res.setHeader('Allow', ['GET', 'POST', 'DELETE']);
+                res.status(405).end(`Method ${method} Not Allowed`);
+        }
     }
-
-    // con.disconnect();
+    res.status(401).end('Not Authorized');
 }
