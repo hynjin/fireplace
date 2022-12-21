@@ -6,8 +6,11 @@ import { ObjectId } from 'mongodb';
 
 const UserList = require('../../models/UserList');
 
-const getUserList = () => {
-    return UserList.find().sort( { name: 1 } );
+const getUserList = (query: any) => {
+    if (query?.name) {
+        return UserList.find({ name: query?.name });
+    }
+    return UserList.find({}, { name:1 } ).sort( { name: 1 } );
 };
 
 const addUser = (letter: any) => {
@@ -66,7 +69,7 @@ export default async function userListHandler(
 
     switch (method) {
         case 'GET':
-            const users = await getUserList();
+            const users = await getUserList(query);
             // console.log('+++ call users',  users);
             res.status(200).json(users);
             break;
@@ -94,12 +97,3 @@ export default async function userListHandler(
     }
     // con.disconnect();
 }
-
-
-import { MongoClient } from 'mongodb';
-
-/*
- * Requires the MongoDB Node.js Driver
- * https://mongodb.github.io/node-mongodb-native
- */
-

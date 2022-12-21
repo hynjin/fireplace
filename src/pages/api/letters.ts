@@ -7,12 +7,23 @@ import { ObjectId } from 'mongodb';
 const Letter = require('../../models/Letter');
 const UserList = require('../../models/UserList');
 
-const getAllLetters = (userId?: string | string[], name?: string | string[], unRead?: boolean) => {
+const getAllLetters = async (body: any) => {
+    const { userId, name, isRead } = body;
+    const unRead = !!isRead;
     if (name && !userId) {
         return {};
     }
     if (name) {
-        return Letter.find({ reciever: name, isRead: !unRead }).sort({ updated_at: -1 });
+        if (userId === 'undefined') {
+            return {};
+        }
+        const id = new ObjectId(userId);
+        const user = await UserList.find({ name });
+
+        if (id.equals(user?.[0]?.userId)) {
+            return Letter.find({ reciever: name, isRead: !unRead}).sort({ updated_at: -1 });
+        }
+        return {};
     }
     return Letter.find({}, {sender:1, reciever:1, present:1}).sort({ updated_at: -1 });
 };
@@ -66,10 +77,8 @@ export default async function lettersHandler(
     await connectToDatabase();
 
     switch (method) {
-        case 'GET':
-            const { name, isRead, userId } = query;
-            
-            const letters = await getAllLetters(userId, name, !!isRead);//_.isNil(filter) ? await getAllLetters(name) : await getUnreadLetters(filter);
+        case 'GET':            
+            const letters = await getAllLetters(query);//_.isNil(filter) ? await getAllLetters(name) : await getUnreadLetters(filter);
             res.status(200).json(letters);
             break;
         case 'POST':

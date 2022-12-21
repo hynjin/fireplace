@@ -16,8 +16,7 @@ type Props = {
 export default function Index(props: Props) {
   const {  userName } = props;
 
-  const { data: users } = useSWR(`/api/user-list`, fetcher);
-  const userInfo = useMemo(() => _.find(users, { 'name': userName }), [users, userName]);
+  const { data: userInfo } = useSWR(`/api/user-list?name=${userName}`, fetcher);
 
   const [needTutorial, setNeedTutorial] = useState(false);
   const setDoneTutorial = useCallback(() => {
@@ -26,9 +25,9 @@ export default function Index(props: Props) {
 
   const [ticket, setTicket] = useState(0);
   useEffect(() => {
-      if (userInfo) {
-        setNeedTutorial(!userInfo?.userId);
-        setTicket(userInfo?.ticket ?? 0);
+      if (userInfo?.[0]) {
+        setNeedTutorial(!userInfo?.[0].userId);
+        setTicket(userInfo?.[0].ticket ?? 0);
       }
   }, [userInfo]);
 
